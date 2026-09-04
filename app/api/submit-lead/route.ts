@@ -77,7 +77,7 @@ function buildUserEmailText(name: string, totals: ReturnType<typeof calculateSec
     `Here's the breakdown from your True Cost of Homeownership calculator estimate — it's attached as a PDF too.`,
     '',
     `Your monthly true cost of home ownership: ${formatCurrency(totals.grandTotal, 0)}`,
-    `Mortgage payment alone: ${formatCurrencyWhole(totals.mortgageMonthly)}/mo`,
+    `P&I payment: ${formatCurrencyWhole(totals.pAndI)}/mo`,
     '',
     `Mortgage: ${formatCurrencyWhole(totals.mortgageMonthly)}/mo`,
     `Taxes & Insurance: ${formatCurrencyWhole(totals.taxesInsuranceMonthly)}/mo`,
