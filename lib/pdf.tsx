@@ -150,7 +150,7 @@ export default function CostReportDocument({ name, state, totals }: CostReportPr
         <View style={styles.heroBox}>
           <Text style={styles.heroLabel}>Your monthly true cost of home ownership</Text>
           <Text style={styles.heroTotal}>{formatCurrency(totals.grandTotal, 0)}</Text>
-          <Text style={styles.heroSub}>Mortgage payment alone: {formatCurrencyWhole(totals.mortgageMonthly)}/mo</Text>
+          <Text style={styles.heroSub}>P&amp;I payment: {formatCurrencyWhole(totals.pAndI)}/mo</Text>
         </View>
 
         <Text style={styles.sectionTitle}>Monthly breakdown</Text>
@@ -179,10 +179,11 @@ export default function CostReportDocument({ name, state, totals }: CostReportPr
 
         <View style={styles.explainerBox}>
           <Text style={styles.explainerText}>
-            Your mortgage payment is your mortgage payment — that part is fixed, and you already know that
-            number. This total adds your other monthly expense estimates (taxes, insurance, utilities) plus
-            future home expenses, like a roof or water heater down the road, averaged out into a monthly amount
-            so you can plan for them ahead of time.
+            This number adds your mortgage, property taxes, insurance, utilities, routine maintenance, and a
+            monthly reserve for future repairs — everything it actually takes to keep the home running, not just
+            what the bank collects each month. It&apos;s an estimate, not a guarantee; every home and every year
+            looks a little different. But having a realistic range before you buy, instead of finding it out one
+            bill at a time, makes it a lot easier to plan with confidence.
           </Text>
         </View>
 

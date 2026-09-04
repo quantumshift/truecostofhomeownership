@@ -50,10 +50,8 @@ export function calculateSectionTotals(state: CalculatorState): SectionTotals {
   const taxesInsuranceMonthly = propertyTaxMonthly + homeownersInsuranceMonthly + hoaMonthly;
 
   const u = state.utilities;
-  const electricityMonthly = weightedSeasonalAverage(u.electricitySummer.value, u.electricityWinter.value);
-  const gasMonthly = weightedSeasonalAverage(u.gasSummer.value, u.gasWinter.value);
   const utilitiesMonthly =
-    electricityMonthly + gasMonthly + u.waterSewer.value + u.trash.value + u.internet.value + u.other.value;
+    u.electricity.value + u.gas.value + u.waterSewer.value + u.trash.value + u.internet.value + u.other.value;
 
   const maintenanceMonthly = state.maintenance.squareFootage * MAINTENANCE_RATE_PER_SQFT;
 
@@ -93,12 +91,6 @@ export function calculateSectionTotals(state: CalculatorState): SectionTotals {
     waterHeaterReserve,
     grandTotal,
   };
-}
-
-// Summer/winter weighted 3 months each; spring/fall (6 months) use the average of the two.
-function weightedSeasonalAverage(summer: number, winter: number): number {
-  const shoulderAvg = (summer + winter) / 2;
-  return (summer * 3 + winter * 3 + shoulderAvg * 6) / 12;
 }
 
 function calculateSystemReserve(ageYears: number, lifespan: number, replacementCost: number): number {

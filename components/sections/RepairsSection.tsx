@@ -4,6 +4,7 @@ import { RepairsInputs, SYSTEM_REFERENCE_DATA } from '@/lib/types';
 import { formatCurrency, formatCurrencyWhole } from '@/lib/format';
 import CollapsibleSection from '../ui/CollapsibleSection';
 import NumberInput from '../ui/NumberInput';
+import SectionTotalRow from '../ui/SectionTotalRow';
 
 interface RepairsSectionProps {
   value: RepairsInputs;
@@ -35,7 +36,6 @@ export default function RepairsSection({
       id="repairs"
       title="Repairs & System Replacements"
       subtitle="Big-ticket items most buyers don't budget for"
-      monthlyTotal={formatCurrencyWhole(monthlyTotal)}
     >
       <p className="text-sm text-neutral-600 mb-5">
         Roofs, HVAC systems, and water heaters don&apos;t last forever, and replacing one is a large one-time
@@ -77,12 +77,18 @@ export default function RepairsSection({
         </table>
       </div>
 
-      <p className="text-xs text-neutral-500 mt-4">
-        *National median costs shown. Replacement costs vary by region — coastal and West Coast markets often
-        run higher than rural Midwest or Southeast markets due to labor rates and local codes. A local contractor
-        quote will give a more accurate number for a specific property. When a system is already past its typical
-        lifespan, the reserve calculation caps at 1 year remaining to reflect the urgency.
+      <p className="text-xs text-neutral-500 mt-4 leading-relaxed">
+        *These are national medians, and the reason this section exists at all is that most buyers budget for
+        the mortgage and forget that a roof, HVAC system, or water heater eventually wears out — often at an
+        inconvenient time, for several thousand dollars at once. Spreading that expected cost into a monthly
+        reserve now means it&apos;s already planned for instead of a surprise later. Actual costs vary by
+        region — coastal and West Coast markets often run higher than the rural Midwest or Southeast due to labor
+        rates and local codes — so a local contractor quote will always beat a national average for a specific
+        property. When a system is already past its typical lifespan, the reserve calculation caps at 1 year
+        remaining, since replacement could reasonably happen at any time.
       </p>
+
+      <SectionTotalRow label="Total Monthly Repairs Reserve" amount={monthlyTotal} />
     </CollapsibleSection>
   );
 }

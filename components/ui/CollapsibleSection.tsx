@@ -6,7 +6,6 @@ interface CollapsibleSectionProps {
   id: string;
   title: string;
   subtitle?: string;
-  monthlyTotal?: string;
   defaultOpen?: boolean;
   children: ReactNode;
 }
@@ -15,7 +14,6 @@ export default function CollapsibleSection({
   id,
   title,
   subtitle,
-  monthlyTotal,
   defaultOpen = true,
   children,
 }: CollapsibleSectionProps) {
@@ -39,9 +37,6 @@ export default function CollapsibleSection({
           {subtitle && <p className="text-sm text-neutral-500 mt-0.5">{subtitle}</p>}
         </div>
         <div className="flex items-center gap-3 shrink-0">
-          {monthlyTotal && (
-            <span className="text-base font-semibold text-navy tabular-nums">{monthlyTotal}/mo</span>
-          )}
           <svg
             className={`h-5 w-5 text-neutral-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
             viewBox="0 0 20 20"

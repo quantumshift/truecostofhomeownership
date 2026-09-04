@@ -2,11 +2,12 @@
 
 import { useState } from 'react';
 import { UtilitiesInputs, UtilityEstimateResponse, UtilityFieldState } from '@/lib/types';
-import { formatCurrencyWhole, isValidZip } from '@/lib/format';
+import { isValidZip } from '@/lib/format';
 import CollapsibleSection from '../ui/CollapsibleSection';
 import FieldRow from '../ui/FieldRow';
 import CurrencyInput from '../ui/CurrencyInput';
 import AiBadge from '../ui/AiBadge';
+import SectionTotalRow from '../ui/SectionTotalRow';
 
 interface UtilitiesSectionProps {
   value: UtilitiesInputs;
@@ -38,10 +39,8 @@ export default function UtilitiesSection({ value, onChange, monthlyTotal }: Util
       }
       const data: UtilityEstimateResponse = await res.json();
       onChange({
-        electricitySummer: { value: data.electricitySummer, isAiEstimate: true },
-        electricityWinter: { value: data.electricityWinter, isAiEstimate: true },
-        gasSummer: { value: data.gasSummer, isAiEstimate: true },
-        gasWinter: { value: data.gasWinter, isAiEstimate: true },
+        electricity: { value: data.electricity, isAiEstimate: true },
+        gas: { value: data.gas, isAiEstimate: true },
         waterSewer: { value: data.waterSewer, isAiEstimate: true },
         trash: { value: data.trash, isAiEstimate: true },
       });
@@ -53,12 +52,7 @@ export default function UtilitiesSection({ value, onChange, monthlyTotal }: Util
   }
 
   return (
-    <CollapsibleSection
-      id="utilities"
-      title="Utilities"
-      subtitle="Power, gas, water, trash, internet"
-      monthlyTotal={formatCurrencyWhole(monthlyTotal)}
-    >
+    <CollapsibleSection id="utilities" title="Utilities" subtitle="Power, gas, water, trash, internet">
       <div className="rounded-md bg-neutral-50 border border-neutral-200 p-4 mb-6">
         <p className="text-sm font-medium text-neutral-800 mb-2">
           Not sure what utilities run in this area? Enter a ZIP code and we&apos;ll fill in a rough starting point.
@@ -85,58 +79,35 @@ export default function UtilitiesSection({ value, onChange, monthlyTotal }: Util
         </div>
         {error && <p className="text-sm text-red-600 mt-2">{error}</p>}
         <p className="text-xs text-neutral-500 mt-3">
-          Rough estimate only. This is an AI-generated approximation based on general regional knowledge — not
-          live utility rates. Always verify with actual bills from the seller or local utility providers before
-          relying on these numbers.
+          Rough estimate only, built from general regional knowledge (climate, typical rates for that area) — not
+          a live utility-rate lookup. A house that&apos;s bigger, older, or less insulated than average will run
+          higher than this; a newer, well-insulated one will often run lower. Always compare against actual bills
+          from the seller or local utility providers before relying on these numbers.
         </p>
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
         <FieldRow
-          label="Electricity — Summer average"
-          htmlFor="electricitySummer"
-          badge={value.electricitySummer.isAiEstimate ? <AiBadge /> : undefined}
+          label="Electricity — Monthly Average"
+          htmlFor="electricity"
+          badge={value.electricity.isAiEstimate ? <AiBadge /> : undefined}
         >
           <CurrencyInput
-            id="electricitySummer"
-            value={value.electricitySummer.value}
-            onChange={(v) => updateField('electricitySummer', { value: v, isAiEstimate: false })}
+            id="electricity"
+            value={value.electricity.value}
+            onChange={(v) => updateField('electricity', { value: v, isAiEstimate: false })}
           />
         </FieldRow>
 
         <FieldRow
-          label="Electricity — Winter average"
-          htmlFor="electricityWinter"
-          badge={value.electricityWinter.isAiEstimate ? <AiBadge /> : undefined}
+          label="Gas / Heating — Monthly Average"
+          htmlFor="gas"
+          badge={value.gas.isAiEstimate ? <AiBadge /> : undefined}
         >
           <CurrencyInput
-            id="electricityWinter"
-            value={value.electricityWinter.value}
-            onChange={(v) => updateField('electricityWinter', { value: v, isAiEstimate: false })}
-          />
-        </FieldRow>
-
-        <FieldRow
-          label="Gas / Heating — Summer average"
-          htmlFor="gasSummer"
-          badge={value.gasSummer.isAiEstimate ? <AiBadge /> : undefined}
-        >
-          <CurrencyInput
-            id="gasSummer"
-            value={value.gasSummer.value}
-            onChange={(v) => updateField('gasSummer', { value: v, isAiEstimate: false })}
-          />
-        </FieldRow>
-
-        <FieldRow
-          label="Gas / Heating — Winter average"
-          htmlFor="gasWinter"
-          badge={value.gasWinter.isAiEstimate ? <AiBadge /> : undefined}
-        >
-          <CurrencyInput
-            id="gasWinter"
-            value={value.gasWinter.value}
-            onChange={(v) => updateField('gasWinter', { value: v, isAiEstimate: false })}
+            id="gas"
+            value={value.gas.value}
+            onChange={(v) => updateField('gas', { value: v, isAiEstimate: false })}
           />
         </FieldRow>
 
@@ -176,6 +147,8 @@ export default function UtilitiesSection({ value, onChange, monthlyTotal }: Util
           />
         </FieldRow>
       </div>
+
+      <SectionTotalRow label="Total Monthly Utilities" amount={monthlyTotal} />
     </CollapsibleSection>
   );
 }

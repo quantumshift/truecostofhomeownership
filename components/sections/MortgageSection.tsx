@@ -8,6 +8,7 @@ import CurrencyInput from '../ui/CurrencyInput';
 import NumberInput from '../ui/NumberInput';
 import ToggleGroup from '../ui/ToggleGroup';
 import ReadOnlyCurrency from '../ui/ReadOnlyCurrency';
+import SectionTotalRow from '../ui/SectionTotalRow';
 
 interface MortgageSectionProps {
   value: MortgageInputs;
@@ -55,12 +56,7 @@ export default function MortgageSection({
   }
 
   return (
-    <CollapsibleSection
-      id="mortgage"
-      title="Mortgage & Financing"
-      subtitle="Your loan payment"
-      monthlyTotal={formatCurrencyWhole(monthlyMortgage)}
-    >
+    <CollapsibleSection id="mortgage" title="Mortgage & Financing" subtitle="Your loan payment">
       <div className="grid gap-5 sm:grid-cols-2">
         <FieldRow label="Purchase Price" htmlFor="purchasePrice">
           <CurrencyInput
@@ -163,18 +159,7 @@ export default function MortgageSection({
         )}
       </div>
 
-      <p className="text-sm text-neutral-500 mt-5">
-        Don&apos;t have your mortgage numbers handy?{' '}
-        <a
-          href="https://www.kirkrauhomeloans.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-navy-light underline hover:text-navy"
-        >
-          Use Kirk&apos;s mortgage calculator
-        </a>
-        .
-      </p>
+      <SectionTotalRow label="Total Monthly Mortgage" amount={monthlyMortgage} />
     </CollapsibleSection>
   );
 }

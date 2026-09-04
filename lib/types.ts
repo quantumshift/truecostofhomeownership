@@ -28,10 +28,8 @@ export interface UtilityFieldState {
 
 export interface UtilitiesInputs {
   zip: string;
-  electricitySummer: UtilityFieldState;
-  electricityWinter: UtilityFieldState;
-  gasSummer: UtilityFieldState;
-  gasWinter: UtilityFieldState;
+  electricity: UtilityFieldState;
+  gas: UtilityFieldState;
   waterSewer: UtilityFieldState;
   trash: UtilityFieldState;
   internet: UtilityFieldState;
@@ -61,10 +59,8 @@ export interface CalculatorState {
 }
 
 export interface UtilityEstimateResponse {
-  electricitySummer: number;
-  electricityWinter: number;
-  gasSummer: number;
-  gasWinter: number;
+  electricity: number;
+  gas: number;
   waterSewer: number;
   trash: number;
 }

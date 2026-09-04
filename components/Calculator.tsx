@@ -31,10 +31,8 @@ const initialState: CalculatorState = {
   },
   utilities: {
     zip: '',
-    electricitySummer: { value: 150, isAiEstimate: false },
-    electricityWinter: { value: 120, isAiEstimate: false },
-    gasSummer: { value: 20, isAiEstimate: false },
-    gasWinter: { value: 100, isAiEstimate: false },
+    electricity: { value: 135, isAiEstimate: false },
+    gas: { value: 60, isAiEstimate: false },
     waterSewer: { value: 70, isAiEstimate: false },
     trash: { value: 35, isAiEstimate: false },
     internet: { value: 70, isAiEstimate: false },
@@ -76,54 +74,50 @@ export default function Calculator() {
   const totals = useMemo(() => calculateSectionTotals(state), [state]);
 
   return (
-    <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_380px] items-start">
-      <div className="space-y-5">
-        <MortgageSection
-          value={state.mortgage}
-          onChange={(patch) => setState((s) => ({ ...s, mortgage: { ...s.mortgage, ...patch } }))}
-          loanAmount={loanAmount}
-          monthlyMortgage={totals.mortgageMonthly}
-          pmiApplicable={pmiApplicable}
-        />
-        <TaxesInsuranceSection
-          value={state.taxesInsurance}
-          onChange={(patch) => setState((s) => ({ ...s, taxesInsurance: { ...s.taxesInsurance, ...patch } }))}
-          monthlyPropertyTax={totals.propertyTaxMonthly}
-          monthlyInsurance={totals.homeownersInsuranceMonthly}
-          monthlyTotal={totals.taxesInsuranceMonthly}
-        />
-        <UtilitiesSection
-          value={state.utilities}
-          onChange={(patch) => setState((s) => ({ ...s, utilities: { ...s.utilities, ...patch } }))}
-          monthlyTotal={totals.utilitiesMonthly}
-        />
-        <MaintenanceSection
-          value={state.maintenance}
-          onChange={(patch) => setState((s) => ({ ...s, maintenance: { ...s.maintenance, ...patch } }))}
-          monthlyTotal={totals.maintenanceMonthly}
-        />
-        <RepairsSection
-          value={state.repairs}
-          onChange={(patch) => setState((s) => ({ ...s, repairs: { ...s.repairs, ...patch } }))}
-          roofReserve={totals.roofReserve}
-          hvacReserve={totals.hvacReserve}
-          waterHeaterReserve={totals.waterHeaterReserve}
-          monthlyTotal={totals.repairsMonthly}
-        />
-      </div>
+    <div className="max-w-2xl mx-auto space-y-5">
+      <MortgageSection
+        value={state.mortgage}
+        onChange={(patch) => setState((s) => ({ ...s, mortgage: { ...s.mortgage, ...patch } }))}
+        loanAmount={loanAmount}
+        monthlyMortgage={totals.mortgageMonthly}
+        pmiApplicable={pmiApplicable}
+      />
+      <TaxesInsuranceSection
+        value={state.taxesInsurance}
+        onChange={(patch) => setState((s) => ({ ...s, taxesInsurance: { ...s.taxesInsurance, ...patch } }))}
+        monthlyPropertyTax={totals.propertyTaxMonthly}
+        monthlyInsurance={totals.homeownersInsuranceMonthly}
+        monthlyTotal={totals.taxesInsuranceMonthly}
+      />
+      <UtilitiesSection
+        value={state.utilities}
+        onChange={(patch) => setState((s) => ({ ...s, utilities: { ...s.utilities, ...patch } }))}
+        monthlyTotal={totals.utilitiesMonthly}
+      />
+      <MaintenanceSection
+        value={state.maintenance}
+        onChange={(patch) => setState((s) => ({ ...s, maintenance: { ...s.maintenance, ...patch } }))}
+        monthlyTotal={totals.maintenanceMonthly}
+      />
+      <RepairsSection
+        value={state.repairs}
+        onChange={(patch) => setState((s) => ({ ...s, repairs: { ...s.repairs, ...patch } }))}
+        roofReserve={totals.roofReserve}
+        hvacReserve={totals.hvacReserve}
+        waterHeaterReserve={totals.waterHeaterReserve}
+        monthlyTotal={totals.repairsMonthly}
+      />
 
-      <div className="lg:sticky lg:top-6">
-        <SummarySection state={state} totals={totals} />
-      </div>
+      <SummarySection state={state} totals={totals} />
 
       <a
         href="#summary"
-        className="lg:hidden fixed bottom-0 inset-x-0 z-20 flex items-center justify-between bg-navy text-white px-5 py-3 shadow-lg"
+        className="fixed bottom-0 inset-x-0 z-20 flex items-center justify-between bg-navy text-white px-5 py-3 shadow-lg"
       >
-        <span className="text-sm text-white/70">Your monthly true cost</span>
+        <span className="text-sm text-white/70">Your monthly true cost so far</span>
         <span className="text-lg font-semibold tabular-nums">{formatCurrencyWhole(totals.grandTotal)}/mo ↓</span>
       </a>
-      <div className="lg:hidden h-16" aria-hidden="true" />
+      <div className="h-16" aria-hidden="true" />
     </div>
   );
 }

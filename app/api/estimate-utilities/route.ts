@@ -7,6 +7,7 @@ const TOOL_NAME = 'provide_utility_estimate';
 export async function POST(req: NextRequest) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
+    console.error('[estimate-utilities] ANTHROPIC_API_KEY is not set in this environment.');
     return NextResponse.json({ error: 'Estimate feature is not configured.' }, { status: 503 });
   }
 
@@ -31,29 +32,39 @@ export async function POST(req: NextRequest) {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 500,
+        model: 'claude-sonnet-5',
+        max_tokens: 700,
         messages: [
           {
             role: 'user',
-            content: `Based on your general knowledge of typical residential utility costs for ZIP code ${zip} in the United States, give a rough monthly estimate in whole dollars for a typical single-family home in that area. Use your general regional knowledge (climate, typical utility rates for that area) — you do not have access to live rate data, so give a reasonable planning-level approximation.`,
+            content: `A home buyer wants a rough sense of typical monthly utility costs for a single-family home in ZIP code ${zip} in the United States.
+
+First, work out (to yourself) what state/metro area that ZIP is in and what its climate is like — hot/humid summers, cold winters, mild year-round, heavy AC dependence, heavy heating-oil-or-gas dependence, typical local electricity/gas rates relative to the US average, etc. This matters a lot: a home in a hot, humid, high-electricity-rate area should show noticeably higher electricity costs than a home in a mild, low-rate area, and a home in a cold-winter gas-heating region should show noticeably higher gas costs than one in a mild climate with little heating need.
+
+Then give a single blended monthly average (across the whole year, not just one season) for each category below, in whole dollars, for a typical single-family home of roughly average size for that area. Make sure your numbers actually reflect that ZIP's specific climate and typical utility rates rather than defaulting to generic national-average figures — two different ZIP codes in very different climates should produce visibly different estimates.`,
           },
         ],
         tools: [
           {
             name: TOOL_NAME,
-            description: 'Provide rough monthly utility cost estimates in whole dollars for the given ZIP code.',
+            description:
+              'Provide rough blended monthly utility cost estimates in whole dollars for the given ZIP code, reflecting that area\'s specific climate and typical utility rates.',
             input_schema: {
               type: 'object',
               properties: {
-                electricitySummer: { type: 'number', description: 'Typical summer monthly electricity bill in dollars' },
-                electricityWinter: { type: 'number', description: 'Typical winter monthly electricity bill in dollars' },
-                gasSummer: { type: 'number', description: 'Typical summer monthly gas/heating bill in dollars' },
-                gasWinter: { type: 'number', description: 'Typical winter monthly gas/heating bill in dollars' },
+                electricity: {
+                  type: 'number',
+                  description: 'Typical blended monthly electricity bill in dollars, averaged across the year',
+                },
+                gas: {
+                  type: 'number',
+                  description:
+                    'Typical blended monthly gas/heating bill in dollars, averaged across the year (0 if the area typically has no natural gas service and heats with electricity)',
+                },
                 waterSewer: { type: 'number', description: 'Typical monthly water & sewer bill in dollars' },
                 trash: { type: 'number', description: 'Typical monthly trash/recycling bill in dollars' },
               },
-              required: ['electricitySummer', 'electricityWinter', 'gasSummer', 'gasWinter', 'waterSewer', 'trash'],
+              required: ['electricity', 'gas', 'waterSewer', 'trash'],
             },
           },
         ],
@@ -62,27 +73,29 @@ export async function POST(req: NextRequest) {
     });
 
     if (!response.ok) {
+      const bodyText = await response.text();
+      console.error(`[estimate-utilities] Anthropic API returned ${response.status}: ${bodyText}`);
       return NextResponse.json({ error: 'Estimate request failed.' }, { status: 502 });
     }
 
     const data = await response.json();
     const toolUse = data.content?.find((block: { type: string }) => block.type === 'tool_use');
     if (!toolUse) {
+      console.error('[estimate-utilities] No tool_use block in response:', JSON.stringify(data));
       return NextResponse.json({ error: 'No estimate returned.' }, { status: 502 });
     }
 
     const input = toolUse.input as Record<string, number>;
     const result = {
-      electricitySummer: clampEstimate(input.electricitySummer),
-      electricityWinter: clampEstimate(input.electricityWinter),
-      gasSummer: clampEstimate(input.gasSummer),
-      gasWinter: clampEstimate(input.gasWinter),
+      electricity: clampEstimate(input.electricity),
+      gas: clampEstimate(input.gas),
       waterSewer: clampEstimate(input.waterSewer),
       trash: clampEstimate(input.trash),
     };
 
     return NextResponse.json(result);
-  } catch {
+  } catch (err) {
+    console.error('[estimate-utilities] Unexpected error:', err);
     return NextResponse.json({ error: 'Estimate request failed.' }, { status: 502 });
   }
 }

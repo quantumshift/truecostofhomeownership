@@ -1,12 +1,12 @@
 'use client';
 
 import { TaxesInsuranceInputs } from '@/lib/types';
-import { formatCurrencyWhole } from '@/lib/format';
 import CollapsibleSection from '../ui/CollapsibleSection';
 import FieldRow from '../ui/FieldRow';
 import CurrencyInput from '../ui/CurrencyInput';
 import ToggleGroup from '../ui/ToggleGroup';
 import ReadOnlyCurrency from '../ui/ReadOnlyCurrency';
+import SectionTotalRow from '../ui/SectionTotalRow';
 
 interface TaxesInsuranceSectionProps {
   value: TaxesInsuranceInputs;
@@ -37,7 +37,6 @@ export default function TaxesInsuranceSection({
       id="taxes-insurance"
       title="Property Taxes & Insurance"
       subtitle="What the county and your insurer expect"
-      monthlyTotal={formatCurrencyWhole(monthlyTotal)}
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <FieldRow label="Annual Property Tax" htmlFor="annualPropertyTax">
@@ -96,6 +95,8 @@ export default function TaxesInsuranceSection({
           <CurrencyInput id="hoaMonthly" value={value.hoaMonthly} onChange={(v) => onChange({ hoaMonthly: v })} />
         </FieldRow>
       </div>
+
+      <SectionTotalRow label="Total Monthly Taxes & Insurance" amount={monthlyTotal} />
     </CollapsibleSection>
   );
 }

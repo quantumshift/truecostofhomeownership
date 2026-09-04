@@ -91,16 +91,17 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
         <p className="text-sm uppercase tracking-wide text-white/70 mb-2">Your monthly true cost of home ownership</p>
         <p className="text-4xl sm:text-5xl font-bold tabular-nums">{formatCurrency(totals.grandTotal, 0)}</p>
         <p className="text-sm text-white/70 mt-3">
-          Mortgage payment alone: <span className="font-medium text-white">{formatCurrencyWhole(totals.mortgageMonthly)}/mo</span>
+          P&amp;I payment: <span className="font-medium text-white">{formatCurrencyWhole(totals.pAndI)}/mo</span>
         </p>
       </div>
 
       <div className="rounded-lg bg-neutral-50 border border-neutral-200 p-5 mb-8">
         <p className="text-sm text-neutral-700 leading-relaxed">
-          Your mortgage payment is your mortgage payment — that part&apos;s fixed, and you already know that
-          number. This total adds your other monthly expense estimates (taxes, insurance, utilities) plus future
-          home expenses, like a roof or water heater down the road, averaged out into a monthly amount so you can
-          plan for them ahead of time.
+          This number adds your mortgage, property taxes, insurance, utilities, routine maintenance, and a
+          monthly reserve for future repairs — everything it actually takes to keep the home running, not just
+          what the bank collects each month. It&apos;s an estimate, not a guarantee; every home and every year
+          looks a little different. But having a realistic range before you buy, instead of finding it out one
+          bill at a time, makes it a lot easier to plan with confidence.
         </p>
       </div>
 
