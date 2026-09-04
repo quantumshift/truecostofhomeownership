@@ -108,6 +108,10 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
           homeownership with a clear-eyed sense of what it actually takes to hold onto this home for the next 5,
           10, 15, or 20 years, not just what it takes to close on it.
         </p>
+        <p className="text-sm text-neutral-700 leading-relaxed">
+          Curious whether the maintenance and repair-reserve piece specifically fits your plans? It&apos;s worth
+          a quick check with your financial advisor.
+        </p>
       </div>
 
       <div className="rounded-lg border border-neutral-200 bg-white p-6">

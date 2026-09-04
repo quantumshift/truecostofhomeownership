@@ -53,6 +53,13 @@ export default function UtilitiesSection({ value, onChange, monthlyTotal }: Util
 
   return (
     <CollapsibleSection id="utilities" title="Utilities" subtitle="Power, gas, water, trash, internet">
+      <p className="text-sm text-neutral-600 mb-5 leading-relaxed">
+        Utility costs vary more than people expect. A bigger home, an older or poorly insulated one, or a climate
+        with real summers and winters will all push electricity and gas higher than a smaller, newer, or
+        milder-climate home would run. These are costs you&apos;ll pay every month whether or not you&apos;re
+        thinking about them, so it&apos;s worth putting a real number here rather than skipping it.
+      </p>
+
       <div className="rounded-md bg-neutral-50 border border-neutral-200 p-4 mb-6">
         <p className="text-sm font-medium text-neutral-800 mb-2">
           Not sure what utilities run in this area? Enter a ZIP code and we&apos;ll fill in a rough starting point.

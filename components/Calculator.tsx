@@ -10,6 +10,7 @@ import UtilitiesSection from './sections/UtilitiesSection';
 import MaintenanceSection from './sections/MaintenanceSection';
 import RepairsSection from './sections/RepairsSection';
 import SummarySection from './sections/SummarySection';
+import MaintenanceRepairsGroup from './MaintenanceRepairsGroup';
 
 const initialState: CalculatorState = {
   mortgage: {
@@ -94,19 +95,21 @@ export default function Calculator() {
         onChange={(patch) => setState((s) => ({ ...s, utilities: { ...s.utilities, ...patch } }))}
         monthlyTotal={totals.utilitiesMonthly}
       />
-      <MaintenanceSection
-        value={state.maintenance}
-        onChange={(patch) => setState((s) => ({ ...s, maintenance: { ...s.maintenance, ...patch } }))}
-        monthlyTotal={totals.maintenanceMonthly}
-      />
-      <RepairsSection
-        value={state.repairs}
-        onChange={(patch) => setState((s) => ({ ...s, repairs: { ...s.repairs, ...patch } }))}
-        roofReserve={totals.roofReserve}
-        hvacReserve={totals.hvacReserve}
-        waterHeaterReserve={totals.waterHeaterReserve}
-        monthlyTotal={totals.repairsMonthly}
-      />
+      <MaintenanceRepairsGroup>
+        <MaintenanceSection
+          value={state.maintenance}
+          onChange={(patch) => setState((s) => ({ ...s, maintenance: { ...s.maintenance, ...patch } }))}
+          monthlyTotal={totals.maintenanceMonthly}
+        />
+        <RepairsSection
+          value={state.repairs}
+          onChange={(patch) => setState((s) => ({ ...s, repairs: { ...s.repairs, ...patch } }))}
+          roofReserve={totals.roofReserve}
+          hvacReserve={totals.hvacReserve}
+          waterHeaterReserve={totals.waterHeaterReserve}
+          monthlyTotal={totals.repairsMonthly}
+        />
+      </MaintenanceRepairsGroup>
 
       <SummarySection state={state} totals={totals} />
 

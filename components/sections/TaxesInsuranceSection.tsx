@@ -38,6 +38,14 @@ export default function TaxesInsuranceSection({
       title="Property Taxes & Insurance"
       subtitle="What the county and your insurer expect"
     >
+      <p className="text-sm text-neutral-600 mb-5 leading-relaxed">
+        These are required, ongoing costs tied to the home itself rather than your loan, and they can vary a lot
+        by location. Property tax rates differ significantly by county and state, and insurance costs are shaped
+        by things like the home&apos;s age, roof condition, and local weather risk — wildfire, hurricane, hail,
+        and so on. If the property has an HOA, those dues get added in here too, since they&apos;re just as fixed
+        and recurring as taxes and insurance.
+      </p>
+
       <div className="grid gap-5 sm:grid-cols-2">
         <FieldRow label="Annual Property Tax" htmlFor="annualPropertyTax">
           <CurrencyInput

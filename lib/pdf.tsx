@@ -186,7 +186,9 @@ export default function CostReportDocument({ name, state, totals }: CostReportPr
             Every home is different. Some cost quite a bit less than average to own, others quite a bit more —
             this is a rough, honest starting point, not a final answer. The goal is simple: help you walk into
             homeownership with a clear-eyed sense of what it actually takes to hold onto this home for the next
-            5, 10, 15, or 20 years, not just what it takes to close on it.
+            5, 10, 15, or 20 years, not just what it takes to close on it.{'\n\n'}
+            Curious whether the maintenance and repair-reserve piece specifically fits your plans? It&apos;s
+            worth a quick check with your financial advisor.
           </Text>
         </View>
 
