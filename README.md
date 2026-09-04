@@ -37,7 +37,7 @@ See `.env.example` for the full list with comments. In short:
 
 | Variable | Required for | Notes |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | "Estimate costs for this ZIP" utilities feature | Server-side only, from console.anthropic.com |
+| `ANTHROPIC_API_KEY` | "Estimate costs for this ZIP" utilities feature, and the background high-end/luxury market check | Server-side only, from console.anthropic.com |
 | `RESEND_API_KEY` | "Email me my results" | Server-side only, from resend.com |
 | `RESEND_FROM_ADDRESS` | "Email me my results" | Must be a verified sender domain in Resend |
 | `LEAD_NOTIFICATION_EMAIL` | Lead notifications | Defaults to Kirk@EmpireHomeLoans.com |
@@ -85,12 +85,32 @@ npm run typecheck  # TypeScript check with no emit
 | Monthly P&I | Standard amortization: `P × [r(1+r)^n] / [(1+r)^n − 1]` |
 | PMI | User-entered monthly estimate, shown only when down payment < 20% |
 | Monthly property tax | Annual property tax ÷ 12 |
-| Monthly utilities (electric/gas) | Summer and winter weighted 3 months each; spring/fall (6 months) use the average of the two |
-| Monthly maintenance | Square footage × $0.14 (HUD/VA standard maintenance-and-utilities allowance) |
+| Monthly utilities | Electricity + gas are single blended monthly averages (no seasonal split — regional summer/winter swings vary too much nationally for one formula to hold up) |
+| Monthly maintenance | Square footage × $0.14 (HUD/VA standard maintenance-and-utilities allowance), plus any high-end line items below |
 | Monthly repair reserve (per system) | Replacement cost ÷ max(1, lifespan − age) ÷ 12 |
 
 System reference data (`lib/types.ts` → `SYSTEM_REFERENCE_DATA`): Roof (25 yr / $14,500), HVAC (17 yr / $9,838),
 Water Heater (10 yr / $1,550). These are national medians — update them if better regional data becomes available.
+
+---
+
+## High-end / luxury mode
+
+A ZIP code is collected once, at the top of Mortgage & Financing, and reused for both the utility estimator and
+this feature (no asking twice). On blur (not on every keystroke), if the ZIP is a complete 5-digit value,
+`Calculator.tsx` fires a background call to `/api/estimate-market`, which asks Claude for a rough county median
+home price and a typical higher-end HOA range for that ZIP — same "rough estimate, not a live lookup" standard
+as the utility estimator. No button, no loading state the visitor has to notice — it's a quiet background check,
+the same pattern as PMI auto-toggling based on down payment.
+
+If the entered purchase price comes in at 25% or more above that county median, four extra expense fields appear
+inside the Maintenance & Upkeep section (still counted in its total): Pool/Spa Maintenance, Landscaping Crew,
+Housekeeping/Property Staff, and Security System/Monitoring. Separately, the HOA field in Property Taxes &
+Insurance gets an informational reference note showing the typical higher-end HOA range for the area —
+informational only, never auto-filled, since actual dues vary too much property to property.
+
+If the estimate call fails or `ANTHROPIC_API_KEY` isn't set, this fails silently — the calculator behaves exactly
+as it does today, just without the extra fields. Nothing about the core tool depends on this working.
 
 ---
 
@@ -102,11 +122,13 @@ app/
   layout.tsx                Metadata (title, description, canonical, OG/Twitter)
   robots.ts, sitemap.ts     Crawler access (no AI-crawler disallow rules) + sitemap
   api/
-    estimate-utilities/     Calls Claude (Haiku) for rough ZIP-based utility estimates
+    estimate-utilities/     Calls Claude for rough ZIP-based utility estimates
+    estimate-market/         Calls Claude for county median price + high-end HOA range (luxury mode)
     submit-lead/             Recomputes totals server-side, renders PDF, sends both emails
 components/
-  Calculator.tsx            Client orchestrator — owns all calculator state
-  sections/                 One component per calculator section (1–6)
+  Calculator.tsx            Client orchestrator — owns all calculator state, luxury-mode derivation
+  MaintenanceRepairsGroup.tsx  Shared visual box + framing copy + advisor nudge around sections 4 & 5
+  sections/                 One component per calculator section
   ui/                       Shared inputs (CurrencyInput, NumberInput, ToggleGroup, CollapsibleSection…)
   FaqSection.tsx             Static FAQ content (also feeds the FAQPage JSON-LD)
   Footer.tsx, Logo.tsx

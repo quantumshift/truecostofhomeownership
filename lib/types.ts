@@ -27,7 +27,6 @@ export interface UtilityFieldState {
 }
 
 export interface UtilitiesInputs {
-  zip: string;
   electricity: UtilityFieldState;
   gas: UtilityFieldState;
   waterSewer: UtilityFieldState;
@@ -38,6 +37,10 @@ export interface UtilitiesInputs {
 
 export interface MaintenanceInputs {
   squareFootage: number;
+  poolSpa: number;
+  landscapingCrew: number;
+  housekeeping: number;
+  security: number;
 }
 
 export interface SystemInputs {
@@ -51,6 +54,7 @@ export interface RepairsInputs {
 }
 
 export interface CalculatorState {
+  zip: string;
   mortgage: MortgageInputs;
   taxesInsurance: TaxesInsuranceInputs;
   utilities: UtilitiesInputs;
@@ -63,6 +67,12 @@ export interface UtilityEstimateResponse {
   gas: number;
   waterSewer: number;
   trash: number;
+}
+
+export interface MarketEstimateResponse {
+  countyMedianPrice: number;
+  hoaLow: number;
+  hoaHigh: number;
 }
 
 export interface SectionTotals {

@@ -53,7 +53,9 @@ export function calculateSectionTotals(state: CalculatorState): SectionTotals {
   const utilitiesMonthly =
     u.electricity.value + u.gas.value + u.waterSewer.value + u.trash.value + u.internet.value + u.other.value;
 
-  const maintenanceMonthly = state.maintenance.squareFootage * MAINTENANCE_RATE_PER_SQFT;
+  const m = state.maintenance;
+  const maintenanceMonthly =
+    m.squareFootage * MAINTENANCE_RATE_PER_SQFT + m.poolSpa + m.landscapingCrew + m.housekeeping + m.security;
 
   const roofReserve = calculateSystemReserve(
     state.repairs.roof.ageYears,

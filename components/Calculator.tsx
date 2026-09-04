@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { CalculatorState } from '@/lib/types';
+import { CalculatorState, MarketEstimateResponse } from '@/lib/types';
 import { calculateSectionTotals, getDownPaymentPercent, getLoanAmount } from '@/lib/calculations';
-import { formatCurrencyWhole } from '@/lib/format';
+import { formatCurrencyWhole, isValidZip } from '@/lib/format';
 import MortgageSection from './sections/MortgageSection';
 import TaxesInsuranceSection from './sections/TaxesInsuranceSection';
 import UtilitiesSection from './sections/UtilitiesSection';
@@ -13,6 +13,7 @@ import SummarySection from './sections/SummarySection';
 import MaintenanceRepairsGroup from './MaintenanceRepairsGroup';
 
 const initialState: CalculatorState = {
+  zip: '',
   mortgage: {
     purchasePrice: 400000,
     downPaymentMode: 'percent',
@@ -31,7 +32,6 @@ const initialState: CalculatorState = {
     hoaMonthly: 0,
   },
   utilities: {
-    zip: '',
     electricity: { value: 135, isAiEstimate: false },
     gas: { value: 60, isAiEstimate: false },
     waterSewer: { value: 70, isAiEstimate: false },
@@ -41,6 +41,10 @@ const initialState: CalculatorState = {
   },
   maintenance: {
     squareFootage: 1800,
+    poolSpa: 0,
+    landscapingCrew: 0,
+    housekeeping: 0,
+    security: 0,
   },
   repairs: {
     roof: { ageYears: 10 },
@@ -49,12 +53,45 @@ const initialState: CalculatorState = {
   },
 };
 
+interface MarketEstimateState extends MarketEstimateResponse {
+  zip: string;
+}
+
 export default function Calculator() {
   const [state, setState] = useState<CalculatorState>(initialState);
   const prevPmiApplicable = useRef<boolean | null>(null);
+  const [marketEstimate, setMarketEstimate] = useState<MarketEstimateState | null>(null);
+  const fetchedZips = useRef<Set<string>>(new Set());
 
   const downPaymentPercent = getDownPaymentPercent(state);
   const pmiApplicable = downPaymentPercent < 20;
+
+  async function handleZipBlur(zip: string) {
+    if (!isValidZip(zip) || fetchedZips.current.has(zip)) return;
+    fetchedZips.current.add(zip);
+    try {
+      const res = await fetch('/api/estimate-market', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ zip }),
+      });
+      if (!res.ok) return;
+      const data: MarketEstimateResponse = await res.json();
+      setMarketEstimate({ zip, ...data });
+    } catch {
+      // Silent — high-end mode just won't activate for this ZIP.
+    }
+  }
+
+  const isLuxuryMode =
+    !!marketEstimate &&
+    marketEstimate.zip === state.zip &&
+    state.mortgage.purchasePrice >= marketEstimate.countyMedianPrice * 1.25;
+
+  const hoaRange =
+    marketEstimate && marketEstimate.zip === state.zip
+      ? { low: marketEstimate.hoaLow, high: marketEstimate.hoaHigh }
+      : null;
 
   useEffect(() => {
     if (prevPmiApplicable.current === null) {
@@ -82,6 +119,9 @@ export default function Calculator() {
         loanAmount={loanAmount}
         monthlyMortgage={totals.mortgageMonthly}
         pmiApplicable={pmiApplicable}
+        zip={state.zip}
+        onZipChange={(zip) => setState((s) => ({ ...s, zip }))}
+        onZipBlur={handleZipBlur}
       />
       <TaxesInsuranceSection
         value={state.taxesInsurance}
@@ -89,8 +129,11 @@ export default function Calculator() {
         monthlyPropertyTax={totals.propertyTaxMonthly}
         monthlyInsurance={totals.homeownersInsuranceMonthly}
         monthlyTotal={totals.taxesInsuranceMonthly}
+        isLuxuryMode={isLuxuryMode}
+        hoaRange={hoaRange}
       />
       <UtilitiesSection
+        zip={state.zip}
         value={state.utilities}
         onChange={(patch) => setState((s) => ({ ...s, utilities: { ...s.utilities, ...patch } }))}
         monthlyTotal={totals.utilitiesMonthly}
@@ -100,6 +143,7 @@ export default function Calculator() {
           value={state.maintenance}
           onChange={(patch) => setState((s) => ({ ...s, maintenance: { ...s.maintenance, ...patch } }))}
           monthlyTotal={totals.maintenanceMonthly}
+          isLuxuryMode={isLuxuryMode}
         />
         <RepairsSection
           value={state.repairs}

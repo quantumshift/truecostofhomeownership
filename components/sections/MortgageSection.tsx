@@ -16,6 +16,9 @@ interface MortgageSectionProps {
   loanAmount: number;
   monthlyMortgage: number;
   pmiApplicable: boolean;
+  zip: string;
+  onZipChange: (zip: string) => void;
+  onZipBlur: (zip: string) => void;
 }
 
 export default function MortgageSection({
@@ -24,6 +27,9 @@ export default function MortgageSection({
   loanAmount,
   monthlyMortgage,
   pmiApplicable,
+  zip,
+  onZipChange,
+  onZipBlur,
 }: MortgageSectionProps) {
   function handleDownPaymentModeChange(mode: 'dollar' | 'percent') {
     if (mode === value.downPaymentMode) return;
@@ -65,6 +71,20 @@ export default function MortgageSection({
       </p>
 
       <div className="grid gap-5 sm:grid-cols-2">
+        <FieldRow label="ZIP Code" htmlFor="zip" hint="Used for utility and market estimates below">
+          <input
+            id="zip"
+            type="text"
+            inputMode="numeric"
+            maxLength={5}
+            placeholder="ZIP code"
+            value={zip}
+            onChange={(e) => onZipChange(e.target.value.replace(/[^0-9]/g, '').slice(0, 5))}
+            onBlur={(e) => onZipBlur(e.target.value)}
+            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-navy-light focus:border-navy-light"
+          />
+        </FieldRow>
+
         <FieldRow label="Purchase Price" htmlFor="purchasePrice">
           <CurrencyInput
             id="purchasePrice"

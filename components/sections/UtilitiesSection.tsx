@@ -10,12 +10,13 @@ import AiBadge from '../ui/AiBadge';
 import SectionTotalRow from '../ui/SectionTotalRow';
 
 interface UtilitiesSectionProps {
+  zip: string;
   value: UtilitiesInputs;
   onChange: (patch: Partial<UtilitiesInputs>) => void;
   monthlyTotal: number;
 }
 
-export default function UtilitiesSection({ value, onChange, monthlyTotal }: UtilitiesSectionProps) {
+export default function UtilitiesSection({ zip, value, onChange, monthlyTotal }: UtilitiesSectionProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,14 +26,14 @@ export default function UtilitiesSection({ value, onChange, monthlyTotal }: Util
   }
 
   async function handleEstimate() {
-    if (!isValidZip(value.zip)) return;
+    if (!isValidZip(zip)) return;
     setLoading(true);
     setError(null);
     try {
       const res = await fetch('/api/estimate-utilities', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ zip: value.zip }),
+        body: JSON.stringify({ zip }),
       });
       if (!res.ok) {
         throw new Error('estimate failed');
@@ -62,27 +63,23 @@ export default function UtilitiesSection({ value, onChange, monthlyTotal }: Util
 
       <div className="rounded-md bg-neutral-50 border border-neutral-200 p-4 mb-6">
         <p className="text-sm font-medium text-neutral-800 mb-2">
-          Not sure what utilities run in this area? Enter a ZIP code and we&apos;ll fill in a rough starting point.
+          Not sure what utilities run in this area? We can use the ZIP code you entered above to fill in a rough
+          starting point.
         </p>
         <div className="flex flex-wrap items-center gap-2">
-          <input
-            type="text"
-            inputMode="numeric"
-            maxLength={5}
-            placeholder="ZIP code"
-            value={value.zip}
-            onChange={(e) => onChange({ zip: e.target.value.replace(/[^0-9]/g, '').slice(0, 5) })}
-            className="w-32 rounded-md border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-navy-light focus:border-navy-light"
-            aria-label="ZIP code"
-          />
           <button
             type="button"
             onClick={handleEstimate}
-            disabled={!isValidZip(value.zip) || loading}
+            disabled={!isValidZip(zip) || loading}
             className="rounded-md bg-navy px-4 py-2 text-sm font-medium text-white hover:bg-navy-light disabled:bg-neutral-300 disabled:cursor-not-allowed transition-colors"
           >
             {loading ? 'Estimating…' : 'Estimate costs for this ZIP'}
           </button>
+          {!isValidZip(zip) && (
+            <span className="text-xs text-neutral-500">
+              Enter your ZIP code in Mortgage &amp; Financing above to use this.
+            </span>
+          )}
         </div>
         {error && <p className="text-sm text-red-600 mt-2">{error}</p>}
         <p className="text-xs text-neutral-500 mt-3">

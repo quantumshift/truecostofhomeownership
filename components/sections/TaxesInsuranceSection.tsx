@@ -1,6 +1,7 @@
 'use client';
 
 import { TaxesInsuranceInputs } from '@/lib/types';
+import { formatCurrencyWhole } from '@/lib/format';
 import CollapsibleSection from '../ui/CollapsibleSection';
 import FieldRow from '../ui/FieldRow';
 import CurrencyInput from '../ui/CurrencyInput';
@@ -8,12 +9,19 @@ import ToggleGroup from '../ui/ToggleGroup';
 import ReadOnlyCurrency from '../ui/ReadOnlyCurrency';
 import SectionTotalRow from '../ui/SectionTotalRow';
 
+interface HoaRange {
+  low: number;
+  high: number;
+}
+
 interface TaxesInsuranceSectionProps {
   value: TaxesInsuranceInputs;
   onChange: (patch: Partial<TaxesInsuranceInputs>) => void;
   monthlyPropertyTax: number;
   monthlyInsurance: number;
   monthlyTotal: number;
+  isLuxuryMode: boolean;
+  hoaRange: HoaRange | null;
 }
 
 export default function TaxesInsuranceSection({
@@ -22,6 +30,8 @@ export default function TaxesInsuranceSection({
   monthlyPropertyTax,
   monthlyInsurance,
   monthlyTotal,
+  isLuxuryMode,
+  hoaRange,
 }: TaxesInsuranceSectionProps) {
   function handleInsuranceModeChange(mode: 'annual' | 'monthly') {
     if (mode === value.insuranceMode) return;
@@ -101,6 +111,13 @@ export default function TaxesInsuranceSection({
 
         <FieldRow label="HOA Fees (monthly)" htmlFor="hoaMonthly" hint="Enter 0 if there's no HOA">
           <CurrencyInput id="hoaMonthly" value={value.hoaMonthly} onChange={(v) => onChange({ hoaMonthly: v })} />
+          {isLuxuryMode && hoaRange && (
+            <p className="text-xs text-neutral-500 mt-1.5">
+              Typical HOA dues for higher-end communities in this area: {formatCurrencyWhole(hoaRange.low)}–
+              {formatCurrencyWhole(hoaRange.high)}/month. A rough, AI-generated approximation, not a live listing
+              lookup — enter your own number above if you have it.
+            </p>
+          )}
         </FieldRow>
       </div>
 
