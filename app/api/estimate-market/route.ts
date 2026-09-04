@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 const TOOL_NAME = 'provide_market_estimate';
+const REQUEST_TIMEOUT_MS = 8000;
 
 export async function POST(req: NextRequest) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
@@ -23,26 +25,25 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'ZIP code must be 5 digits.' }, { status: 400 });
   }
 
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
+      signal: controller.signal,
       headers: {
         'content-type': 'application/json',
         'x-api-key': apiKey,
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-5',
-        max_tokens: 500,
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 300,
         messages: [
           {
             role: 'user',
-            content: `A home-cost calculator needs two rough, planning-level figures for ZIP code ${zip} in the United States, based on your general knowledge only (you don't have access to live MLS or listing data):
-
-1. A rough estimate of the county's current median single-family home sale price (the county that ZIP code sits in).
-2. A rough monthly HOA dues range typical of higher-end/luxury residential communities in that area specifically (not the county-wide average — the higher tier of communities, since that's the tier this figure is used for).
-
-Give your best reasonable approximation for both, grounded in what you know about that area's housing market.`,
+            content: `Based on general knowledge only (no live MLS/listing data), give two rough planning-level figures for ZIP code ${zip}, United States: (1) the county's current median single-family home sale price, and (2) a typical monthly HOA dues range for higher-end/luxury communities specifically in that area (not the county-wide average).`,
           },
         ],
         tools: [
@@ -72,6 +73,7 @@ Give your best reasonable approximation for both, grounded in what you know abou
         tool_choice: { type: 'tool', name: TOOL_NAME },
       }),
     });
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const bodyText = await response.text();
@@ -95,6 +97,11 @@ Give your best reasonable approximation for both, grounded in what you know abou
 
     return NextResponse.json(result);
   } catch (err) {
+    clearTimeout(timeoutId);
+    if (err instanceof Error && err.name === 'AbortError') {
+      console.error(`[estimate-market] Request to Anthropic timed out after ${REQUEST_TIMEOUT_MS}ms`);
+      return NextResponse.json({ error: 'Estimate request timed out.' }, { status: 504 });
+    }
     console.error('[estimate-market] Unexpected error:', err);
     return NextResponse.json({ error: 'Estimate request failed.' }, { status: 502 });
   }

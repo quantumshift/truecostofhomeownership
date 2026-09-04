@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 const TOOL_NAME = 'provide_utility_estimate';
+const REQUEST_TIMEOUT_MS = 8000;
 
 export async function POST(req: NextRequest) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
@@ -23,25 +25,25 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'ZIP code must be 5 digits.' }, { status: 400 });
   }
 
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
+      signal: controller.signal,
       headers: {
         'content-type': 'application/json',
         'x-api-key': apiKey,
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-5',
-        max_tokens: 700,
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 400,
         messages: [
           {
             role: 'user',
-            content: `A home buyer wants a rough sense of typical monthly utility costs for a single-family home in ZIP code ${zip} in the United States.
-
-First, work out (to yourself) what state/metro area that ZIP is in and what its climate is like — hot/humid summers, cold winters, mild year-round, heavy AC dependence, heavy heating-oil-or-gas dependence, typical local electricity/gas rates relative to the US average, etc. This matters a lot: a home in a hot, humid, high-electricity-rate area should show noticeably higher electricity costs than a home in a mild, low-rate area, and a home in a cold-winter gas-heating region should show noticeably higher gas costs than one in a mild climate with little heating need.
-
-Then give a single blended monthly average (across the whole year, not just one season) for each category below, in whole dollars, for a typical single-family home of roughly average size for that area. Make sure your numbers actually reflect that ZIP's specific climate and typical utility rates rather than defaulting to generic national-average figures — two different ZIP codes in very different climates should produce visibly different estimates.`,
+            content: `Estimate typical blended monthly utility costs (year-round average, in whole dollars) for a typical single-family home in ZIP code ${zip}, United States. Base this on that specific area's climate and typical utility rates — a hot, humid, high-rate area should show noticeably higher electricity than a mild, low-rate area, and a cold-winter gas-heating region should show noticeably higher gas than a mild climate. Two different ZIP codes in different climates should produce visibly different numbers, not generic national averages.`,
           },
         ],
         tools: [
@@ -71,6 +73,7 @@ Then give a single blended monthly average (across the whole year, not just one 
         tool_choice: { type: 'tool', name: TOOL_NAME },
       }),
     });
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const bodyText = await response.text();
@@ -95,6 +98,11 @@ Then give a single blended monthly average (across the whole year, not just one 
 
     return NextResponse.json(result);
   } catch (err) {
+    clearTimeout(timeoutId);
+    if (err instanceof Error && err.name === 'AbortError') {
+      console.error(`[estimate-utilities] Request to Anthropic timed out after ${REQUEST_TIMEOUT_MS}ms`);
+      return NextResponse.json({ error: 'Estimate request timed out.' }, { status: 504 });
+    }
     console.error('[estimate-utilities] Unexpected error:', err);
     return NextResponse.json({ error: 'Estimate request failed.' }, { status: 502 });
   }
