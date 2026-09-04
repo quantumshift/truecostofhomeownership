@@ -95,13 +95,18 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
         </p>
       </div>
 
-      <div className="rounded-lg bg-neutral-50 border border-neutral-200 p-5 mb-8">
+      <div className="rounded-lg bg-neutral-50 border border-neutral-200 p-5 mb-8 space-y-3">
         <p className="text-sm text-neutral-700 leading-relaxed">
-          This number adds your mortgage, property taxes, insurance, utilities, routine maintenance, and a
-          monthly reserve for future repairs — everything it actually takes to keep the home running, not just
-          what the bank collects each month. It&apos;s an estimate, not a guarantee; every home and every year
-          looks a little different. But having a realistic range before you buy, instead of finding it out one
-          bill at a time, makes it a lot easier to plan with confidence.
+          This number adds up your mortgage payment (principal, interest, taxes, and insurance), HOA dues if you
+          have them, everyday costs like electricity, water and sewer, internet, and trash — plus a rough monthly
+          amount set aside so you&apos;re ready when a roof, HVAC system, or water heater eventually needs
+          replacing.
+        </p>
+        <p className="text-sm text-neutral-700 leading-relaxed">
+          Every home is different. Some cost quite a bit less than average to own, others quite a bit more — this
+          is a rough, honest starting point, not a final answer. The goal is simple: help you walk into
+          homeownership with a clear-eyed sense of what it actually takes to hold onto this home for the next 5,
+          10, 15, or 20 years, not just what it takes to close on it.
         </p>
       </div>
 
