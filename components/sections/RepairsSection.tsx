@@ -85,6 +85,37 @@ export default function RepairsSection({
           national average for a specific property. When a system is already past its typical lifespan, we treat
           it as due within the next year for this calculation, since replacement could reasonably happen anytime.
         </p>
+
+        <div className="overflow-x-auto -mx-1">
+          <table className="w-full text-sm border-collapse min-w-[480px]">
+            <thead>
+              <tr className="text-left text-neutral-500 border-b border-neutral-200">
+                <th className="py-2 pr-3 font-medium">System</th>
+                <th className="py-2 pr-3 font-medium">Typical lifespan</th>
+                <th className="py-2 pr-3 font-medium">National median cost</th>
+                <th className="py-2 pr-1 font-medium">Luxury-tier median cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              {(['roof', 'hvac', 'waterHeater'] as const).map((key) => (
+                <tr key={key} className="border-b border-neutral-100 last:border-0">
+                  <td className="py-3 pr-3 font-medium text-neutral-800">{SYSTEM_REFERENCE_DATA[key].label}</td>
+                  <td className="py-3 pr-3 text-neutral-600">{SYSTEM_REFERENCE_DATA[key].lifespan} years</td>
+                  <td className="py-3 pr-3 text-neutral-600 tabular-nums">
+                    {formatCurrencyWhole(SYSTEM_REFERENCE_DATA[key].cost)}
+                  </td>
+                  <td className="py-3 pr-1 text-neutral-600 tabular-nums">
+                    {formatCurrencyWhole(LUXURY_SYSTEM_REFERENCE_DATA[key].cost)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="text-xs text-neutral-500">
+          Luxury-tier figures are based on research across three luxury real estate markets: King County, WA;
+          Los Angeles County, CA; and the Hamptons, NY.
+        </p>
         <p>
           This category doesn&apos;t usually come up in the homebuying process. It&apos;s not part of a
           pre-approval letter, a listing price, or a typical closing conversation, but it belongs on the table
