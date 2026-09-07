@@ -66,7 +66,7 @@ export default function MortgageSection({
     <CollapsibleSection
       id="mortgage"
       title="Mortgage & Financing"
-      subtitle="Your principal and interest — the core loan payment, calculated from what you enter below."
+      subtitle="Your principal and interest, the core loan payment, calculated from what you enter below."
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <FieldRow label="ZIP Code" htmlFor="zip" hint="Used for utility and market estimates below">
@@ -167,7 +167,7 @@ export default function MortgageSection({
                 Private Mortgage Insurance (PMI)
               </label>
               <p className="text-xs text-neutral-500 mt-1 ml-6">
-                Turned on automatically since your down payment is under 20% — uncheck it if yours doesn&apos;t apply.
+                Turned on automatically since your down payment is under 20%. Uncheck it if yours doesn&apos;t apply.
               </p>
             </div>
 
@@ -190,7 +190,7 @@ export default function MortgageSection({
         <p>
           Principal and interest is usually the single biggest piece of your monthly cost, and the one most
           buyers already have some handle on before they start shopping. But P&amp;I by itself isn&apos;t
-          &quot;the house payment&quot; lenders use when they qualify you — that figure includes taxes and
+          &quot;the house payment&quot; lenders use when they qualify you. That figure includes taxes and
           insurance too, covered in the next section.
         </p>
         <p>

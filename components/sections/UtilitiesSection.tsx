@@ -47,22 +47,29 @@ export default function UtilitiesSection({ zip, value, onChange, monthlyTotal }:
         trash: { value: data.trash, isAiEstimate: true },
       });
     } catch {
-      setError("Couldn't get an estimate for that ZIP right now — go ahead and enter your own numbers below.");
+      setError("Couldn't get an estimate for that ZIP right now. Go ahead and enter your own numbers below.");
     } finally {
       setLoading(false);
     }
   }
 
+  const hasEstimate =
+    value.electricity.isAiEstimate ||
+    value.gas.isAiEstimate ||
+    value.waterSewer.isAiEstimate ||
+    value.trash.isAiEstimate;
+
   return (
     <CollapsibleSection
       id="utilities"
       title="Utilities"
-      subtitle="Power, gas, water, trash, internet — what it costs to run the home each month."
+      subtitle="Power, gas, water, trash, internet: what it costs to run the home each month."
     >
       <div className="rounded-md bg-neutral-50 border border-neutral-200 p-4 mb-6">
         <p className="text-sm font-medium text-neutral-800 mb-2">
-          Not sure what utilities run in this area? We can use the ZIP code you entered above to fill in a rough
-          starting point.
+          {hasEstimate
+            ? "These numbers are already averages for the ZIP code you entered. Feel free to adjust any of them. We encourage it, since actual costs vary from home to home."
+            : "We'll estimate typical utility costs using the ZIP code you entered above."}
         </p>
         <div className="flex flex-wrap items-center gap-2">
           <button
@@ -75,7 +82,7 @@ export default function UtilitiesSection({ zip, value, onChange, monthlyTotal }:
           </button>
           {!isValidZip(zip) && (
             <span className="text-xs text-neutral-500">
-              Enter your ZIP code in Mortgage &amp; Financing above to use this.
+              Enter a ZIP code in Mortgage &amp; Financing above to enable this.
             </span>
           )}
         </div>
@@ -84,7 +91,7 @@ export default function UtilitiesSection({ zip, value, onChange, monthlyTotal }:
 
       <div className="grid gap-5 sm:grid-cols-2">
         <FieldRow
-          label="Electricity — Monthly Average"
+          label="Electricity: Monthly Average"
           htmlFor="electricity"
           badge={value.electricity.isAiEstimate ? <AiBadge /> : undefined}
         >
@@ -96,7 +103,7 @@ export default function UtilitiesSection({ zip, value, onChange, monthlyTotal }:
         </FieldRow>
 
         <FieldRow
-          label="Gas / Heating — Monthly Average"
+          label="Gas / Heating: Monthly Average"
           htmlFor="gas"
           badge={value.gas.isAiEstimate ? <AiBadge /> : undefined}
         >
@@ -148,17 +155,17 @@ export default function UtilitiesSection({ zip, value, onChange, monthlyTotal }:
 
       <EducationBubble>
         <p>
-          Utility costs vary more than people expect — a bigger home, an older or poorly insulated one, or a
+          Utility costs vary more than people expect. A bigger home, an older or poorly insulated one, or a
           climate with real summers and winters will all push electricity and gas higher than a smaller, newer,
           or milder-climate home would run.
         </p>
         <p>
-          Rough estimate only, built from general regional knowledge — not a live utility-rate lookup. Always
+          Rough estimate only, built from general regional knowledge, not a live utility-rate lookup. Always
           compare against actual bills from the seller or local utility providers before relying on these
           numbers.
         </p>
         <p>
-          These costs don&apos;t show up on a pre-approval letter or a listing price — they start the month you
+          These costs don&apos;t show up on a pre-approval letter or a listing price. They start the month you
           move in, and they&apos;re yours to pay for as long as you own the home.
         </p>
       </EducationBubble>

@@ -137,7 +137,7 @@ export default function CostReportDocument({ name, state, totals }: CostReportPr
   ];
 
   return (
-    <Document title="True Cost of Homeownership — Your Estimate">
+    <Document title="True Cost of Homeownership: Your Estimate">
       <Page size="LETTER" style={styles.page}>
         <View style={styles.header}>
           <ShieldMark />
@@ -145,7 +145,7 @@ export default function CostReportDocument({ name, state, totals }: CostReportPr
         </View>
 
         <Text style={styles.title}>Your True Cost of Homeownership</Text>
-        <Text style={styles.subtitle}>Prepared for {name || 'you'} — estimates for planning purposes only</Text>
+        <Text style={styles.subtitle}>Prepared for {name || 'you'}. Estimates for planning purposes only.</Text>
 
         <View style={styles.heroBox}>
           <Text style={styles.heroLabel}>Your monthly true cost of home ownership</Text>
@@ -180,10 +180,10 @@ export default function CostReportDocument({ name, state, totals }: CostReportPr
         <View style={styles.explainerBox}>
           <Text style={styles.explainerText}>
             This number adds up your mortgage payment (principal, interest, taxes, and insurance), HOA dues if
-            you have them, everyday costs like electricity, water and sewer, internet, and trash — plus a rough
+            you have them, everyday costs like electricity, water and sewer, internet, and trash, plus a rough
             monthly amount set aside so you&apos;re ready when a roof, HVAC system, or water heater eventually
             needs replacing.{'\n\n'}
-            Every home is different. Some cost quite a bit less than average to own, others quite a bit more —
+            Every home is different. Some cost quite a bit less than average to own, others quite a bit more, and
             this is a rough, honest starting point, not a final answer. The goal is simple: help you walk into
             homeownership with a clear-eyed sense of what it actually takes to hold onto this home for the next
             5, 10, 15, or 20 years, not just what it takes to close on it.{'\n\n'}

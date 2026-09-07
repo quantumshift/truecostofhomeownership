@@ -20,7 +20,7 @@ export default function MaintenanceSection({ value, onChange, monthlyTotal, isLu
     <CollapsibleSection
       id="maintenance"
       title="Maintenance & Upkeep"
-      subtitle="Routine, predictable upkeep — lawn care, gutters, filters, pest control, general wear."
+      subtitle="Routine, predictable upkeep: lawn care, gutters, filters, pest control, general wear."
     >
       <div className="max-w-xs">
         <FieldRow label="Home Square Footage" htmlFor="squareFootage" hint="Heated/living space">
@@ -36,8 +36,8 @@ export default function MaintenanceSection({ value, onChange, monthlyTotal, isLu
       {isLuxuryMode && (
         <div className="mt-6 pt-5 border-t border-neutral-200">
           <p className="text-sm text-neutral-600 mb-4 leading-relaxed">
-            Homes in this price range for the area often carry some additional ongoing costs. Add any that apply
-            — leave any that don&apos;t at $0.
+            Homes in this price range for the area often carry some additional ongoing costs. Add any that apply,
+            and leave any that don&apos;t at $0.
           </p>
           <div className="grid gap-5 sm:grid-cols-2">
             <FieldRow label="Pool / Spa Maintenance" htmlFor="poolSpa">
@@ -68,13 +68,13 @@ export default function MaintenanceSection({ value, onChange, monthlyTotal, isLu
 
       <EducationBubble>
         <p>
-          This is separate from the big-ticket system replacements in the next section — routine upkeep is
-          regular and predictable, while system replacements are irregular and much larger.
+          This is separate from the big-ticket system replacements in the next section. Routine upkeep is regular
+          and predictable, while system replacements are irregular and much larger.
         </p>
         <p>
           The $0.14/sq ft baseline above is the HUD/VA standard maintenance-and-utilities allowance figure used
-          in reverse mortgage and VA loan residual income calculations, so it&apos;s grounded in something real —
-          but it&apos;s a starting point, not a prediction. A newer home with modern systems and good bones can
+          in reverse mortgage and VA loan residual income calculations, so it&apos;s grounded in something real.
+          Still, it&apos;s a starting point, not a prediction. A newer home with modern systems and good bones can
           run well under this for 20–30 years, while a home over a century old with undocumented past work or
           areas that haven&apos;t been opened up in decades can run well above it. Age, condition, and how well
           the home has been maintained before you move in will move this number more than square footage alone.

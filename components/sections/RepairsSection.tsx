@@ -38,7 +38,7 @@ export default function RepairsSection({
     <CollapsibleSection
       id="repairs"
       title="Repairs & System Replacements"
-      subtitle="Roofs, HVAC systems, and water heaters don't last forever — the big-ticket items most buyers don't budget for."
+      subtitle="Roofs, HVAC systems, and water heaters don't last forever. They're the big-ticket items most buyers don't budget for."
     >
       <div className="overflow-x-auto -mx-1">
         <table className="w-full text-sm border-collapse min-w-[560px]">
@@ -80,24 +80,23 @@ export default function RepairsSection({
 
       <EducationBubble>
         <p>
-          Replacement costs vary by region — coastal and West Coast markets often run higher than the rural
-          Midwest or Southeast due to labor rates and local codes — so a local contractor quote will always beat
-          a national average for a specific property. When a system is already past its typical lifespan, we
-          treat it as due within the next year for this calculation, since replacement could reasonably happen
-          anytime.
+          Replacement costs vary by region. Coastal and West Coast markets often run higher than the rural
+          Midwest or Southeast due to labor rates and local codes, so a local contractor quote will always beat a
+          national average for a specific property. When a system is already past its typical lifespan, we treat
+          it as due within the next year for this calculation, since replacement could reasonably happen anytime.
         </p>
         <p>
-          This category doesn&apos;t usually come up in the homebuying process — it&apos;s not part of a
-          pre-approval letter, a listing price, or a typical closing conversation — but it belongs on the table
+          This category doesn&apos;t usually come up in the homebuying process. It&apos;s not part of a
+          pre-approval letter, a listing price, or a typical closing conversation, but it belongs on the table
           just as much as anything else here. Building this reserve is entirely optional, and plenty of
           homeowners don&apos;t. When a major repair comes up without one in place, the common alternatives are a
           credit card with enough room on it, a family member with savings available, or a loan against home
-          equity. Those are real options too — the point here is simply to show the size of what&apos;s being
+          equity. Those are real options too. The point here is simply to show the size of what&apos;s being
           covered, whichever way you choose to handle it.
         </p>
         <p>
           Not sure if this reserve estimate fits your situation? It&apos;s worth running it past your financial
-          advisor — they can tell you whether it&apos;s too high or too low for your plans.
+          advisor, who can tell you whether it&apos;s too high or too low for your plans.
         </p>
       </EducationBubble>
     </CollapsibleSection>

@@ -1,8 +1,8 @@
 # True Cost of Homeownership Calculator
 
-A free calculator that estimates the real monthly cost of owning a home —
-mortgage, property taxes, insurance, utilities, routine maintenance, and
-future repair reserves — instead of just the mortgage payment. Built by
-Empire Home Loans Inc. for buyers anywhere in the U.S.
+A free calculator that estimates the real monthly cost of owning a home,
+including mortgage, property taxes, insurance, utilities, routine
+maintenance, and future repair reserves, instead of just the mortgage
+payment. Built by Empire Home Loans Inc. for buyers anywhere in the U.S.
 
 Calculator: https://truecostofhomeownership.com/

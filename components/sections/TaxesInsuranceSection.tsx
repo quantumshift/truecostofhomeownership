@@ -108,7 +108,7 @@ export default function TaxesInsuranceSection({
             <p className="text-xs text-neutral-500 mt-1.5">
               Typical HOA dues for higher-end communities in this area: {formatCurrencyWhole(hoaRange.low)}–
               {formatCurrencyWhole(hoaRange.high)}/month. A rough, AI-generated approximation, not a live listing
-              lookup — enter your own number above if you have it.
+              lookup. Enter your own number above if you have it.
             </p>
           )}
         </FieldRow>
@@ -120,8 +120,8 @@ export default function TaxesInsuranceSection({
         <p>
           These are required, ongoing costs tied to the home itself rather than your loan, and they vary a lot by
           location. Property tax rates differ significantly by county and state, and insurance costs are shaped
-          by things like the home&apos;s age, roof condition, and local weather risk — wildfire, hurricane, hail,
-          and so on.
+          by things like the home&apos;s age, roof condition, and local weather risk, including wildfire,
+          hurricane, and hail.
         </p>
         <p>
           When a property has an HOA, those dues are just as fixed and recurring as taxes and insurance, which is

@@ -121,7 +121,7 @@ export default function Calculator() {
       <TierGroup
         eyebrow="Tier 1"
         title="The House Payment"
-        intro={<p>Together, these make up the house payment — the figure lenders use to calculate your debt-to-income (DTI) ratio.</p>}
+        intro={<p>Together, these make up the house payment, the figure lenders use to calculate your debt-to-income (DTI) ratio.</p>}
       >
         <MortgageSection
           value={state.mortgage}
@@ -143,18 +143,18 @@ export default function Calculator() {
           hoaRange={hoaRange}
         />
         <p className="text-sm text-neutral-600 leading-relaxed border-t border-navy/10 pt-4">
-          Principal, interest, taxes, and insurance — plus HOA dues, if the property has them — together make up
+          Principal, interest, taxes, and insurance, plus HOA dues if the property has them, together make up
           your full monthly house payment. This combined figure, not principal and interest alone, is what
           lenders use to calculate your debt-to-income (DTI) ratio. For many buyers, it&apos;s the only number
-          they see before making an offer — everything below adds the rest of what it actually costs to hold
-          onto the home.
+          they see before making an offer. Everything below adds the rest of what it actually costs to hold onto
+          the home.
         </p>
       </TierGroup>
 
       <TierGroup
         eyebrow="Tier 2"
         title="Home Operating Costs"
-        intro={<p>The ongoing costs of running the home day to day — power, gas, water, trash, and internet.</p>}
+        intro={<p>The ongoing costs of running the home day to day: power, gas, water, trash, and internet.</p>}
       >
         <UtilitiesSection
           zip={state.zip}
@@ -169,7 +169,7 @@ export default function Calculator() {
         title="Owner's Reserve"
         intro={
           <p>
-            Think of this like paying yourself HOA dues — money set aside now so it&apos;s there when a big home
+            Think of this like paying yourself HOA dues: money set aside now so it&apos;s there when a big home
             expense eventually comes up, instead of being a surprise.
           </p>
         }

@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
     await resend.emails.send({
       from: fromAddress,
       to: leadNotificationEmail,
-      subject: `New lead: ${name} — True Cost of Homeownership calculator`,
+      subject: `New lead: ${name}, True Cost of Homeownership calculator`,
       text: buildLeadEmailText(name, email, totals),
       attachments: [attachment],
     });
@@ -74,7 +74,7 @@ function buildUserEmailText(name: string, totals: ReturnType<typeof calculateSec
   return [
     `Hi ${name},`,
     '',
-    `Here's the breakdown from your True Cost of Homeownership calculator estimate — it's attached as a PDF too.`,
+    `Here's the breakdown from your True Cost of Homeownership calculator estimate. It's attached as a PDF too.`,
     '',
     `Your monthly true cost of home ownership: ${formatCurrency(totals.grandTotal, 0)}`,
     `P&I payment: ${formatCurrencyWhole(totals.pAndI)}/mo`,

@@ -79,7 +79,7 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
     <section id="summary" className="scroll-mt-6">
       <div className="text-center mb-6">
         <h2 className="text-2xl sm:text-3xl font-bold text-navy">Your monthly true cost of home ownership</h2>
-        <p className="text-neutral-500 mt-1">Everything combined — not just the mortgage</p>
+        <p className="text-neutral-500 mt-1">Everything combined, not just the mortgage</p>
       </div>
 
       <div className="rounded-lg border border-neutral-200 bg-white p-5 mb-4">
@@ -116,13 +116,13 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
       <div className="rounded-lg bg-neutral-50 border border-neutral-200 p-5 mb-8 space-y-3">
         <p className="text-sm text-neutral-700 leading-relaxed">
           This number adds up your mortgage payment (principal, interest, taxes, and insurance), HOA dues if you
-          have them, everyday costs like electricity, water and sewer, internet, and trash — plus a rough monthly
+          have them, everyday costs like electricity, water and sewer, internet, and trash, plus a rough monthly
           amount set aside so you&apos;re ready when a roof, HVAC system, or water heater eventually needs
           replacing.
         </p>
         <p className="text-sm text-neutral-700 leading-relaxed">
-          Every home is different. Some cost quite a bit less than average to own, others quite a bit more — this
-          is a rough, honest starting point, not a final answer. The goal is simple: help you walk into
+          Every home is different. Some cost quite a bit less than average to own, others quite a bit more, and
+          this is a rough, honest starting point, not a final answer. The goal is simple: help you walk into
           homeownership with a clear-eyed sense of what it actually takes to hold onto this home for the next 5,
           10, 15, or 20 years, not just what it takes to close on it.
         </p>
@@ -137,7 +137,7 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
           <div className="text-center py-4">
             <p className="text-navy font-semibold text-lg mb-1">Sent!</p>
             <p className="text-sm text-neutral-600">
-              Check your inbox for the breakdown — it should land in a minute or two.
+              Check your inbox for the breakdown. It should land in a minute or two.
             </p>
           </div>
         ) : (
@@ -184,7 +184,7 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
             </button>
             {status === 'error' && (
               <p className="text-sm text-red-600 mt-3">
-                Something didn&apos;t go through on our end — mind trying again in a moment?
+                Something didn&apos;t go through on our end. Mind trying again in a moment?
               </p>
             )}
             <p className="text-xs text-neutral-500 mt-3">
