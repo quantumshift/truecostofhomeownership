@@ -120,8 +120,8 @@ export default function Calculator() {
     <div className="max-w-2xl mx-auto space-y-5">
       <TierGroup
         eyebrow="Tier 1"
-        title="Principal, Interest, Taxes & Insurance"
-        intro={<p>Together, these make up your monthly house payment — the figure lenders use to calculate your debt-to-income (DTI) ratio.</p>}
+        title="The House Payment"
+        intro={<p>Together, these make up the house payment — the figure lenders use to calculate your debt-to-income (DTI) ratio.</p>}
       >
         <MortgageSection
           value={state.mortgage}

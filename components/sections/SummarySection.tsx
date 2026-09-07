@@ -19,12 +19,25 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
   const [emailError, setEmailError] = useState<string | null>(null);
   const [status, setStatus] = useState<SubmitStatus>('idle');
 
-  const breakdown = [
-    { label: 'Mortgage (P&I + PMI)', amount: totals.mortgageMonthly, Icon: HomeIcon },
-    { label: 'Property Taxes & Insurance', amount: totals.taxesInsuranceMonthly, Icon: ShieldIcon },
-    { label: 'Utilities', amount: totals.utilitiesMonthly, Icon: BoltIcon },
-    { label: 'Maintenance & Upkeep', amount: totals.maintenanceMonthly, Icon: WrenchIcon },
-    { label: 'Repairs & System Reserves', amount: totals.repairsMonthly, Icon: ToolboxIcon },
+  const breakdownGroups = [
+    {
+      label: 'The House Payment',
+      items: [
+        { label: 'Mortgage (P&I + PMI)', amount: totals.mortgageMonthly, Icon: HomeIcon },
+        { label: 'Property Taxes & Insurance', amount: totals.taxesInsuranceMonthly, Icon: ShieldIcon },
+      ],
+    },
+    {
+      label: 'Home Operating Costs',
+      items: [{ label: 'Utilities', amount: totals.utilitiesMonthly, Icon: BoltIcon }],
+    },
+    {
+      label: "Owner's Reserve",
+      items: [
+        { label: 'Maintenance & Upkeep', amount: totals.maintenanceMonthly, Icon: WrenchIcon },
+        { label: 'Repairs & System Reserves', amount: totals.repairsMonthly, Icon: ToolboxIcon },
+      ],
+    },
   ];
 
   async function handleSubmit(e: FormEvent) {
@@ -70,21 +83,26 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
       </div>
 
       <div className="rounded-lg border border-neutral-200 bg-white p-5 mb-4">
-        <ul className="divide-y divide-neutral-100">
-          {breakdown.map(({ label, amount, Icon }) => (
-            <li key={label} className="flex items-center justify-between py-3">
-              <div className="flex items-center gap-3">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-navy/5 text-navy shrink-0">
-                  <Icon />
-                </span>
-                <span className="text-sm font-medium text-neutral-700">{label}</span>
-              </div>
-              <span className="text-sm font-semibold text-neutral-900 tabular-nums">
-                {formatCurrencyWhole(amount)}/mo
-              </span>
-            </li>
-          ))}
-        </ul>
+        {breakdownGroups.map((group, i) => (
+          <div key={group.label} className={i > 0 ? 'mt-4 pt-4 border-t border-neutral-200' : ''}>
+            <p className="text-xs font-semibold uppercase tracking-wide text-navy-light mb-1.5">{group.label}</p>
+            <ul className="divide-y divide-neutral-100">
+              {group.items.map(({ label, amount, Icon }) => (
+                <li key={label} className="flex items-center justify-between py-3">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-navy/5 text-navy shrink-0">
+                      <Icon />
+                    </span>
+                    <span className="text-sm font-medium text-neutral-700">{label}</span>
+                  </div>
+                  <span className="text-sm font-semibold text-neutral-900 tabular-nums">
+                    {formatCurrencyWhole(amount)}/mo
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
 
       <div className="rounded-lg bg-navy text-white p-6 sm:p-8 text-center mb-4">
