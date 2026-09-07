@@ -8,6 +8,7 @@ import FieldRow from '../ui/FieldRow';
 import CurrencyInput from '../ui/CurrencyInput';
 import AiBadge from '../ui/AiBadge';
 import SectionTotalRow from '../ui/SectionTotalRow';
+import EducationBubble from '../ui/EducationBubble';
 
 interface UtilitiesSectionProps {
   zip: string;
@@ -53,14 +54,11 @@ export default function UtilitiesSection({ zip, value, onChange, monthlyTotal }:
   }
 
   return (
-    <CollapsibleSection id="utilities" title="Utilities" subtitle="Power, gas, water, trash, internet">
-      <p className="text-sm text-neutral-600 mb-5 leading-relaxed">
-        Utility costs vary more than people expect. A bigger home, an older or poorly insulated one, or a climate
-        with real summers and winters will all push electricity and gas higher than a smaller, newer, or
-        milder-climate home would run. These are costs you&apos;ll pay every month whether or not you&apos;re
-        thinking about them, so it&apos;s worth putting a real number here rather than skipping it.
-      </p>
-
+    <CollapsibleSection
+      id="utilities"
+      title="Utilities"
+      subtitle="Power, gas, water, trash, internet — what it costs to run the home each month."
+    >
       <div className="rounded-md bg-neutral-50 border border-neutral-200 p-4 mb-6">
         <p className="text-sm font-medium text-neutral-800 mb-2">
           Not sure what utilities run in this area? We can use the ZIP code you entered above to fill in a rough
@@ -82,12 +80,6 @@ export default function UtilitiesSection({ zip, value, onChange, monthlyTotal }:
           )}
         </div>
         {error && <p className="text-sm text-red-600 mt-2">{error}</p>}
-        <p className="text-xs text-neutral-500 mt-3">
-          Rough estimate only, built from general regional knowledge (climate, typical rates for that area) — not
-          a live utility-rate lookup. A house that&apos;s bigger, older, or less insulated than average will run
-          higher than this; a newer, well-insulated one will often run lower. Always compare against actual bills
-          from the seller or local utility providers before relying on these numbers.
-        </p>
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">
@@ -153,6 +145,23 @@ export default function UtilitiesSection({ zip, value, onChange, monthlyTotal }:
       </div>
 
       <SectionTotalRow label="Total Monthly Utilities" amount={monthlyTotal} />
+
+      <EducationBubble>
+        <p>
+          Utility costs vary more than people expect — a bigger home, an older or poorly insulated one, or a
+          climate with real summers and winters will all push electricity and gas higher than a smaller, newer,
+          or milder-climate home would run.
+        </p>
+        <p>
+          Rough estimate only, built from general regional knowledge — not a live utility-rate lookup. Always
+          compare against actual bills from the seller or local utility providers before relying on these
+          numbers.
+        </p>
+        <p>
+          These costs don&apos;t show up on a pre-approval letter or a listing price — they start the month you
+          move in, and they&apos;re yours to pay for as long as you own the home.
+        </p>
+      </EducationBubble>
     </CollapsibleSection>
   );
 }

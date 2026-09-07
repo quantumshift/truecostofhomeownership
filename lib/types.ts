@@ -55,6 +55,7 @@ export interface RepairsInputs {
 
 export interface CalculatorState {
   zip: string;
+  isLuxuryMode: boolean;
   mortgage: MortgageInputs;
   taxesInsurance: TaxesInsuranceInputs;
   utilities: UtilitiesInputs;
@@ -96,6 +97,14 @@ export const SYSTEM_REFERENCE_DATA = {
   roof: { lifespan: 25, cost: 14500, label: 'Roof' },
   hvac: { lifespan: 17, cost: 9838, label: 'HVAC' },
   waterHeater: { lifespan: 10, cost: 1550, label: 'Water Heater' },
+} as const;
+
+// Used in place of SYSTEM_REFERENCE_DATA when high-end/luxury mode is triggered. Same lifespans,
+// higher replacement costs reflecting higher-end system quality and installation complexity.
+export const LUXURY_SYSTEM_REFERENCE_DATA = {
+  roof: { lifespan: 25, cost: 40000, label: 'Roof' },
+  hvac: { lifespan: 17, cost: 22000, label: 'HVAC' },
+  waterHeater: { lifespan: 10, cost: 6500, label: 'Water Heater' },
 } as const;
 
 export const MAINTENANCE_RATE_PER_SQFT = 0.14;

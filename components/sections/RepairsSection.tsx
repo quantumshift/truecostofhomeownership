@@ -1,10 +1,11 @@
 'use client';
 
-import { RepairsInputs, SYSTEM_REFERENCE_DATA } from '@/lib/types';
+import { LUXURY_SYSTEM_REFERENCE_DATA, RepairsInputs, SYSTEM_REFERENCE_DATA } from '@/lib/types';
 import { formatCurrency, formatCurrencyWhole } from '@/lib/format';
 import CollapsibleSection from '../ui/CollapsibleSection';
 import NumberInput from '../ui/NumberInput';
 import SectionTotalRow from '../ui/SectionTotalRow';
+import EducationBubble from '../ui/EducationBubble';
 
 interface RepairsSectionProps {
   value: RepairsInputs;
@@ -13,13 +14,8 @@ interface RepairsSectionProps {
   hvacReserve: number;
   waterHeaterReserve: number;
   monthlyTotal: number;
+  isLuxuryMode: boolean;
 }
-
-const SYSTEMS = [
-  { key: 'roof' as const, ...SYSTEM_REFERENCE_DATA.roof },
-  { key: 'hvac' as const, ...SYSTEM_REFERENCE_DATA.hvac },
-  { key: 'waterHeater' as const, ...SYSTEM_REFERENCE_DATA.waterHeater },
-];
 
 export default function RepairsSection({
   value,
@@ -28,30 +24,22 @@ export default function RepairsSection({
   hvacReserve,
   waterHeaterReserve,
   monthlyTotal,
+  isLuxuryMode,
 }: RepairsSectionProps) {
   const reserves = { roof: roofReserve, hvac: hvacReserve, waterHeater: waterHeaterReserve };
+  const referenceData = isLuxuryMode ? LUXURY_SYSTEM_REFERENCE_DATA : SYSTEM_REFERENCE_DATA;
+  const systems = [
+    { key: 'roof' as const, ...referenceData.roof },
+    { key: 'hvac' as const, ...referenceData.hvac },
+    { key: 'waterHeater' as const, ...referenceData.waterHeater },
+  ];
 
   return (
     <CollapsibleSection
       id="repairs"
       title="Repairs & System Replacements"
-      subtitle="Big-ticket items most buyers don't budget for"
+      subtitle="Roofs, HVAC systems, and water heaters don't last forever — the big-ticket items most buyers don't budget for."
     >
-      <p className="text-sm text-neutral-600 mb-3 leading-relaxed">
-        Roofs, HVAC systems, and water heaters don&apos;t last forever, and replacing one is a large one-time
-        cost — often several thousand dollars at once, and often at an inconvenient time. Most buyers budget for
-        the mortgage and simply forget these are coming.
-      </p>
-
-      <p className="text-sm text-neutral-600 mb-5 leading-relaxed">
-        The numbers below spread that eventual cost into a monthly reserve, based on national median lifespans
-        and replacement costs. Actual costs vary by region — coastal and West Coast markets often run higher than
-        the rural Midwest or Southeast due to labor rates and local codes — so a local contractor quote will
-        always beat a national average for a specific property. If a system is already past its typical
-        lifespan, we treat it as due within the next year for this calculation, since replacement could
-        reasonably happen anytime.
-      </p>
-
       <div className="overflow-x-auto -mx-1">
         <table className="w-full text-sm border-collapse min-w-[560px]">
           <thead>
@@ -59,12 +47,14 @@ export default function RepairsSection({
               <th className="py-2 pr-3 font-medium">System</th>
               <th className="py-2 pr-3 font-medium">Age (years)</th>
               <th className="py-2 pr-3 font-medium">Typical lifespan</th>
-              <th className="py-2 pr-3 font-medium">Median replacement cost</th>
+              <th className="py-2 pr-3 font-medium">
+                {isLuxuryMode ? 'Luxury-tier median replacement cost' : 'Median replacement cost'}
+              </th>
               <th className="py-2 pr-1 font-medium text-right">Monthly reserve</th>
             </tr>
           </thead>
           <tbody>
-            {SYSTEMS.map((system) => (
+            {systems.map((system) => (
               <tr key={system.key} className="border-b border-neutral-100 last:border-0">
                 <td className="py-3 pr-3 font-medium text-neutral-800">{system.label}</td>
                 <td className="py-3 pr-3 w-28">
@@ -87,6 +77,29 @@ export default function RepairsSection({
       </div>
 
       <SectionTotalRow label="Total Monthly Repairs Reserve" amount={monthlyTotal} />
+
+      <EducationBubble>
+        <p>
+          Replacement costs vary by region — coastal and West Coast markets often run higher than the rural
+          Midwest or Southeast due to labor rates and local codes — so a local contractor quote will always beat
+          a national average for a specific property. When a system is already past its typical lifespan, we
+          treat it as due within the next year for this calculation, since replacement could reasonably happen
+          anytime.
+        </p>
+        <p>
+          This category doesn&apos;t usually come up in the homebuying process — it&apos;s not part of a
+          pre-approval letter, a listing price, or a typical closing conversation — but it belongs on the table
+          just as much as anything else here. Building this reserve is entirely optional, and plenty of
+          homeowners don&apos;t. When a major repair comes up without one in place, the common alternatives are a
+          credit card with enough room on it, a family member with savings available, or a loan against home
+          equity. Those are real options too — the point here is simply to show the size of what&apos;s being
+          covered, whichever way you choose to handle it.
+        </p>
+        <p>
+          Not sure if this reserve estimate fits your situation? It&apos;s worth running it past your financial
+          advisor — they can tell you whether it&apos;s too high or too low for your plans.
+        </p>
+      </EducationBubble>
     </CollapsibleSection>
   );
 }

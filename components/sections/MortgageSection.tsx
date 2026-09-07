@@ -9,6 +9,7 @@ import NumberInput from '../ui/NumberInput';
 import ToggleGroup from '../ui/ToggleGroup';
 import ReadOnlyCurrency from '../ui/ReadOnlyCurrency';
 import SectionTotalRow from '../ui/SectionTotalRow';
+import EducationBubble from '../ui/EducationBubble';
 
 interface MortgageSectionProps {
   value: MortgageInputs;
@@ -62,14 +63,11 @@ export default function MortgageSection({
   }
 
   return (
-    <CollapsibleSection id="mortgage" title="Mortgage & Financing" subtitle="Your loan payment">
-      <p className="text-sm text-neutral-600 mb-5 leading-relaxed">
-        This is principal and interest, calculated from the loan amount, rate, and term you enter below — usually
-        the single biggest piece of your monthly cost, and the one most people already have a decent handle on
-        before they start shopping. If you&apos;re putting down less than 20%, lenders typically require PMI
-        (private mortgage insurance) until you build enough equity, which we&apos;ve factored in separately here.
-      </p>
-
+    <CollapsibleSection
+      id="mortgage"
+      title="Mortgage & Financing"
+      subtitle="Your principal and interest — the core loan payment, calculated from what you enter below."
+    >
       <div className="grid gap-5 sm:grid-cols-2">
         <FieldRow label="ZIP Code" htmlFor="zip" hint="Used for utility and market estimates below">
           <input
@@ -187,6 +185,20 @@ export default function MortgageSection({
       </div>
 
       <SectionTotalRow label="Total Monthly Mortgage" amount={monthlyMortgage} />
+
+      <EducationBubble>
+        <p>
+          Principal and interest is usually the single biggest piece of your monthly cost, and the one most
+          buyers already have some handle on before they start shopping. But P&amp;I by itself isn&apos;t
+          &quot;the house payment&quot; lenders use when they qualify you — that figure includes taxes and
+          insurance too, covered in the next section.
+        </p>
+        <p>
+          If you&apos;re putting down less than 20%, PMI (private mortgage insurance) is typically required until
+          you build enough equity. It protects the lender, not you, and it usually goes away once your loan
+          balance drops enough relative to the home&apos;s value.
+        </p>
+      </EducationBubble>
     </CollapsibleSection>
   );
 }

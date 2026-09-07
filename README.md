@@ -99,6 +99,9 @@ npm run typecheck  # TypeScript check with no emit
 
 System reference data (`lib/types.ts` → `SYSTEM_REFERENCE_DATA`): Roof (25 yr / $14,500), HVAC (17 yr / $9,838),
 Water Heater (10 yr / $1,550). These are national medians — update them if better regional data becomes available.
+When high-end/luxury mode is triggered, `LUXURY_SYSTEM_REFERENCE_DATA` is used instead (same lifespans, higher
+costs: Roof $40,000, HVAC $22,000, Water Heater $6,500) — `calculateSectionTotals` picks whichever table applies
+based on `state.isLuxuryMode`.
 
 ---
 
@@ -111,11 +114,14 @@ home price and a typical higher-end HOA range for that ZIP — same "rough estim
 as the utility estimator. No button, no loading state the visitor has to notice — it's a quiet background check,
 the same pattern as PMI auto-toggling based on down payment.
 
-If the entered purchase price comes in at 25% or more above that county median, four extra expense fields appear
-inside the Maintenance & Upkeep section (still counted in its total): Pool/Spa Maintenance, Landscaping Crew,
-Housekeeping/Property Staff, and Security System/Monitoring. Separately, the HOA field in Property Taxes &
-Insurance gets an informational reference note showing the typical higher-end HOA range for the area —
-informational only, never auto-filled, since actual dues vary too much property to property.
+If the entered purchase price comes in at 25% or more above that county median, `state.isLuxuryMode` flips on
+(synced from Calculator.tsx's derived value into CalculatorState, so it's also correct in the server-side
+recompute for the PDF/email) and three things change: four extra expense fields appear inside Maintenance &
+Upkeep (still counted in its total) — Pool/Spa Maintenance, Landscaping Crew, Housekeeping/Property Staff, and
+Security System/Monitoring; the Repairs & System Replacements reference table switches from national-median costs
+to `LUXURY_SYSTEM_REFERENCE_DATA` (same lifespans, higher costs); and the HOA field in Property Taxes & Insurance
+gets an informational reference note showing the typical higher-end HOA range for the area — informational only,
+never auto-filled, since actual dues vary too much property to property.
 
 If the estimate call fails or `ANTHROPIC_API_KEY` isn't set, this fails silently — the calculator behaves exactly
 as it does today, just without the extra fields. Nothing about the core tool depends on this working.
@@ -135,11 +141,15 @@ app/
     submit-lead/             Recomputes totals server-side, renders PDF, sends both emails
 components/
   Calculator.tsx            Client orchestrator — owns all calculator state, luxury-mode derivation
-  TierGroup.tsx              Generic tier wrapper (eyebrow + H2 title + intro copy + boxed container),
-                             used for all three tiers: PITI, Home Operating Costs, Owner's Reserve
-  sections/                 One component per calculator section (each renders its own H3)
+  TierGroup.tsx              Generic tier wrapper (eyebrow + H2 title + one-line intro + boxed container),
+                             used for all three tiers: Principal/Interest/Taxes & Insurance, Home Operating
+                             Costs, Owner's Reserve
+  sections/                 One component per calculator section (each renders its own H3). Every section
+                             follows the same five-part shape: title, one-line orienting subtitle, inputs,
+                             calculated result, one EducationBubble after the result — that's the only place
+                             substantive explanatory copy lives per section
   ui/                       Shared inputs (CurrencyInput, NumberInput, ToggleGroup, CollapsibleSection,
-                             EducationBubble — the post-tier callout — …)
+                             EducationBubble — the single post-result education block — …)
   FaqSection.tsx             Static FAQ content (also feeds the FAQPage JSON-LD)
   Footer.tsx, Logo.tsx
 lib/

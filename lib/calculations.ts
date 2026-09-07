@@ -1,5 +1,6 @@
 import {
   CalculatorState,
+  LUXURY_SYSTEM_REFERENCE_DATA,
   MAINTENANCE_RATE_PER_SQFT,
   SYSTEM_REFERENCE_DATA,
   SectionTotals,
@@ -57,20 +58,22 @@ export function calculateSectionTotals(state: CalculatorState): SectionTotals {
   const maintenanceMonthly =
     m.squareFootage * MAINTENANCE_RATE_PER_SQFT + m.poolSpa + m.landscapingCrew + m.housekeeping + m.security;
 
+  const referenceData = state.isLuxuryMode ? LUXURY_SYSTEM_REFERENCE_DATA : SYSTEM_REFERENCE_DATA;
+
   const roofReserve = calculateSystemReserve(
     state.repairs.roof.ageYears,
-    SYSTEM_REFERENCE_DATA.roof.lifespan,
-    SYSTEM_REFERENCE_DATA.roof.cost,
+    referenceData.roof.lifespan,
+    referenceData.roof.cost,
   );
   const hvacReserve = calculateSystemReserve(
     state.repairs.hvac.ageYears,
-    SYSTEM_REFERENCE_DATA.hvac.lifespan,
-    SYSTEM_REFERENCE_DATA.hvac.cost,
+    referenceData.hvac.lifespan,
+    referenceData.hvac.cost,
   );
   const waterHeaterReserve = calculateSystemReserve(
     state.repairs.waterHeater.ageYears,
-    SYSTEM_REFERENCE_DATA.waterHeater.lifespan,
-    SYSTEM_REFERENCE_DATA.waterHeater.cost,
+    referenceData.waterHeater.lifespan,
+    referenceData.waterHeater.cost,
   );
   const repairsMonthly = roofReserve + hvacReserve + waterHeaterReserve;
 
