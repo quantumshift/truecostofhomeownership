@@ -46,6 +46,14 @@ See `.env.example` for the full list with comments. In short:
 Until `ANTHROPIC_API_KEY` / `RESEND_API_KEY` are set, those two features return a clear error to the user instead
 of a false success — the ZIP estimate button shows an inline message and the email form shows a send error.
 
+### Email delivery (`RESEND_API_KEY`) is intentionally not configured here
+
+Per Kirk: the "Email me my results" send-and-notify flow is being completed inside the broker marketplace
+website builder, not in this standalone deployment. `/api/submit-lead` is fully built and tested (PDF
+generation, lead-email content, error handling) and returns a clean "not configured" response until Resend
+credentials are added — this is expected, not a bug, and not an open task on this project. No action needed here
+unless that changes.
+
 ### No CRM is wired in yet
 
 Right now, submitting the lead form sends two emails via Resend: the branded PDF report to the user, and a lead
