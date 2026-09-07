@@ -33,7 +33,7 @@ export default function CollapsibleSection({
         className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left hover:bg-neutral-50 transition-colors"
       >
         <div>
-          <h2 className="text-lg font-semibold text-navy">{title}</h2>
+          <h3 className="text-lg font-semibold text-navy">{title}</h3>
           {subtitle && <p className="text-sm text-neutral-500 mt-0.5">{subtitle}</p>}
         </div>
         <div className="flex items-center gap-3 shrink-0">

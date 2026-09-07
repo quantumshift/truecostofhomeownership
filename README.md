@@ -135,9 +135,11 @@ app/
     submit-lead/             Recomputes totals server-side, renders PDF, sends both emails
 components/
   Calculator.tsx            Client orchestrator — owns all calculator state, luxury-mode derivation
-  MaintenanceRepairsGroup.tsx  Shared visual box + framing copy + advisor nudge around sections 4 & 5
-  sections/                 One component per calculator section
-  ui/                       Shared inputs (CurrencyInput, NumberInput, ToggleGroup, CollapsibleSection…)
+  TierGroup.tsx              Generic tier wrapper (eyebrow + H2 title + intro copy + boxed container),
+                             used for all three tiers: PITI, Home Operating Costs, Owner's Reserve
+  sections/                 One component per calculator section (each renders its own H3)
+  ui/                       Shared inputs (CurrencyInput, NumberInput, ToggleGroup, CollapsibleSection,
+                             EducationBubble — the post-tier callout — …)
   FaqSection.tsx             Static FAQ content (also feeds the FAQPage JSON-LD)
   Footer.tsx, Logo.tsx
 lib/
