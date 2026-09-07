@@ -99,8 +99,8 @@ export const SYSTEM_REFERENCE_DATA = {
   waterHeater: { lifespan: 10, cost: 1550, label: 'Water Heater' },
 } as const;
 
-// Used in place of SYSTEM_REFERENCE_DATA when high-end/luxury mode is triggered. Same lifespans,
-// higher replacement costs reflecting higher-end system quality and installation complexity.
+// Used in place of SYSTEM_REFERENCE_DATA when luxury mode is triggered. Same lifespans, higher
+// replacement costs reflecting luxury-tier system quality and installation complexity.
 export const LUXURY_SYSTEM_REFERENCE_DATA = {
   roof: { lifespan: 25, cost: 40000, label: 'Roof' },
   hvac: { lifespan: 17, cost: 22000, label: 'HVAC' },

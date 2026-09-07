@@ -80,7 +80,7 @@ export default function Calculator() {
       const data: MarketEstimateResponse = await res.json();
       setMarketEstimate({ zip, ...data });
     } catch {
-      // Silent — high-end mode just won't activate for this ZIP.
+      // Silent — luxury mode just won't activate for this ZIP.
     }
   }
 

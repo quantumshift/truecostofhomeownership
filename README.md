@@ -37,7 +37,7 @@ See `.env.example` for the full list with comments. In short:
 
 | Variable | Required for | Notes |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | "Estimate costs for this ZIP" utilities feature, and the background high-end/luxury market check | Server-side only, from console.anthropic.com |
+| `ANTHROPIC_API_KEY` | "Estimate costs for this ZIP" utilities feature, and the background luxury market check | Server-side only, from console.anthropic.com |
 | `RESEND_API_KEY` | "Email me my results" | Server-side only, from resend.com |
 | `RESEND_FROM_ADDRESS` | "Email me my results" | Must be a verified sender domain in Resend |
 | `LEAD_NOTIFICATION_EMAIL` | Lead notifications | Defaults to Kirk@EmpireHomeLoans.com |
@@ -94,23 +94,23 @@ npm run typecheck  # TypeScript check with no emit
 | PMI | User-entered monthly estimate, shown only when down payment < 20% |
 | Monthly property tax | Annual property tax ÷ 12 |
 | Monthly utilities | Electricity + gas are single blended monthly averages (no seasonal split — regional summer/winter swings vary too much nationally for one formula to hold up) |
-| Monthly maintenance | Square footage × $0.14 (HUD/VA standard maintenance-and-utilities allowance), plus any high-end line items below |
+| Monthly maintenance | Square footage × $0.14 (HUD/VA standard maintenance-and-utilities allowance), plus any luxury line items below |
 | Monthly repair reserve (per system) | Replacement cost ÷ max(1, lifespan − age) ÷ 12 |
 
 System reference data (`lib/types.ts` → `SYSTEM_REFERENCE_DATA`): Roof (25 yr / $14,500), HVAC (17 yr / $9,838),
 Water Heater (10 yr / $1,550). These are national medians — update them if better regional data becomes available.
-When high-end/luxury mode is triggered, `LUXURY_SYSTEM_REFERENCE_DATA` is used instead (same lifespans, higher
+When luxury mode is triggered, `LUXURY_SYSTEM_REFERENCE_DATA` is used instead (same lifespans, higher
 costs: Roof $40,000, HVAC $22,000, Water Heater $6,500) — `calculateSectionTotals` picks whichever table applies
 based on `state.isLuxuryMode`.
 
 ---
 
-## High-end / luxury mode
+## Luxury mode
 
 A ZIP code is collected once, at the top of Mortgage & Financing, and reused for both the utility estimator and
 this feature (no asking twice). On blur (not on every keystroke), if the ZIP is a complete 5-digit value,
 `Calculator.tsx` fires a background call to `/api/estimate-market`, which asks Claude for a rough county median
-home price and a typical higher-end HOA range for that ZIP — same "rough estimate, not a live lookup" standard
+home price and a typical luxury HOA range for that ZIP — same "rough estimate, not a live lookup" standard
 as the utility estimator. No button, no loading state the visitor has to notice — it's a quiet background check,
 the same pattern as PMI auto-toggling based on down payment.
 
@@ -120,7 +120,7 @@ recompute for the PDF/email) and three things change: four extra expense fields 
 Upkeep (still counted in its total) — Pool/Spa Maintenance, Landscaping Crew, Housekeeping/Property Staff, and
 Security System/Monitoring; the Repairs & System Replacements reference table switches from national-median costs
 to `LUXURY_SYSTEM_REFERENCE_DATA` (same lifespans, higher costs); and the HOA field in Property Taxes & Insurance
-gets an informational reference note showing the typical higher-end HOA range for the area — informational only,
+gets an informational reference note showing the typical luxury HOA range for the area — informational only,
 never auto-filled, since actual dues vary too much property to property.
 
 If the estimate call fails or `ANTHROPIC_API_KEY` isn't set, this fails silently — the calculator behaves exactly
@@ -137,7 +137,7 @@ app/
   robots.ts, sitemap.ts     Crawler access (no AI-crawler disallow rules) + sitemap
   api/
     estimate-utilities/     Calls Claude for rough ZIP-based utility estimates
-    estimate-market/         Calls Claude for county median price + high-end HOA range (luxury mode)
+    estimate-market/         Calls Claude for county median price + luxury HOA range (luxury mode)
     submit-lead/             Recomputes totals server-side, renders PDF, sends both emails
 components/
   Calculator.tsx            Client orchestrator — owns all calculator state, luxury-mode derivation

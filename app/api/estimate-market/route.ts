@@ -43,13 +43,13 @@ export async function POST(req: NextRequest) {
         messages: [
           {
             role: 'user',
-            content: `Based on general knowledge only (no live MLS/listing data), give two rough planning-level figures for ZIP code ${zip}, United States: (1) the county's current median single-family home sale price, and (2) a typical monthly HOA dues range for higher-end/luxury communities specifically in that area (not the county-wide average).`,
+            content: `Based on general knowledge only (no live MLS/listing data), give two rough planning-level figures for ZIP code ${zip}, United States: (1) the county's current median single-family home sale price, and (2) a typical monthly HOA dues range for luxury communities specifically in that area (not the county-wide average).`,
           },
         ],
         tools: [
           {
             name: TOOL_NAME,
-            description: 'Provide a rough county median home price and a typical higher-end HOA dues range for the given ZIP code.',
+            description: 'Provide a rough county median home price and a typical luxury HOA dues range for the given ZIP code.',
             input_schema: {
               type: 'object',
               properties: {
@@ -59,11 +59,11 @@ export async function POST(req: NextRequest) {
                 },
                 hoaLow: {
                   type: 'number',
-                  description: 'Low end of typical monthly HOA dues for higher-end communities in this area, in whole dollars',
+                  description: 'Low end of typical monthly HOA dues for luxury communities in this area, in whole dollars',
                 },
                 hoaHigh: {
                   type: 'number',
-                  description: 'High end of typical monthly HOA dues for higher-end communities in this area, in whole dollars',
+                  description: 'High end of typical monthly HOA dues for luxury communities in this area, in whole dollars',
                 },
               },
               required: ['countyMedianPrice', 'hoaLow', 'hoaHigh'],

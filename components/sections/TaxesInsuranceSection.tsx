@@ -106,7 +106,7 @@ export default function TaxesInsuranceSection({
           <CurrencyInput id="hoaMonthly" value={value.hoaMonthly} onChange={(v) => onChange({ hoaMonthly: v })} />
           {isLuxuryMode && hoaRange && (
             <p className="text-xs text-neutral-500 mt-1.5">
-              Typical HOA dues for higher-end communities in this area: {formatCurrencyWhole(hoaRange.low)}–
+              Typical HOA dues for luxury communities in this area: {formatCurrencyWhole(hoaRange.low)}–
               {formatCurrencyWhole(hoaRange.high)}/month. A rough, AI-generated approximation, not a live listing
               lookup. Enter your own number above if you have it.
             </p>
