@@ -2,12 +2,12 @@ export const faqItems = [
   {
     question: 'What is the true cost of homeownership?',
     answer:
-      "It's the full monthly picture of owning a home, not just the mortgage payment. That means principal and interest, property taxes, homeowners insurance, HOA dues if you have them, utilities, routine maintenance, and a reserve for big-ticket repairs like a roof or water heater down the road. Most buyers only budget for the mortgage and get caught off guard by the rest.",
+      "It's the full monthly picture of owning a home, not just the mortgage payment. It includes principal and interest, property taxes, homeowners insurance, HOA dues if applicable, utilities, routine maintenance, and a reserve for larger repairs like a roof or water heater down the road.",
   },
   {
     question: "What's included in the true cost of owning a home beyond the mortgage?",
     answer:
-      'Property taxes and homeowners insurance, utilities (electricity, gas, water, trash, internet), routine maintenance like lawn care and gutter cleaning, and a monthly reserve for eventual system replacements. Roof, HVAC, and water heater are the big three. HOA fees get added in too if the property has them.',
+      'Property taxes, homeowners insurance, and HOA dues if applicable. Utilities such as electricity, gas, water, trash, and internet. Routine maintenance like lawn care and gutter cleaning. And a monthly reserve for major system replacements, roof, HVAC, and water heater being the big three.',
   },
   {
     question: 'How much does home maintenance cost per month?',
@@ -17,7 +17,7 @@ export const faqItems = [
   {
     question: 'Is this calculator accurate for any state or city?',
     answer:
-      "It's built to work anywhere in the U.S., with no regional assumption baked into the defaults. You enter your own purchase price, tax rate, insurance, and utility numbers, so the result reflects your market. The repair reserve figures use national median costs, and we call that out clearly since coastal and West Coast markets often run higher than the rural Midwest or Southeast.",
+      "Yes. It's built to work anywhere in the U.S., with no regional assumptions baked into the defaults, you enter your own purchase price, tax rate, insurance, and utility numbers, so the result reflects your market. The one exception is the repair reserve figures, which use national median costs, since coastal and West Coast markets often run higher than the rural Midwest or Southeast, we call that out directly rather than implying false precision.",
   },
 ];
 

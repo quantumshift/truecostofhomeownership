@@ -38,7 +38,7 @@ export default function RepairsSection({
     <CollapsibleSection
       id="repairs"
       title="System Replacements"
-      subtitle="An age-based reserve for the major systems most buyers don't budget for."
+      subtitle="A monthly reserve based on how old each system is."
     >
       <div className="overflow-x-auto -mx-1">
         <table className="w-full text-sm border-collapse min-w-[560px]">
