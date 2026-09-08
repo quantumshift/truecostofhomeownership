@@ -112,6 +112,46 @@ export default function RepairsSection({
             </tbody>
           </table>
         </div>
+        <p className="text-xs text-neutral-500 leading-relaxed">
+          Roof cost is based on{' '}
+          <a
+            href="https://www.angi.com/articles/architectural-shingles-cost.htm"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-navy-light"
+          >
+            Angi&apos;s 2026 cost data
+          </a>{' '}
+          for architectural shingle roof replacement. HVAC cost is based on 2026 data from{' '}
+          <a
+            href="https://www.angi.com/articles/insider-s-price-guide-new-heating-and-cooling-system.htm"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-navy-light"
+          >
+            Angi
+          </a>{' '}
+          and{' '}
+          <a
+            href="https://pearlscore.com/news/average-hvac-replacement-cost"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-navy-light"
+          >
+            Pearl
+          </a>
+          , reflecting a full system replacement rather than a single component. Water heater cost is based on
+          2026 data from Angi, HomeAdvisor, and{' '}
+          <a
+            href="https://www.homewyse.com/services/cost_to_replace_hot_water_heater.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-navy-light"
+          >
+            Homewyse
+          </a>{' '}
+          for a standard tank-style unit, not tankless.
+        </p>
         <p className="text-xs text-neutral-500">
           Luxury-tier figures are based on research across three luxury real estate markets: King County, WA;
           Los Angeles County, CA; and the Hamptons, NY.
