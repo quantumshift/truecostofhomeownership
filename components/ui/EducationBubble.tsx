@@ -21,7 +21,7 @@ export default function EducationBubble({ children }: EducationBubbleProps) {
           strokeLinejoin="round"
         />
       </svg>
-      <div className="text-sm text-neutral-700 leading-relaxed space-y-2.5">{children}</div>
+      <div className="min-w-0 flex-1 text-sm text-neutral-700 leading-relaxed space-y-2.5">{children}</div>
     </div>
   );
 }

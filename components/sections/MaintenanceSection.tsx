@@ -35,8 +35,10 @@ export default function MaintenanceSection({ value, onChange, monthlyTotal }: Ma
 
       <EducationBubble>
         <p>
-          This is separate from the big-ticket system replacements in the next section. Routine upkeep is regular
-          and predictable, while system replacements are irregular and much larger.
+          Separate from system replacements below, this covers regular upkeep, not big one-time repairs. $0.14/sq
+          ft is a HUD/VA standard baseline, not a prediction. A newer home with modern systems can run well under
+          this for decades; a century-old home with undocumented work can run well above it. Condition matters
+          more than square footage.
         </p>
 
         <div className="overflow-x-auto -mx-1">
@@ -60,13 +62,6 @@ export default function MaintenanceSection({ value, onChange, monthlyTotal }: Ma
             </tbody>
           </table>
         </div>
-
-        <p>
-          Still, it&apos;s a starting point, not a prediction. A newer home with modern systems and good bones can
-          run well under this for 20–30 years, while a home over a century old with undocumented past work or
-          areas that haven&apos;t been opened up in decades can run well above it. Age, condition, and how well
-          the home has been maintained before you move in will move this number more than square footage alone.
-        </p>
       </EducationBubble>
     </CollapsibleSection>
   );

@@ -118,14 +118,9 @@ export default function TaxesInsuranceSection({
 
       <EducationBubble>
         <p>
-          These are required, ongoing costs tied to the home itself rather than your loan, and they vary a lot by
-          location. Property tax rates differ significantly by county and state, and insurance costs are shaped
-          by things like the home&apos;s age, roof condition, and local weather risk, including wildfire,
-          hurricane, and hail.
-        </p>
-        <p>
-          When a property has an HOA, those dues are just as fixed and recurring as taxes and insurance, which is
-          why they&apos;re included here rather than treated as optional.
+          Property tax rates vary by county and state. Insurance depends on the home&apos;s age, roof condition,
+          and local weather risk. HOA dues, when present, are just as fixed and recurring as taxes and insurance,
+          which is why they&apos;re included here.
         </p>
       </EducationBubble>
     </CollapsibleSection>

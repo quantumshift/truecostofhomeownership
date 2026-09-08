@@ -201,18 +201,10 @@ export default function UtilitiesSection({
 
       <EducationBubble>
         <p>
-          Utility costs vary more than people expect. A bigger home, an older or poorly insulated one, or a
-          climate with real summers and winters will all push electricity and gas higher than a smaller, newer,
-          or milder-climate home would run.
-        </p>
-        <p>
-          Rough estimate only, built from general regional knowledge, not a live utility-rate lookup. Always
-          compare against actual bills from the seller or local utility providers before relying on these
-          numbers.
-        </p>
-        <p>
-          These costs don&apos;t show up on a pre-approval letter or a listing price. They start the month you
-          move in, and they&apos;re yours to pay for as long as you own the home.
+          Utility costs vary by home size, age, insulation, and climate. Rough estimate only, built from general
+          regional knowledge, not a live utility-rate lookup. Always compare against actual bills from the seller
+          or local utility providers. These costs start the month you move in and continue for as long as you
+          own the home.
         </p>
       </EducationBubble>
     </CollapsibleSection>

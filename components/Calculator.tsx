@@ -143,11 +143,8 @@ export default function Calculator() {
           hoaRange={hoaRange}
         />
         <p className="text-sm text-neutral-600 leading-relaxed border-t border-navy/10 pt-4">
-          Principal, interest, taxes, and insurance, plus HOA dues if the property has them, together make up
-          your full monthly house payment. This combined figure, not principal and interest alone, is what
-          lenders use to calculate your debt-to-income (DTI) ratio. For many buyers, it&apos;s the only number
-          they see before making an offer. Everything below adds the rest of what it actually costs to hold onto
-          the home.
+          Together, P&amp;I, taxes, insurance, and HOA make up your full house payment, the figure lenders use
+          for DTI. Everything below adds what it actually costs to keep the home running.
         </p>
       </TierGroup>
 

@@ -188,15 +188,9 @@ export default function MortgageSection({
 
       <EducationBubble>
         <p>
-          Principal and interest is usually the single biggest piece of your monthly cost, and the one most
-          buyers already have some handle on before they start shopping. But P&amp;I by itself isn&apos;t
-          &quot;the house payment&quot; lenders use when they qualify you. That figure includes taxes and
-          insurance too, covered in the next section.
-        </p>
-        <p>
-          If you&apos;re putting down less than 20%, PMI (private mortgage insurance) is typically required until
-          you build enough equity. It protects the lender, not you, and it usually goes away once your loan
-          balance drops enough relative to the home&apos;s value.
+          P&amp;I is usually your biggest monthly cost, but it&apos;s not the full house payment lenders use to
+          qualify you (see below). PMI applies when you put down less than 20% and typically ends once you build
+          enough equity.
         </p>
       </EducationBubble>
     </CollapsibleSection>
