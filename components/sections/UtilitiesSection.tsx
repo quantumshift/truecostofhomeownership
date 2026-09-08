@@ -67,11 +67,7 @@ export default function UtilitiesSection({
     value.trash.isAiEstimate;
 
   return (
-    <CollapsibleSection
-      id="utilities"
-      title="Utilities"
-      subtitle="Power, gas, water, trash, internet: what it costs to run the home each month."
-    >
+    <CollapsibleSection id="utilities" title="Monthly Operating Costs">
       <div className="rounded-md bg-neutral-50 border border-neutral-200 p-4 mb-6">
         <p className="text-sm font-medium text-neutral-800 mb-2">
           {hasEstimate
@@ -197,7 +193,7 @@ export default function UtilitiesSection({
         </div>
       )}
 
-      <SectionTotalRow label="Total Monthly Utilities" amount={monthlyTotal} />
+      <SectionTotalRow label="Total Monthly Operating Costs" amount={monthlyTotal} />
 
       <EducationBubble>
         <p>

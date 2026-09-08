@@ -152,7 +152,12 @@ export default function Calculator() {
       <TierGroup
         eyebrow="Tier 2"
         title="Home Operating Costs"
-        intro={<p>The ongoing costs of running the home day to day: power, gas, water, trash, and internet.</p>}
+        intro={
+          <p>
+            The ongoing costs of running the home day to day, power, gas, water, trash, and internet, plus
+            anything else that keeps the property running month to month.
+          </p>
+        }
       >
         <UtilitiesSection
           zip={state.zip}

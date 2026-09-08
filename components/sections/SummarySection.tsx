@@ -31,7 +31,7 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
     },
     {
       label: 'Home Operating Costs',
-      items: [{ label: 'Utilities', amount: totals.utilitiesMonthly, Icon: BoltIcon }],
+      items: [{ label: 'Monthly Operating Costs', amount: totals.utilitiesMonthly, Icon: BoltIcon }],
     },
     {
       label: "Owner's Reserve",

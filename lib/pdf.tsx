@@ -133,7 +133,7 @@ export default function CostReportDocument({ name, state, totals }: CostReportPr
   const breakdown = [
     { label: 'Mortgage (Principal, Interest & PMI)', amount: totals.mortgageMonthly },
     { label: 'Taxes, Insurance & HOA', amount: totals.taxesInsuranceMonthly },
-    { label: 'Utilities', amount: totals.utilitiesMonthly },
+    { label: 'Monthly Operating Costs', amount: totals.utilitiesMonthly },
     { label: 'Maintenance & Upkeep', amount: totals.maintenanceMonthly },
     { label: 'System Replacement Reserves', amount: totals.repairsMonthly },
   ];
