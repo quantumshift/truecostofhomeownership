@@ -19,12 +19,14 @@ export async function POST(req: NextRequest) {
 
   let name: string;
   let email: string;
+  let address: string;
   let state: CalculatorState;
 
   try {
     const body = await req.json();
     name = String(body.name ?? '').trim();
     email = String(body.email ?? '').trim();
+    address = String(body.address ?? '').trim();
     state = body.state as CalculatorState;
   } catch {
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 });
@@ -38,7 +40,7 @@ export async function POST(req: NextRequest) {
 
   let pdfBuffer: Buffer;
   try {
-    pdfBuffer = await renderToBuffer(CostReportDocument({ name, state, totals }));
+    pdfBuffer = await renderToBuffer(CostReportDocument({ name, address, state, totals }));
   } catch {
     return NextResponse.json({ error: 'Could not generate report.' }, { status: 500 });
   }

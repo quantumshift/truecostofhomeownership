@@ -123,11 +123,12 @@ function ShieldMark() {
 
 interface CostReportProps {
   name: string;
+  address?: string;
   state: CalculatorState;
   totals: SectionTotals;
 }
 
-export default function CostReportDocument({ name, state, totals }: CostReportProps) {
+export default function CostReportDocument({ name, address, state, totals }: CostReportProps) {
   const housePaymentMonthly = totals.mortgageMonthly + totals.taxesInsuranceMonthly;
 
   const breakdown = [
@@ -147,7 +148,10 @@ export default function CostReportDocument({ name, state, totals }: CostReportPr
         </View>
 
         <Text style={styles.title}>Your True Cost of Home Ownership Report</Text>
-        <Text style={styles.subtitle}>Prepared for {name || 'you'}. Estimates for planning purposes only.</Text>
+        <Text style={styles.subtitle}>
+          Prepared for {name || 'you'}
+          {address ? ` | ${address}` : ''}. Estimates for planning purposes only.
+        </Text>
 
         <View style={styles.heroBox}>
           <Text style={styles.heroLabel}>Your monthly true cost of home ownership</Text>

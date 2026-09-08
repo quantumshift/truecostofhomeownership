@@ -15,6 +15,7 @@ type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
 export default function SummarySection({ state, totals }: SummarySectionProps) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [address, setAddress] = useState('');
   const [nameError, setNameError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
   const [status, setStatus] = useState<SubmitStatus>('idle');
@@ -68,7 +69,7 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
       const res = await fetch('/api/submit-lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: trimmedName, email, state, totals }),
+        body: JSON.stringify({ name: trimmedName, email, address: address.trim(), state, totals }),
       });
       if (!res.ok) throw new Error('submit failed');
       setStatus('success');
@@ -175,6 +176,21 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
                 />
                 {emailError && <p className="text-xs text-red-600 mt-1">{emailError}</p>}
               </div>
+            </div>
+            <div className="mb-4">
+              <label htmlFor="leadAddress" className="text-sm font-medium text-neutral-700 mb-1.5 block">
+                Property address <span className="font-normal text-neutral-400">(optional)</span>
+              </label>
+              <input
+                id="leadAddress"
+                type="text"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-navy-light focus:border-navy-light"
+              />
+              <p className="text-xs text-neutral-500 mt-1">
+                Add the address if you&apos;d like your report customized for a specific home.
+              </p>
             </div>
             <button
               type="submit"
