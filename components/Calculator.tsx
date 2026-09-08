@@ -39,13 +39,13 @@ const initialState: CalculatorState = {
     trash: { value: 35, isAiEstimate: false },
     internet: { value: 70, isAiEstimate: false },
     other: { value: 0, isAiEstimate: false },
-  },
-  maintenance: {
-    squareFootage: 1800,
     poolSpa: 0,
     landscapingCrew: 0,
     housekeeping: 0,
     security: 0,
+  },
+  maintenance: {
+    squareFootage: 1800,
   },
   repairs: {
     roof: { ageYears: 10 },
@@ -161,6 +161,7 @@ export default function Calculator() {
           value={state.utilities}
           onChange={(patch) => setState((s) => ({ ...s, utilities: { ...s.utilities, ...patch } }))}
           monthlyTotal={totals.utilitiesMonthly}
+          isLuxuryMode={isLuxuryMode}
         />
       </TierGroup>
 
@@ -178,7 +179,6 @@ export default function Calculator() {
           value={state.maintenance}
           onChange={(patch) => setState((s) => ({ ...s, maintenance: { ...s.maintenance, ...patch } }))}
           monthlyTotal={totals.maintenanceMonthly}
-          isLuxuryMode={isLuxuryMode}
         />
         <RepairsSection
           value={state.repairs}

@@ -35,7 +35,7 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
       label: "Owner's Reserve",
       items: [
         { label: 'Maintenance & Upkeep', amount: totals.maintenanceMonthly, Icon: WrenchIcon },
-        { label: 'Repairs & System Reserves', amount: totals.repairsMonthly, Icon: ToolboxIcon },
+        { label: 'System Replacement Reserves', amount: totals.repairsMonthly, Icon: ToolboxIcon },
       ],
     },
   ];

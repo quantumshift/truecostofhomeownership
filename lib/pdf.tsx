@@ -133,7 +133,7 @@ export default function CostReportDocument({ name, state, totals }: CostReportPr
     { label: 'Property Taxes & Insurance', amount: totals.taxesInsuranceMonthly },
     { label: 'Utilities', amount: totals.utilitiesMonthly },
     { label: 'Maintenance & Upkeep', amount: totals.maintenanceMonthly },
-    { label: 'Repairs & System Reserves', amount: totals.repairsMonthly },
+    { label: 'System Replacement Reserves', amount: totals.repairsMonthly },
   ];
 
   return (
@@ -161,7 +161,7 @@ export default function CostReportDocument({ name, state, totals }: CostReportPr
           </View>
         ))}
 
-        <Text style={styles.sectionTitle}>Repairs & system replacement detail</Text>
+        <Text style={styles.sectionTitle}>System replacement detail</Text>
         <View style={styles.row}>
           <Text style={styles.rowLabel}>Roof (age {state.repairs.roof.ageYears} yrs, 25 yr typical lifespan)</Text>
           <Text style={styles.rowValue}>{formatCurrency(totals.roofReserve)}/mo</Text>

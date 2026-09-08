@@ -33,14 +33,16 @@ export interface UtilitiesInputs {
   trash: UtilityFieldState;
   internet: UtilityFieldState;
   other: UtilityFieldState;
-}
-
-export interface MaintenanceInputs {
-  squareFootage: number;
+  // Luxury-mode-only fields: recurring monthly bills, same nature as the fields above, shown
+  // only when isLuxuryMode is true.
   poolSpa: number;
   landscapingCrew: number;
   housekeeping: number;
   security: number;
+}
+
+export interface MaintenanceInputs {
+  squareFootage: number;
 }
 
 export interface SystemInputs {

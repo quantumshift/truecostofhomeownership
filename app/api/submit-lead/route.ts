@@ -83,7 +83,7 @@ function buildUserEmailText(name: string, totals: ReturnType<typeof calculateSec
     `Taxes & Insurance: ${formatCurrencyWhole(totals.taxesInsuranceMonthly)}/mo`,
     `Utilities: ${formatCurrencyWhole(totals.utilitiesMonthly)}/mo`,
     `Maintenance & Upkeep: ${formatCurrencyWhole(totals.maintenanceMonthly)}/mo`,
-    `Repairs & System Reserves: ${formatCurrencyWhole(totals.repairsMonthly)}/mo`,
+    `System Replacement Reserves: ${formatCurrencyWhole(totals.repairsMonthly)}/mo`,
     '',
     "These are planning estimates, not a substitute for actual quotes, bills, or professional advice.",
     '',
@@ -105,7 +105,7 @@ function buildLeadEmailText(name: string, email: string, totals: ReturnType<type
     `Taxes & Insurance: ${formatCurrencyWhole(totals.taxesInsuranceMonthly)}/mo`,
     `Utilities: ${formatCurrencyWhole(totals.utilitiesMonthly)}/mo`,
     `Maintenance & Upkeep: ${formatCurrencyWhole(totals.maintenanceMonthly)}/mo`,
-    `Repairs & System Reserves: ${formatCurrencyWhole(totals.repairsMonthly)}/mo`,
+    `System Replacement Reserves: ${formatCurrencyWhole(totals.repairsMonthly)}/mo`,
     '',
     'Full PDF report is attached.',
   ].join('\n');

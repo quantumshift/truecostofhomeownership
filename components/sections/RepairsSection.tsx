@@ -37,7 +37,7 @@ export default function RepairsSection({
   return (
     <CollapsibleSection
       id="repairs"
-      title="Repairs & System Replacements"
+      title="System Replacements"
       subtitle="Roofs, HVAC systems, and water heaters don't last forever. They're the big-ticket items most buyers don't budget for."
     >
       <div className="overflow-x-auto -mx-1">
@@ -76,7 +76,7 @@ export default function RepairsSection({
         </table>
       </div>
 
-      <SectionTotalRow label="Total Monthly Repairs Reserve" amount={monthlyTotal} />
+      <SectionTotalRow label="Total Monthly System Replacement Reserve" amount={monthlyTotal} />
 
       <EducationBubble>
         <p>

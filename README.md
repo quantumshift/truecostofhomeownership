@@ -116,12 +116,13 @@ the same pattern as PMI auto-toggling based on down payment.
 
 If the entered purchase price comes in at 25% or more above that county median, `state.isLuxuryMode` flips on
 (synced from Calculator.tsx's derived value into CalculatorState, so it's also correct in the server-side
-recompute for the PDF/email) and three things change: four extra expense fields appear inside Maintenance &
-Upkeep (still counted in its total) — Pool/Spa Maintenance, Landscaping Crew, Housekeeping/Property Staff, and
-Security System/Monitoring; the Repairs & System Replacements reference table switches from national-median costs
-to `LUXURY_SYSTEM_REFERENCE_DATA` (same lifespans, higher costs); and the HOA field in Property Taxes & Insurance
-gets an informational reference note showing the typical luxury HOA range for the area — informational only,
-never auto-filled, since actual dues vary too much property to property.
+recompute for the PDF/email) and three things change: four extra expense fields appear inside Utilities, under
+Home Operating Costs (still counted in its total) — Pool/Spa Maintenance, Landscaping Crew, Housekeeping/Property
+Staff, and Security System/Monitoring, alongside the existing generic "Other" catch-all field, not replacing it;
+the System Replacements reference table switches from national-median costs to `LUXURY_SYSTEM_REFERENCE_DATA`
+(same lifespans, higher costs); and the HOA field in Property Taxes & Insurance gets an informational reference
+note showing the typical luxury HOA range for the area — informational only, never auto-filled, since actual dues
+vary too much property to property.
 
 If the estimate call fails or `ANTHROPIC_API_KEY` isn't set, this fails silently — the calculator behaves exactly
 as it does today, just without the extra fields. Nothing about the core tool depends on this working.

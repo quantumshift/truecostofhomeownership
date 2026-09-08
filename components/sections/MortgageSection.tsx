@@ -184,7 +184,7 @@ export default function MortgageSection({
         )}
       </div>
 
-      <SectionTotalRow label="Total Loan Payment (P&I + PMI)" amount={monthlyMortgage} />
+      <SectionTotalRow label="Principal, Interest & Mortgage Insurance" amount={monthlyMortgage} />
 
       <EducationBubble>
         <p>

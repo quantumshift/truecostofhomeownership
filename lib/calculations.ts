@@ -52,11 +52,18 @@ export function calculateSectionTotals(state: CalculatorState): SectionTotals {
 
   const u = state.utilities;
   const utilitiesMonthly =
-    u.electricity.value + u.gas.value + u.waterSewer.value + u.trash.value + u.internet.value + u.other.value;
+    u.electricity.value +
+    u.gas.value +
+    u.waterSewer.value +
+    u.trash.value +
+    u.internet.value +
+    u.other.value +
+    u.poolSpa +
+    u.landscapingCrew +
+    u.housekeeping +
+    u.security;
 
-  const m = state.maintenance;
-  const maintenanceMonthly =
-    m.squareFootage * MAINTENANCE_RATE_PER_SQFT + m.poolSpa + m.landscapingCrew + m.housekeeping + m.security;
+  const maintenanceMonthly = state.maintenance.squareFootage * MAINTENANCE_RATE_PER_SQFT;
 
   const referenceData = state.isLuxuryMode ? LUXURY_SYSTEM_REFERENCE_DATA : SYSTEM_REFERENCE_DATA;
 
