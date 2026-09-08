@@ -19,12 +19,14 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
   const [emailError, setEmailError] = useState<string | null>(null);
   const [status, setStatus] = useState<SubmitStatus>('idle');
 
+  const housePaymentMonthly = totals.mortgageMonthly + totals.taxesInsuranceMonthly;
+
   const breakdownGroups = [
     {
       label: 'The House Payment',
       items: [
         { label: 'Mortgage (P&I + PMI)', amount: totals.mortgageMonthly, Icon: HomeIcon },
-        { label: 'Property Taxes & Insurance', amount: totals.taxesInsuranceMonthly, Icon: ShieldIcon },
+        { label: 'Taxes, Insurance & HOA', amount: totals.taxesInsuranceMonthly, Icon: ShieldIcon },
       ],
     },
     {
@@ -109,26 +111,26 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
         <p className="text-sm uppercase tracking-wide text-white/70 mb-2">Your monthly true cost of home ownership</p>
         <p className="text-4xl sm:text-5xl font-bold tabular-nums">{formatCurrency(totals.grandTotal, 0)}</p>
         <p className="text-sm text-white/70 mt-3">
-          P&amp;I payment: <span className="font-medium text-white">{formatCurrencyWhole(totals.pAndI)}/mo</span>
+          House Payment:{' '}
+          <span className="font-medium text-white">{formatCurrencyWhole(housePaymentMonthly)}/mo</span>
         </p>
       </div>
 
       <div className="rounded-lg bg-neutral-50 border border-neutral-200 p-5 mb-8 space-y-3">
         <p className="text-sm text-neutral-700 leading-relaxed">
-          This number adds up your mortgage payment (principal, interest, taxes, and insurance), HOA dues if you
-          have them, everyday costs like electricity, water and sewer, internet, and trash, plus a rough monthly
-          amount set aside so you&apos;re ready when a roof, HVAC system, or water heater eventually needs
-          replacing.
+          This figure combines your house payment (principal, interest, taxes, insurance, and HOA dues if
+          applicable), your home operating costs (electricity, water, sewer, trash, and internet), and a
+          calculated monthly reserve for routine maintenance and eventual system replacement, such as a roof,
+          HVAC system, or water heater.
         </p>
         <p className="text-sm text-neutral-700 leading-relaxed">
-          Every home is different. Some cost quite a bit less than average to own, others quite a bit more, and
-          this is a rough, honest starting point, not a final answer. The goal is simple: help you walk into
-          homeownership with a clear-eyed sense of what it actually takes to hold onto this home for the next 5,
-          10, 15, or 20 years, not just what it takes to close on it.
+          Each category is grounded in the published cost data cited throughout this report, so treat the result
+          as an informed estimate, not a guarantee, actual costs will vary by property condition, region, and
+          personal circumstances.
         </p>
         <p className="text-sm text-neutral-700 leading-relaxed">
-          Curious whether the maintenance and repair-reserve piece specifically fits your plans? It&apos;s worth
-          a quick check with your financial advisor.
+          If you&apos;d like a second opinion on the maintenance and reserve estimate specifically, it&apos;s a
+          reasonable question to bring to a financial advisor.
         </p>
       </div>
 
@@ -143,7 +145,7 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
         ) : (
           <form onSubmit={handleSubmit} noValidate>
             <p className="text-sm text-neutral-600 mb-4">
-              Enter your info below and we&apos;ll send this breakdown straight to your inbox.
+              Enter your name and email below to receive your complete True Cost of Home Ownership Report.
             </p>
             <div className="grid gap-4 sm:grid-cols-2 mb-4">
               <div>
@@ -180,7 +182,7 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
               disabled={status === 'submitting'}
               className="w-full sm:w-auto rounded-md bg-navy px-6 py-2.5 text-sm font-semibold text-white hover:bg-navy-light disabled:bg-neutral-300 transition-colors"
             >
-              {status === 'submitting' ? 'Sending…' : 'Email me my results'}
+              {status === 'submitting' ? 'Sending…' : 'Send Me My True Cost of Home Ownership Report'}
             </button>
             {status === 'error' && (
               <p className="text-sm text-red-600 mt-3">
@@ -188,7 +190,9 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
               </p>
             )}
             <p className="text-xs text-neutral-500 mt-3">
-              Your info goes to Kirk Rau at Empire Home Loans so he can follow up and help with next steps.
+              By submitting this form, you&apos;ll receive your report by email from Kirk Rau, NMLS #1466931, at
+              Empire Home Loans Inc., an Equal Housing Lender. Your information will not be sold or shared with
+              third parties, and you can unsubscribe from any future emails at any time.
             </p>
           </form>
         )}

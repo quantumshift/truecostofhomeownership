@@ -65,7 +65,7 @@ export default function MortgageSection({
   return (
     <CollapsibleSection
       id="mortgage"
-      title="Mortgage & Financing"
+      title="Mortgage"
       subtitle="Your principal and interest, the core loan payment, calculated from what you enter below."
     >
       <div className="grid gap-5 sm:grid-cols-2">
@@ -188,9 +188,8 @@ export default function MortgageSection({
 
       <EducationBubble>
         <p>
-          P&amp;I is usually your biggest monthly cost, but it&apos;s not the full house payment lenders use to
-          qualify you (see below). PMI applies when you put down less than 20% and typically ends once you build
-          enough equity.
+          Principal and interest are usually your largest fixed monthly cost. Mortgage insurance typically
+          applies when the down payment is below 20%, and is removed once enough equity is built.
         </p>
       </EducationBubble>
     </CollapsibleSection>

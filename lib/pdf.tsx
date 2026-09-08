@@ -128,29 +128,31 @@ interface CostReportProps {
 }
 
 export default function CostReportDocument({ name, state, totals }: CostReportProps) {
+  const housePaymentMonthly = totals.mortgageMonthly + totals.taxesInsuranceMonthly;
+
   const breakdown = [
     { label: 'Mortgage (Principal, Interest & PMI)', amount: totals.mortgageMonthly },
-    { label: 'Property Taxes & Insurance', amount: totals.taxesInsuranceMonthly },
+    { label: 'Taxes, Insurance & HOA', amount: totals.taxesInsuranceMonthly },
     { label: 'Utilities', amount: totals.utilitiesMonthly },
     { label: 'Maintenance & Upkeep', amount: totals.maintenanceMonthly },
     { label: 'System Replacement Reserves', amount: totals.repairsMonthly },
   ];
 
   return (
-    <Document title="True Cost of Homeownership: Your Estimate">
+    <Document title="True Cost of Home Ownership Report">
       <Page size="LETTER" style={styles.page}>
         <View style={styles.header}>
           <ShieldMark />
           <Text style={styles.headerText}>Empire Home Loans</Text>
         </View>
 
-        <Text style={styles.title}>Your True Cost of Homeownership</Text>
+        <Text style={styles.title}>Your True Cost of Home Ownership Report</Text>
         <Text style={styles.subtitle}>Prepared for {name || 'you'}. Estimates for planning purposes only.</Text>
 
         <View style={styles.heroBox}>
           <Text style={styles.heroLabel}>Your monthly true cost of home ownership</Text>
           <Text style={styles.heroTotal}>{formatCurrency(totals.grandTotal, 0)}</Text>
-          <Text style={styles.heroSub}>P&amp;I payment: {formatCurrencyWhole(totals.pAndI)}/mo</Text>
+          <Text style={styles.heroSub}>House Payment: {formatCurrencyWhole(housePaymentMonthly)}/mo</Text>
         </View>
 
         <Text style={styles.sectionTitle}>Monthly breakdown</Text>
@@ -179,16 +181,15 @@ export default function CostReportDocument({ name, state, totals }: CostReportPr
 
         <View style={styles.explainerBox}>
           <Text style={styles.explainerText}>
-            This number adds up your mortgage payment (principal, interest, taxes, and insurance), HOA dues if
-            you have them, everyday costs like electricity, water and sewer, internet, and trash, plus a rough
-            monthly amount set aside so you&apos;re ready when a roof, HVAC system, or water heater eventually
-            needs replacing.{'\n\n'}
-            Every home is different. Some cost quite a bit less than average to own, others quite a bit more, and
-            this is a rough, honest starting point, not a final answer. The goal is simple: help you walk into
-            homeownership with a clear-eyed sense of what it actually takes to hold onto this home for the next
-            5, 10, 15, or 20 years, not just what it takes to close on it.{'\n\n'}
-            Curious whether the maintenance and repair-reserve piece specifically fits your plans? It&apos;s
-            worth a quick check with your financial advisor.
+            This figure combines your house payment (principal, interest, taxes, insurance, and HOA dues if
+            applicable), your home operating costs (electricity, water, sewer, trash, and internet), and a
+            calculated monthly reserve for routine maintenance and eventual system replacement, such as a roof,
+            HVAC system, or water heater.{'\n\n'}
+            Each category is grounded in the published cost data cited throughout this report, so treat the
+            result as an informed estimate, not a guarantee, actual costs will vary by property condition,
+            region, and personal circumstances.{'\n\n'}
+            If you&apos;d like a second opinion on the maintenance and reserve estimate specifically, it&apos;s a
+            reasonable question to bring to a financial advisor.
           </Text>
         </View>
 

@@ -89,7 +89,7 @@ export default function UtilitiesSection({
           </button>
           {!isValidZip(zip) && (
             <span className="text-xs text-neutral-500">
-              Enter a ZIP code in Mortgage &amp; Financing above to enable this.
+              Enter a ZIP code in Mortgage above to enable this.
             </span>
           )}
         </div>
@@ -201,10 +201,10 @@ export default function UtilitiesSection({
 
       <EducationBubble>
         <p>
-          Utility costs vary by home size, age, insulation, and climate. Rough estimate only, built from general
-          regional knowledge, not a live utility-rate lookup. Always compare against actual bills from the seller
-          or local utility providers. These costs start the month you move in and continue for as long as you
-          own the home.
+          Utility costs vary with home size, age, insulation quality, and climate. This estimate is built from
+          general regional data, not live utility rates, compare it against actual bills from the seller or
+          local utility provider before relying on it. These costs begin the month you take ownership and
+          continue for as long as you hold the property.
         </p>
       </EducationBubble>
     </CollapsibleSection>

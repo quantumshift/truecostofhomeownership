@@ -38,7 +38,7 @@ export default function RepairsSection({
     <CollapsibleSection
       id="repairs"
       title="System Replacements"
-      subtitle="Roofs, HVAC systems, and water heaters don't last forever. They're the big-ticket items most buyers don't budget for."
+      subtitle="An age-based reserve for the major systems most buyers don't budget for."
     >
       <div className="overflow-x-auto -mx-1">
         <table className="w-full text-sm border-collapse min-w-[560px]">
@@ -80,12 +80,13 @@ export default function RepairsSection({
 
       <EducationBubble>
         <p>
-          Costs vary by region, coastal and West Coast markets often run higher due to labor and codes, so a
-          local quote beats a national average. A system past its typical lifespan is treated as due within a
-          year. This reserve isn&apos;t part of a pre-approval letter or closing conversation, but it&apos;s a
-          real cost. Building it is optional, common alternatives without one include a credit card, family
-          support, or a home equity loan. Worth checking this estimate against your financial advisor&apos;s
-          take.
+          Replacement costs vary by region: coastal and West Coast markets often exceed the rural Midwest or
+          Southeast due to labor rates and building codes, so a local contractor quote will be more accurate than
+          any national figure. A system already past its typical lifespan is treated as due within the next
+          year. This reserve is not part of a pre-approval letter or closing disclosure, but it&apos;s a real,
+          recurring cost of ownership. Building it is optional, common alternatives without one include a credit
+          card, a family loan, or borrowing against home equity. It&apos;s worth reviewing this estimate with a
+          financial advisor to confirm it fits your specific plans.
         </p>
 
         <div className="overflow-x-auto -mx-1">

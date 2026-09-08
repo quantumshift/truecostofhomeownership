@@ -94,11 +94,7 @@ export default function TaxesInsuranceSection({
           )}
         </div>
 
-        <FieldRow
-          label="Monthly Homeowners Insurance"
-          htmlFor="monthlyInsuranceCalc"
-          hint="This is the number that feeds your total"
-        >
+        <FieldRow label="Monthly Homeowners Insurance" htmlFor="monthlyInsuranceCalc">
           <ReadOnlyCurrency id="monthlyInsuranceCalc" value={monthlyInsurance} />
         </FieldRow>
 
@@ -114,7 +110,7 @@ export default function TaxesInsuranceSection({
         </FieldRow>
       </div>
 
-      <SectionTotalRow label="Total Monthly Taxes & Insurance" amount={monthlyTotal} />
+      <SectionTotalRow label="Total Monthly Taxes, Insurance & HOA" amount={monthlyTotal} />
 
       <EducationBubble>
         <p>

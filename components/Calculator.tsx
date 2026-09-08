@@ -143,8 +143,9 @@ export default function Calculator() {
           hoaRange={hoaRange}
         />
         <p className="text-sm text-neutral-600 leading-relaxed border-t border-navy/10 pt-4">
-          Together, P&amp;I, taxes, insurance, and HOA make up your full house payment, the figure lenders use
-          for DTI. Everything below adds what it actually costs to keep the home running.
+          P&amp;I, taxes, insurance, and any HOA dues together make up your house payment, the figure lenders use
+          to calculate your debt-to-income ratio. The tiers below add the additional monthly costs of owning
+          this home beyond what a lender requires you to disclose upfront.
         </p>
       </TierGroup>
 

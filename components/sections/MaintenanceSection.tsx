@@ -35,10 +35,12 @@ export default function MaintenanceSection({ value, onChange, monthlyTotal }: Ma
 
       <EducationBubble>
         <p>
-          Separate from system replacements below, this covers regular upkeep, not big one-time repairs. $0.14/sq
-          ft is a HUD/VA standard baseline, not a prediction. A newer home with modern systems can run well under
-          this for decades; a century-old home with undocumented work can run well above it. Condition matters
-          more than square footage.
+          This figure is separate from system replacements, addressed below: routine upkeep is a predictable,
+          recurring cost, while a system replacement is irregular and considerably larger. The $0.14 per square
+          foot standard is a baseline, not a forecast. A newer home with well-maintained systems can run well
+          under this figure for decades; an older home with undocumented past work or areas left unaddressed for
+          years can run well above it. Condition and maintenance history move this number more than square
+          footage alone.
         </p>
 
         <div className="overflow-x-auto -mx-1">
