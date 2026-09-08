@@ -197,7 +197,7 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
               disabled={status === 'submitting'}
               className="w-full sm:w-auto rounded-md bg-navy px-6 py-2.5 text-sm font-semibold text-white hover:bg-navy-light disabled:bg-neutral-300 transition-colors"
             >
-              {status === 'submitting' ? 'Sending…' : 'Send Me My True Cost of Home Ownership Report'}
+              {status === 'submitting' ? 'Sending…' : 'Send True Cost of Home Ownership Report'}
             </button>
             {status === 'error' && (
               <p className="text-sm text-red-600 mt-3">
