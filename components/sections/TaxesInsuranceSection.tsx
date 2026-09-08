@@ -116,7 +116,8 @@ export default function TaxesInsuranceSection({
         <p>
           Property tax rates vary by county and state. Insurance depends on the home&apos;s age, roof condition,
           and local weather risk. HOA dues, when present, are just as fixed and recurring as taxes and insurance,
-          which is why they&apos;re included here.
+          which is why they&apos;re included here. For the most accurate insurance figure, a quote from a licensed
+          insurance professional will beat any estimate.
         </p>
       </EducationBubble>
     </CollapsibleSection>

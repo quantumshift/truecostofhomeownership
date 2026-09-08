@@ -181,10 +181,9 @@ export default function CostReportDocument({ name, state, totals }: CostReportPr
 
         <View style={styles.explainerBox}>
           <Text style={styles.explainerText}>
-            This figure combines your house payment (principal, interest, taxes, insurance, and HOA dues if
-            applicable), your home operating costs (electricity, water, sewer, trash, and internet), and a
-            calculated monthly reserve for routine maintenance and eventual system replacement, such as a roof,
-            HVAC system, or water heater.{'\n\n'}
+            This figure combines your house payment (principal, interest, taxes, insurance, and HOA dues when
+            applicable), your monthly home operating costs (electricity, water, sewer, trash, and internet), plus
+            a calculated monthly reserve for maintenance and major system replacement.{'\n\n'}
             Each category is grounded in the published cost data cited throughout this report, so treat the
             result as an informed estimate, not a guarantee, actual costs will vary by property condition,
             region, and personal circumstances.{'\n\n'}
