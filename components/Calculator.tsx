@@ -2,7 +2,12 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { CalculatorState, MarketEstimateResponse } from '@/lib/types';
-import { calculateSectionTotals, getDownPaymentPercent, getLoanAmount } from '@/lib/calculations';
+import {
+  calculateAutoPmiMonthly,
+  calculateSectionTotals,
+  getDownPaymentPercent,
+  getLoanAmount,
+} from '@/lib/calculations';
 import { formatCurrencyWhole, isValidZip } from '@/lib/format';
 import MortgageSection from './sections/MortgageSection';
 import TaxesInsuranceSection from './sections/TaxesInsuranceSection';
@@ -24,6 +29,7 @@ const initialState: CalculatorState = {
     loanTerm: 30,
     pmiEnabled: true,
     pmiMonthly: 150,
+    pmiManualOverride: false,
   },
   taxesInsurance: {
     annualPropertyTax: 4000,
@@ -114,6 +120,16 @@ export default function Calculator() {
   }, [isLuxuryMode]);
 
   const loanAmount = getLoanAmount(state);
+
+  useEffect(() => {
+    if (state.mortgage.pmiManualOverride) return;
+    const autoPmi = calculateAutoPmiMonthly(loanAmount, downPaymentPercent);
+    if (autoPmi !== state.mortgage.pmiMonthly) {
+      setState((s) => ({ ...s, mortgage: { ...s.mortgage, pmiMonthly: autoPmi } }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loanAmount, downPaymentPercent, state.mortgage.pmiManualOverride]);
+
   const totals = useMemo(() => calculateSectionTotals(state), [state]);
 
   return (

@@ -172,11 +172,15 @@ export default function MortgageSection({
             </div>
 
             {value.pmiEnabled && (
-              <FieldRow label="Monthly PMI" htmlFor="pmiMonthly" hint="Enter your own estimate or lender quote">
+              <FieldRow
+                label="Monthly PMI"
+                htmlFor="pmiMonthly"
+                hint="Auto-estimated from your down payment — enter your own lender quote if you have one."
+              >
                 <CurrencyInput
                   id="pmiMonthly"
                   value={value.pmiMonthly}
-                  onChange={(v) => onChange({ pmiMonthly: v })}
+                  onChange={(v) => onChange({ pmiMonthly: v, pmiManualOverride: true })}
                 />
               </FieldRow>
             )}

@@ -11,6 +11,7 @@ export interface MortgageInputs {
   loanTerm: LoanTerm;
   pmiEnabled: boolean;
   pmiMonthly: number;
+  pmiManualOverride: boolean;
 }
 
 export interface TaxesInsuranceInputs {

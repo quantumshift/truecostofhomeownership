@@ -24,6 +24,21 @@ export function getLoanAmount(state: CalculatorState): number {
   return Math.max(0, loanAmount);
 }
 
+// Conservative middle-of-range annual PMI rates by down payment tier. Credit score isn't
+// collected in this calculator, so pricing is based on down payment tier alone.
+export function getAutoPmiAnnualRate(downPaymentPercent: number): number {
+  if (downPaymentPercent < 5) return 0.013;
+  if (downPaymentPercent < 10) return 0.01;
+  if (downPaymentPercent < 15) return 0.007;
+  if (downPaymentPercent < 20) return 0.004;
+  return 0;
+}
+
+export function calculateAutoPmiMonthly(loanAmount: number, downPaymentPercent: number): number {
+  const rate = getAutoPmiAnnualRate(downPaymentPercent);
+  return Math.round(((loanAmount * rate) / 12) * 100) / 100;
+}
+
 export function calculateMonthlyPAndI(state: CalculatorState): number {
   const loanAmount = getLoanAmount(state);
   const monthlyRate = state.mortgage.interestRate / 100 / 12;
