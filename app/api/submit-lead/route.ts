@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
 
     if (userSend.error) {
       console.error('[submit-lead] Resend rejected the report email:', userSend.error);
-      return NextResponse.json({ error: 'Email delivery failed.' }, { status: 502 });
+      return NextResponse.json({ error: 'Email delivery failed.' }, { status: 422 });
     }
 
     const leadSend = await resend.emails.send({
@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
 
     if (leadSend.error) {
       console.error('[submit-lead] Resend rejected the lead notification email:', leadSend.error);
-      return NextResponse.json({ error: 'Email delivery failed.' }, { status: 502 });
+      return NextResponse.json({ error: 'Email delivery failed.' }, { status: 422 });
     }
   } catch (err) {
     console.error('[submit-lead] Unexpected error sending via Resend:', err);
