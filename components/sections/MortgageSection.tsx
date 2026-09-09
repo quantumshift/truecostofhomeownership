@@ -175,7 +175,7 @@ export default function MortgageSection({
               <FieldRow
                 label="Monthly PMI"
                 htmlFor="pmiMonthly"
-                hint="Auto-estimated from your down payment — enter your own lender quote if you have one."
+                hint="Auto-estimated from your down payment — rates vary significantly by lender, credit score, and loan program, enter your own lender quote if you have one."
               >
                 <CurrencyInput
                   id="pmiMonthly"

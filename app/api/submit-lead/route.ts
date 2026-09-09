@@ -49,8 +49,11 @@ export async function POST(req: NextRequest) {
   const pdfBase64 = pdfBuffer.toString('base64');
   const attachment = { filename: 'true-cost-of-homeownership.pdf', content: pdfBase64 };
 
+  // The Resend SDK does not throw on API-level failures (bad key, unverified domain, etc.),
+  // it resolves with { error } instead, so both sends must be checked explicitly rather than
+  // relying on a try/catch to catch a real send failure.
   try {
-    await resend.emails.send({
+    const userSend = await resend.emails.send({
       from: fromAddress,
       to: email,
       subject: 'Your True Cost of Home Ownership Report',
@@ -58,14 +61,25 @@ export async function POST(req: NextRequest) {
       attachments: [attachment],
     });
 
-    await resend.emails.send({
+    if (userSend.error) {
+      console.error('[submit-lead] Resend rejected the report email:', userSend.error);
+      return NextResponse.json({ error: 'Email delivery failed.' }, { status: 502 });
+    }
+
+    const leadSend = await resend.emails.send({
       from: fromAddress,
       to: leadNotificationEmail,
       subject: `New lead: ${name}, True Cost of Homeownership calculator`,
       text: buildLeadEmailText(name, email, totals),
       attachments: [attachment],
     });
-  } catch {
+
+    if (leadSend.error) {
+      console.error('[submit-lead] Resend rejected the lead notification email:', leadSend.error);
+      return NextResponse.json({ error: 'Email delivery failed.' }, { status: 502 });
+    }
+  } catch (err) {
+    console.error('[submit-lead] Unexpected error sending via Resend:', err);
     return NextResponse.json({ error: 'Email delivery failed.' }, { status: 502 });
   }
 
