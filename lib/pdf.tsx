@@ -1,7 +1,13 @@
 import { Document, Page, Text, View, StyleSheet, Svg, Path } from '@react-pdf/renderer';
-import { CalculatorState, SectionTotals, MAINTENANCE_RATE_PER_SQFT } from './types';
-import { getDownPaymentPercent, getLoanAmount } from './calculations';
-import { formatCurrency, formatCurrencyWhole } from './format';
+import {
+  CalculatorState,
+  SectionTotals,
+  MAINTENANCE_RATE_PER_SQFT,
+  SYSTEM_REFERENCE_DATA,
+  LUXURY_SYSTEM_REFERENCE_DATA,
+} from './types';
+import { getAutoPmiAnnualRate, getDownPaymentPercent, getLoanAmount } from './calculations';
+import { formatCurrency } from './format';
 
 const NAVY = '#003366';
 const NAVY_LIGHT = '#0a5ca8';
@@ -31,22 +37,137 @@ const styles = StyleSheet.create({
     color: NAVY,
     marginBottom: 4,
   },
-  tagline: {
-    fontSize: 11,
-    fontWeight: 700,
-    color: NAVY_LIGHT,
-    marginBottom: 6,
-  },
   subtitle: {
     fontSize: 10,
     color: '#666666',
-    marginBottom: 18,
+    marginBottom: 20,
   },
+  tierLabel: {
+    fontSize: 8.5,
+    fontWeight: 700,
+    color: NAVY_LIGHT,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginTop: 18,
+    marginBottom: 2,
+  },
+  tierTitle: {
+    fontSize: 14,
+    fontWeight: 700,
+    color: NAVY,
+    marginBottom: 10,
+    paddingBottom: 6,
+    borderBottomWidth: 1.5,
+    borderBottomColor: NAVY,
+  },
+  section: {
+    marginBottom: 14,
+  },
+  sectionTitle: {
+    fontSize: 11,
+    fontWeight: 700,
+    color: NAVY,
+    marginBottom: 6,
+  },
+  detailLine: {
+    fontSize: 8.5,
+    color: '#777777',
+    marginBottom: 6,
+    lineHeight: 1.4,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 4,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eeeeee',
+  },
+  rowLabel: {
+    color: '#333333',
+  },
+  rowValue: {
+    fontWeight: 700,
+    color: '#111111',
+  },
+  totalRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 5,
+    marginTop: 2,
+    borderTopWidth: 1,
+    borderTopColor: '#cccccc',
+  },
+  totalLabel: {
+    fontWeight: 700,
+    color: '#111111',
+  },
+  totalValue: {
+    fontWeight: 700,
+    color: '#111111',
+  },
+  subtotalRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#f0f4f8',
+    borderRadius: 4,
+    padding: 8,
+    marginTop: 6,
+    marginBottom: 4,
+  },
+  subtotalLabel: {
+    fontSize: 10,
+    fontWeight: 700,
+    color: NAVY,
+  },
+  subtotalValue: {
+    fontSize: 10,
+    fontWeight: 700,
+    color: NAVY,
+  },
+  methodologyLine: {
+    fontSize: 8,
+    color: '#888888',
+    marginTop: 6,
+    lineHeight: 1.4,
+  },
+  table: {
+    marginTop: 2,
+    marginBottom: 4,
+  },
+  tableHeaderRow: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: '#cccccc',
+    paddingBottom: 4,
+    marginBottom: 2,
+  },
+  tableHeaderCell: {
+    fontSize: 8,
+    fontWeight: 700,
+    color: '#888888',
+    textTransform: 'uppercase',
+  },
+  tableRow: {
+    flexDirection: 'row',
+    paddingVertical: 4,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eeeeee',
+  },
+  tableCell: {
+    fontSize: 9,
+    color: '#333333',
+  },
+  colSystem: { width: '22%' },
+  colAge: { width: '16%' },
+  colLifespan: { width: '18%' },
+  colCost: { width: '22%' },
+  colReserve: { width: '22%', textAlign: 'right' },
   heroBox: {
     backgroundColor: NAVY,
     borderRadius: 6,
     padding: 20,
-    marginBottom: 20,
+    marginTop: 16,
+    marginBottom: 4,
     textAlign: 'center',
   },
   heroLabel: {
@@ -65,57 +186,6 @@ const styles = StyleSheet.create({
   heroSub: {
     fontSize: 9,
     color: '#c7d6e5',
-  },
-  section: {
-    marginBottom: 16,
-  },
-  sectionTitle: {
-    fontSize: 12,
-    fontWeight: 700,
-    color: NAVY,
-    marginBottom: 2,
-  },
-  sectionSubtitle: {
-    fontSize: 8.5,
-    color: '#888888',
-    marginBottom: 8,
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eeeeee',
-  },
-  rowLabel: {
-    color: '#333333',
-  },
-  rowValue: {
-    fontWeight: 700,
-    color: '#111111',
-  },
-  detailLine: {
-    fontSize: 8.5,
-    color: '#777777',
-    marginTop: 6,
-    lineHeight: 1.4,
-  },
-  bubbleBox: {
-    backgroundColor: '#f0f4f8',
-    borderRadius: 6,
-    padding: 12,
-    marginTop: 8,
-  },
-  bubbleText: {
-    fontSize: 9,
-    lineHeight: 1.5,
-    color: '#444444',
-  },
-  bubbleCitation: {
-    fontSize: 8,
-    lineHeight: 1.5,
-    color: '#666666',
-    marginTop: 6,
   },
   footer: {
     position: 'absolute',
@@ -147,6 +217,26 @@ function ShieldMark() {
   );
 }
 
+function Row({ label, amount, monthly = true }: { label: string; amount: number; monthly?: boolean }) {
+  return (
+    <View style={styles.row}>
+      <Text style={styles.rowLabel}>{label}</Text>
+      <Text style={styles.rowValue}>
+        {formatCurrency(amount)}
+        {monthly ? '/mo' : ''}
+      </Text>
+    </View>
+  );
+}
+
+function getPmiTierLabel(downPaymentPercent: number): string {
+  if (downPaymentPercent < 5) return 'under 5%';
+  if (downPaymentPercent < 10) return '5% to 9.99%';
+  if (downPaymentPercent < 15) return '10% to 14.99%';
+  if (downPaymentPercent < 20) return '15% to 19.99%';
+  return '20% or more';
+}
+
 interface CostReportProps {
   name: string;
   address?: string;
@@ -156,12 +246,59 @@ interface CostReportProps {
 
 export default function CostReportDocument({ name, address, state, totals }: CostReportProps) {
   const housePaymentMonthly = totals.mortgageMonthly + totals.taxesInsuranceMonthly;
+  const ownersReserveMonthly = totals.maintenanceMonthly + totals.repairsMonthly;
   const loanAmount = getLoanAmount(state);
   const downPaymentPercent = getDownPaymentPercent(state);
   const downPaymentDollar =
     state.mortgage.downPaymentMode === 'dollar'
       ? state.mortgage.downPaymentDollar
       : (state.mortgage.purchasePrice * state.mortgage.downPaymentPercent) / 100;
+
+  const pmiRate = getAutoPmiAnnualRate(downPaymentPercent);
+  const pmiTier = getPmiTierLabel(downPaymentPercent);
+
+  let mortgageMethodology: string;
+  if (!state.mortgage.pmiEnabled) {
+    mortgageMethodology =
+      'Principal and interest calculated using standard loan amortization. No mortgage insurance included in this figure.';
+  } else if (state.mortgage.pmiManualOverride) {
+    mortgageMethodology =
+      'Mortgage insurance based on the lender quote entered. Principal and interest calculated using standard loan amortization.';
+  } else {
+    mortgageMethodology = `Mortgage insurance calculated at ${(pmiRate * 100).toFixed(1)}% annually, based on the ${pmiTier} down payment tier. Principal and interest calculated using standard loan amortization.`;
+  }
+
+  const referenceData = state.isLuxuryMode ? LUXURY_SYSTEM_REFERENCE_DATA : SYSTEM_REFERENCE_DATA;
+  const systems = [
+    { key: 'roof' as const, ...referenceData.roof, reserve: totals.roofReserve, age: state.repairs.roof.ageYears },
+    { key: 'hvac' as const, ...referenceData.hvac, reserve: totals.hvacReserve, age: state.repairs.hvac.ageYears },
+    {
+      key: 'waterHeater' as const,
+      ...referenceData.waterHeater,
+      reserve: totals.waterHeaterReserve,
+      age: state.repairs.waterHeater.ageYears,
+    },
+  ];
+
+  const u = state.utilities;
+  const utilityLineItems: { label: string; amount: number }[] = [
+    { label: 'Electricity', amount: u.electricity.value },
+    { label: 'Gas / Heating', amount: u.gas.value },
+    { label: 'Water & Sewer', amount: u.waterSewer.value },
+    { label: 'Trash / Recycling', amount: u.trash.value },
+    { label: 'Internet / Cable', amount: u.internet.value },
+  ];
+  if (u.other.value > 0) utilityLineItems.push({ label: 'Other', amount: u.other.value });
+  if (state.isLuxuryMode) {
+    if (u.poolSpa > 0) utilityLineItems.push({ label: 'Pool / Spa Maintenance', amount: u.poolSpa });
+    if (u.landscapingCrew > 0) utilityLineItems.push({ label: 'Landscaping Crew', amount: u.landscapingCrew });
+    if (u.housekeeping > 0) utilityLineItems.push({ label: 'Housekeeping / Property Staff', amount: u.housekeeping });
+    if (u.security > 0) utilityLineItems.push({ label: 'Security System / Monitoring', amount: u.security });
+  }
+
+  const metaParts = [`Prepared for ${name || 'you'}`];
+  if (address) metaParts.push(address);
+  metaParts.push(`Purchase Price: ${formatCurrency(state.mortgage.purchasePrice)}`);
 
   return (
     <Document title="True Cost of Home Ownership Report">
@@ -172,161 +309,117 @@ export default function CostReportDocument({ name, address, state, totals }: Cos
         </View>
 
         <Text style={styles.title}>Your True Cost of Home Ownership Report</Text>
-        <Text style={styles.tagline}>Know it before you owe it.</Text>
-        <Text style={styles.subtitle}>
-          Prepared for {name || 'you'}
-          {address ? ` | ${address}` : ''}. Estimates for planning purposes only.
-        </Text>
+        <Text style={styles.subtitle}>{metaParts.join(' | ')}</Text>
 
-        <View style={styles.heroBox}>
-          <Text style={styles.heroLabel}>Your monthly true cost of home ownership</Text>
-          <Text style={styles.heroTotal}>{formatCurrency(totals.grandTotal, 0)}</Text>
-          <Text style={styles.heroSub}>House Payment: {formatCurrencyWhole(housePaymentMonthly)}/mo</Text>
-        </View>
+        <Text style={styles.tierLabel}>Tier 1</Text>
+        <Text style={styles.tierTitle}>The House Payment</Text>
 
-        <View style={styles.section}>
+        <View style={styles.section} wrap={false}>
           <Text style={styles.sectionTitle}>Mortgage</Text>
-          <Text style={styles.sectionSubtitle}>
-            Your principal and interest, the core loan payment, calculated from what you entered.
-          </Text>
-          <View style={styles.row}>
-            <Text style={styles.rowLabel}>Principal, Interest &amp; Mortgage Insurance</Text>
-            <Text style={styles.rowValue}>{formatCurrency(totals.mortgageMonthly)}/mo</Text>
-          </View>
           <Text style={styles.detailLine}>
-            Purchase Price: {formatCurrencyWhole(state.mortgage.purchasePrice)} · Down Payment:{' '}
-            {formatCurrencyWhole(downPaymentDollar)} ({downPaymentPercent.toFixed(1)}%) · Rate:{' '}
+            Purchase Price: {formatCurrency(state.mortgage.purchasePrice)} · Down Payment:{' '}
+            {formatCurrency(downPaymentDollar)} ({downPaymentPercent.toFixed(2)}%) · Rate:{' '}
             {state.mortgage.interestRate.toFixed(3)}% · Term: {state.mortgage.loanTerm} yrs · Loan Amount:{' '}
-            {formatCurrencyWhole(loanAmount)}
+            {formatCurrency(loanAmount)}
           </Text>
-          <View style={styles.bubbleBox}>
-            <Text style={styles.bubbleText}>
-              Principal and interest are usually your largest fixed monthly cost. Mortgage insurance typically
-              applies when the down payment is below 20%, and is removed once enough equity is built.
-            </Text>
-          </View>
+          <Row label="Principal, Interest & Mortgage Insurance" amount={totals.mortgageMonthly} />
+          <Text style={styles.methodologyLine}>{mortgageMethodology}</Text>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>
-            Property Taxes &amp; Insurance{state.zip ? ` (ZIP ${state.zip})` : ''}
+        <View style={styles.section} wrap={false}>
+          <Text style={styles.sectionTitle}>Property Taxes &amp; Insurance{state.zip ? ` (${state.zip})` : ''}</Text>
+          <Row label="Monthly Property Tax" amount={totals.propertyTaxMonthly} />
+          <Row label="Monthly Homeowners Insurance" amount={totals.homeownersInsuranceMonthly} />
+          <Row label="HOA Fees (monthly)" amount={totals.hoaMonthly} />
+          <View style={styles.totalRow}>
+            <Text style={styles.totalLabel}>Total Monthly Taxes, Insurance &amp; HOA</Text>
+            <Text style={styles.totalValue}>{formatCurrency(totals.taxesInsuranceMonthly)}/mo</Text>
+          </View>
+          <Text style={styles.methodologyLine}>
+            Property tax is the annual property tax figure divided by 12. Insurance and HOA are entered directly.
           </Text>
-          <Text style={styles.sectionSubtitle}>What the county and your insurer expect.</Text>
-          <View style={styles.row}>
-            <Text style={styles.rowLabel}>Taxes, Insurance &amp; HOA</Text>
-            <Text style={styles.rowValue}>{formatCurrency(totals.taxesInsuranceMonthly)}/mo</Text>
-          </View>
-          <View style={styles.bubbleBox}>
-            <Text style={styles.bubbleText}>
-              Property tax rates vary by county and state. Insurance depends on the home&apos;s age, roof
-              condition, and local weather risk. HOA dues, when present, are just as fixed and recurring as taxes
-              and insurance, which is why they&apos;re included here. For the most accurate insurance figure, a
-              quote from a licensed insurance professional will beat any estimate.
-            </Text>
-          </View>
         </View>
 
-        <View style={styles.section}>
+        <View style={styles.subtotalRow} wrap={false}>
+          <Text style={styles.subtotalLabel}>
+            House Payment Total (P&amp;I, Mortgage Insurance, Taxes, Insurance &amp; HOA)
+          </Text>
+          <Text style={styles.subtotalValue}>{formatCurrency(housePaymentMonthly)}/mo</Text>
+        </View>
+
+        <Text style={styles.tierLabel}>Tier 2</Text>
+        <Text style={styles.tierTitle}>Home Operating Costs</Text>
+
+        <View style={styles.section} wrap={false}>
           <Text style={styles.sectionTitle}>Monthly Operating Costs</Text>
-          <View style={styles.row}>
-            <Text style={styles.rowLabel}>Total Monthly Operating Costs</Text>
-            <Text style={styles.rowValue}>{formatCurrency(totals.utilitiesMonthly)}/mo</Text>
+          {utilityLineItems.map((item) => (
+            <Row key={item.label} label={item.label} amount={item.amount} />
+          ))}
+          <View style={styles.totalRow}>
+            <Text style={styles.totalLabel}>Total Monthly Operating Costs</Text>
+            <Text style={styles.totalValue}>{formatCurrency(totals.utilitiesMonthly)}/mo</Text>
           </View>
-          <View style={styles.bubbleBox}>
-            <Text style={styles.bubbleText}>
-              Utility costs vary with home size, age, insulation quality, and climate. This estimate is built
-              from general regional data, not live utility rates, compare it against actual bills from the
-              seller or local utility provider before relying on it. These costs begin the month you take
-              ownership and continue for as long as you hold the property.
-            </Text>
-          </View>
+          <Text style={styles.methodologyLine}>
+            Entered directly, or estimated by ZIP code from general regional utility data.
+          </Text>
         </View>
 
-        <View style={styles.section}>
+        <Text style={styles.tierLabel}>Tier 3</Text>
+        <Text style={styles.tierTitle}>Owner&apos;s Reserve</Text>
+
+        <View style={styles.section} wrap={false}>
           <Text style={styles.sectionTitle}>Maintenance &amp; Upkeep</Text>
-          <Text style={styles.sectionSubtitle}>
-            Routine, predictable upkeep: lawn care, gutters, filters, pest control, general wear.
-          </Text>
-          <View style={styles.row}>
-            <Text style={styles.rowLabel}>Total Monthly Maintenance &amp; Upkeep</Text>
-            <Text style={styles.rowValue}>{formatCurrency(totals.maintenanceMonthly)}/mo</Text>
-          </View>
           <Text style={styles.detailLine}>
-            {state.maintenance.squareFootage.toLocaleString()} sq ft × ${MAINTENANCE_RATE_PER_SQFT.toFixed(2)}/sq
+            {state.maintenance.squareFootage.toLocaleString()} sq ft x ${MAINTENANCE_RATE_PER_SQFT.toFixed(2)}/sq
             ft = {formatCurrency(totals.maintenanceMonthly)}/mo
           </Text>
-          <View style={styles.bubbleBox}>
-            <Text style={styles.bubbleText}>
-              This figure is separate from system replacements, addressed below: routine upkeep is a
-              predictable, recurring cost, while a system replacement is irregular and considerably larger. The
-              $0.14 per square foot standard is a baseline, not a forecast. A newer home with well-maintained
-              systems can run well under this figure for decades; an older home with undocumented past work or
-              areas left unaddressed for years can run well above it. Condition and maintenance history move
-              this number more than square footage alone.
-            </Text>
-          </View>
+          <Row label="Total Monthly Maintenance & Upkeep" amount={totals.maintenanceMonthly} />
+          <Text style={styles.methodologyLine}>
+            $0.14 per square foot is the HUD/VA standard maintenance-and-utilities allowance used in reverse
+            mortgage and VA loan residual income calculations.
+          </Text>
         </View>
 
         <View style={styles.section} wrap={false}>
           <Text style={styles.sectionTitle}>System Replacements</Text>
-          <Text style={styles.sectionSubtitle}>A monthly reserve based on how old each system is.</Text>
-          <View style={styles.row}>
-            <Text style={styles.rowLabel}>Roof (age {state.repairs.roof.ageYears} yrs, 25 yr typical lifespan)</Text>
-            <Text style={styles.rowValue}>{formatCurrency(totals.roofReserve)}/mo</Text>
+          <View style={styles.table}>
+            <View style={styles.tableHeaderRow}>
+              <Text style={[styles.tableHeaderCell, styles.colSystem]}>System</Text>
+              <Text style={[styles.tableHeaderCell, styles.colAge]}>Age</Text>
+              <Text style={[styles.tableHeaderCell, styles.colLifespan]}>Lifespan</Text>
+              <Text style={[styles.tableHeaderCell, styles.colCost]}>Median Cost</Text>
+              <Text style={[styles.tableHeaderCell, styles.colReserve]}>Monthly Reserve</Text>
+            </View>
+            {systems.map((system) => (
+              <View style={styles.tableRow} key={system.key}>
+                <Text style={[styles.tableCell, styles.colSystem]}>{system.label}</Text>
+                <Text style={[styles.tableCell, styles.colAge]}>{system.age} yrs</Text>
+                <Text style={[styles.tableCell, styles.colLifespan]}>{system.lifespan} yrs</Text>
+                <Text style={[styles.tableCell, styles.colCost]}>{formatCurrency(system.cost)}</Text>
+                <Text style={[styles.tableCell, styles.colReserve]}>{formatCurrency(system.reserve)}/mo</Text>
+              </View>
+            ))}
           </View>
-          <View style={styles.row}>
-            <Text style={styles.rowLabel}>HVAC (age {state.repairs.hvac.ageYears} yrs, 17 yr typical lifespan)</Text>
-            <Text style={styles.rowValue}>{formatCurrency(totals.hvacReserve)}/mo</Text>
+          <View style={styles.totalRow}>
+            <Text style={styles.totalLabel}>Total Monthly System Replacement Reserve</Text>
+            <Text style={styles.totalValue}>{formatCurrency(totals.repairsMonthly)}/mo</Text>
           </View>
-          <View style={styles.row}>
-            <Text style={styles.rowLabel}>
-              Water Heater (age {state.repairs.waterHeater.ageYears} yrs, 10 yr typical lifespan)
-            </Text>
-            <Text style={styles.rowValue}>{formatCurrency(totals.waterHeaterReserve)}/mo</Text>
-          </View>
-          <View style={styles.row}>
-            <Text style={[styles.rowLabel, { fontWeight: 700 }]}>Total Monthly System Replacement Reserve</Text>
-            <Text style={styles.rowValue}>{formatCurrency(totals.repairsMonthly)}/mo</Text>
-          </View>
-          <View style={styles.bubbleBox}>
-            <Text style={styles.bubbleText}>
-              Replacement costs vary by region: coastal and West Coast markets often exceed the rural Midwest or
-              Southeast due to labor rates and building codes, so a local contractor quote will be more accurate
-              than any national figure. A system already past its typical lifespan is treated as due within the
-              next year. This reserve is not part of a pre-approval letter or closing disclosure, but it&apos;s a
-              real, recurring cost of ownership. Building it is optional, common alternatives without one include
-              a credit card, a family loan, or borrowing against home equity. It&apos;s worth reviewing this
-              estimate with a financial advisor to confirm it fits your specific plans.
-            </Text>
-            <Text style={styles.bubbleCitation}>
-              Roof cost is based on Angi&apos;s 2026 cost data for architectural shingle roof replacement. HVAC
-              cost is based on 2026 data from Angi and Pearl, reflecting a full system replacement rather than a
-              single component. Water heater cost is based on 2026 data from Angi, HomeAdvisor, and Homewyse for
-              a standard tank-style unit, not tankless.
-            </Text>
-            {state.isLuxuryMode && (
-              <Text style={styles.bubbleCitation}>
-                Luxury-tier figures are based on research across three luxury real estate markets: King County,
-                WA; Los Angeles County, CA; and the Hamptons, NY.
-              </Text>
-            )}
-          </View>
+          <Text style={styles.methodologyLine}>
+            Monthly reserve equals median replacement cost divided by years remaining (lifespan minus age, floor
+            of one year), divided by 12. Roof, HVAC, and water heater cost figures are based on data from Angi,
+            Pearl, HomeAdvisor, and Homewyse.
+          </Text>
         </View>
 
-        <View style={styles.section} wrap={false}>
-          <Text style={styles.sectionTitle}>Your monthly true cost of home ownership</Text>
-          <Text style={styles.sectionSubtitle}>Everything combined, not just the mortgage</Text>
-          <View style={styles.bubbleBox}>
-            <Text style={styles.bubbleText}>
-              We built this to put a real number on what people call the &quot;hidden costs&quot; of
-              homeownership.{'\n\n'}
-              This number won&apos;t be perfect, actual costs will vary by property condition, region, and
-              additional circumstances, but it&apos;s a really good starting point for smart conversations about
-              future expenses.{'\n\n'}
-              Sharing this report with your financial planner for their feedback wouldn&apos;t be a horrible
-              idea.
-            </Text>
-          </View>
+        <View style={styles.subtotalRow} wrap={false}>
+          <Text style={styles.subtotalLabel}>Owner&apos;s Reserve Total (Maintenance &amp; System Replacement)</Text>
+          <Text style={styles.subtotalValue}>{formatCurrency(ownersReserveMonthly)}/mo</Text>
+        </View>
+
+        <View style={styles.heroBox} wrap={false}>
+          <Text style={styles.heroLabel}>Your monthly true cost of home ownership</Text>
+          <Text style={styles.heroTotal}>{formatCurrency(totals.grandTotal)}</Text>
+          <Text style={styles.heroSub}>House Payment: {formatCurrency(housePaymentMonthly)}/mo</Text>
         </View>
 
         <View style={styles.footer} fixed>
