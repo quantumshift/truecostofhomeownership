@@ -63,8 +63,9 @@ export default function Home() {
           <p className="mt-2 max-w-2xl text-navy-light font-medium">Know it before you owe it.</p>
           <p className="mt-4 max-w-2xl text-neutral-600 leading-relaxed">
             This calculator shows the true monthly cost of owning a home, principal, interest, taxes, insurance,
-            utilities, maintenance, and a reserve for future repairs, not just the mortgage payment. Enter your
-            numbers below to see your own estimate.
+            utilities, maintenance, plus a reserve for major system replacements, not just the mortgage payment.
+            Answer the questions below to receive your true cost of home ownership, so you can walk into home
+            ownership prepared for the future, not surprised by it.
           </p>
 
           <div className="mt-10">

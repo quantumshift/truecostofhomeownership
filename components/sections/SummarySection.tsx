@@ -119,18 +119,15 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
 
       <div className="rounded-lg bg-neutral-50 border border-neutral-200 p-5 mb-8 space-y-3">
         <p className="text-sm text-neutral-700 leading-relaxed">
-          This figure combines your house payment (principal, interest, taxes, insurance, and HOA dues when
-          applicable), your monthly home operating costs (electricity, water, sewer, trash, and internet), plus a
-          calculated monthly reserve for maintenance and major system replacement.
+          We built this to put a real number on what people call the &quot;hidden costs&quot; of homeownership.
         </p>
         <p className="text-sm text-neutral-700 leading-relaxed">
-          Each category is grounded in the published cost data cited throughout this report, so treat the result
-          as an informed estimate, not a guarantee, actual costs will vary by property condition, region, and
-          personal circumstances.
+          This number won&apos;t be perfect, actual costs will vary by property condition, region, and additional
+          circumstances, but it&apos;s a really good starting point for smart conversations about future
+          expenses.
         </p>
         <p className="text-sm text-neutral-700 leading-relaxed">
-          If you&apos;d like a second opinion on the maintenance and reserve estimate specifically, it&apos;s a
-          reasonable question to bring to a financial advisor.
+          Sharing this report with your financial planner for their feedback wouldn&apos;t be a horrible idea.
         </p>
       </div>
 

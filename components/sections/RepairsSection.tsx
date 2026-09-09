@@ -27,11 +27,14 @@ export default function RepairsSection({
   isLuxuryMode,
 }: RepairsSectionProps) {
   const reserves = { roof: roofReserve, hvac: hvacReserve, waterHeater: waterHeaterReserve };
-  const referenceData = isLuxuryMode ? LUXURY_SYSTEM_REFERENCE_DATA : SYSTEM_REFERENCE_DATA;
   const systems = [
-    { key: 'roof' as const, ...referenceData.roof },
-    { key: 'hvac' as const, ...referenceData.hvac },
-    { key: 'waterHeater' as const, ...referenceData.waterHeater },
+    { key: 'roof' as const, ...SYSTEM_REFERENCE_DATA.roof, luxuryCost: LUXURY_SYSTEM_REFERENCE_DATA.roof.cost },
+    { key: 'hvac' as const, ...SYSTEM_REFERENCE_DATA.hvac, luxuryCost: LUXURY_SYSTEM_REFERENCE_DATA.hvac.cost },
+    {
+      key: 'waterHeater' as const,
+      ...SYSTEM_REFERENCE_DATA.waterHeater,
+      luxuryCost: LUXURY_SYSTEM_REFERENCE_DATA.waterHeater.cost,
+    },
   ];
 
   return (
@@ -41,15 +44,14 @@ export default function RepairsSection({
       subtitle="A monthly reserve based on how old each system is."
     >
       <div className="overflow-x-auto -mx-1">
-        <table className="w-full text-sm border-collapse min-w-[560px]">
+        <table className={`w-full text-sm border-collapse ${isLuxuryMode ? 'min-w-[680px]' : 'min-w-[560px]'}`}>
           <thead>
             <tr className="text-left text-neutral-500 border-b border-neutral-200">
               <th className="py-2 pr-3 font-medium">System</th>
               <th className="py-2 pr-3 font-medium">Age (years)</th>
               <th className="py-2 pr-3 font-medium">Typical lifespan</th>
-              <th className="py-2 pr-3 font-medium">
-                {isLuxuryMode ? 'Luxury-tier median replacement cost' : 'Median replacement cost'}
-              </th>
+              <th className="py-2 pr-3 font-medium">Median replacement cost</th>
+              {isLuxuryMode && <th className="py-2 pr-3 font-medium">Luxury-tier median cost</th>}
               <th className="py-2 pr-1 font-medium text-right">Monthly reserve</th>
             </tr>
           </thead>
@@ -67,6 +69,9 @@ export default function RepairsSection({
                 </td>
                 <td className="py-3 pr-3 text-neutral-500">{system.lifespan} years</td>
                 <td className="py-3 pr-3 text-neutral-500">{formatCurrencyWhole(system.cost)}</td>
+                {isLuxuryMode && (
+                  <td className="py-3 pr-3 text-neutral-500">{formatCurrencyWhole(system.luxuryCost)}</td>
+                )}
                 <td className="py-3 pr-1 text-right font-semibold text-navy tabular-nums">
                   {formatCurrency(reserves[system.key])}
                 </td>
@@ -89,32 +94,6 @@ export default function RepairsSection({
           financial advisor to confirm it fits your specific plans.
         </p>
 
-        <div className="overflow-x-auto -mx-1">
-          <table className="w-full text-sm border-collapse min-w-[480px]">
-            <thead>
-              <tr className="text-left text-neutral-500 border-b border-neutral-200">
-                <th className="py-2 pr-3 font-medium">System</th>
-                <th className="py-2 pr-3 font-medium">Typical lifespan</th>
-                <th className="py-2 pr-3 font-medium">National median cost</th>
-                <th className="py-2 pr-1 font-medium">Luxury-tier median cost</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(['roof', 'hvac', 'waterHeater'] as const).map((key) => (
-                <tr key={key} className="border-b border-neutral-100 last:border-0">
-                  <td className="py-3 pr-3 font-medium text-neutral-800">{SYSTEM_REFERENCE_DATA[key].label}</td>
-                  <td className="py-3 pr-3 text-neutral-600">{SYSTEM_REFERENCE_DATA[key].lifespan} years</td>
-                  <td className="py-3 pr-3 text-neutral-600 tabular-nums">
-                    {formatCurrencyWhole(SYSTEM_REFERENCE_DATA[key].cost)}
-                  </td>
-                  <td className="py-3 pr-1 text-neutral-600 tabular-nums">
-                    {formatCurrencyWhole(LUXURY_SYSTEM_REFERENCE_DATA[key].cost)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
         <p className="text-xs text-neutral-500 leading-relaxed">
           Roof cost is based on{' '}
           <a
