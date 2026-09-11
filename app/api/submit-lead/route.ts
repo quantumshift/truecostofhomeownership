@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
       from: fromAddress,
       to: email,
       subject: 'Your True Cost of Home Ownership Report',
-      text: buildUserEmailText(name, totals),
+      text: buildUserEmailText(name, totals, state.marketEstimateFailed),
       attachments: [attachment],
     });
 
@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
       from: fromAddress,
       to: leadNotificationEmail,
       subject: `New lead: ${name}, True Cost of Homeownership calculator`,
-      text: buildLeadEmailText(name, email, totals),
+      text: buildLeadEmailText(name, email, totals, state.marketEstimateFailed),
       attachments: [attachment],
     });
 
@@ -86,7 +86,11 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ success: true });
 }
 
-function buildUserEmailText(name: string, totals: ReturnType<typeof calculateSectionTotals>): string {
+function buildUserEmailText(
+  name: string,
+  totals: ReturnType<typeof calculateSectionTotals>,
+  marketEstimateFailed: boolean,
+): string {
   return [
     `Hi ${name},`,
     '',
@@ -101,6 +105,12 @@ function buildUserEmailText(name: string, totals: ReturnType<typeof calculateSec
     `Maintenance & Upkeep: ${formatCurrencyWhole(totals.maintenanceMonthly)}/mo`,
     `System Replacement Reserves: ${formatCurrencyWhole(totals.repairsMonthly)}/mo`,
     '',
+    ...(marketEstimateFailed
+      ? [
+          "Note: we couldn't verify local market data for this ZIP, so the luxury-tier classification in this report may not be fully reflected.",
+          '',
+        ]
+      : []),
     "These are planning estimates, not a substitute for actual quotes, bills, or professional advice.",
     '',
     'Kirk Rau · Empire Home Loans Inc.',
@@ -109,7 +119,12 @@ function buildUserEmailText(name: string, totals: ReturnType<typeof calculateSec
   ].join('\n');
 }
 
-function buildLeadEmailText(name: string, email: string, totals: ReturnType<typeof calculateSectionTotals>): string {
+function buildLeadEmailText(
+  name: string,
+  email: string,
+  totals: ReturnType<typeof calculateSectionTotals>,
+  marketEstimateFailed: boolean,
+): string {
   return [
     `New lead from the True Cost of Homeownership calculator.`,
     '',
@@ -123,6 +138,9 @@ function buildLeadEmailText(name: string, email: string, totals: ReturnType<type
     `Maintenance & Upkeep: ${formatCurrencyWhole(totals.maintenanceMonthly)}/mo`,
     `System Replacement Reserves: ${formatCurrencyWhole(totals.repairsMonthly)}/mo`,
     '',
+    ...(marketEstimateFailed
+      ? ["Note: local market data could not be verified for this ZIP — luxury-tier classification is unconfirmed."]
+      : []),
     'Full PDF report is attached.',
   ].join('\n');
 }

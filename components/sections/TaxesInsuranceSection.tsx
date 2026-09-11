@@ -1,6 +1,6 @@
 'use client';
 
-import { TaxesInsuranceInputs } from '@/lib/types';
+import { LuxuryThresholdSource, TaxesInsuranceInputs } from '@/lib/types';
 import { formatCurrencyWhole } from '@/lib/format';
 import CollapsibleSection from '../ui/CollapsibleSection';
 import FieldRow from '../ui/FieldRow';
@@ -22,6 +22,7 @@ interface TaxesInsuranceSectionProps {
   monthlyInsurance: number;
   monthlyTotal: number;
   isLuxuryMode: boolean;
+  luxuryThresholdSource: LuxuryThresholdSource;
   hoaRange: HoaRange | null;
 }
 
@@ -32,6 +33,7 @@ export default function TaxesInsuranceSection({
   monthlyInsurance,
   monthlyTotal,
   isLuxuryMode,
+  luxuryThresholdSource,
   hoaRange,
 }: TaxesInsuranceSectionProps) {
   function handleInsuranceModeChange(mode: 'annual' | 'monthly') {
@@ -100,6 +102,13 @@ export default function TaxesInsuranceSection({
 
         <FieldRow label="HOA Fees (monthly)" htmlFor="hoaMonthly" hint="Enter 0 if there's no HOA">
           <CurrencyInput id="hoaMonthly" value={value.hoaMonthly} onChange={(v) => onChange({ hoaMonthly: v })} />
+          {isLuxuryMode && (
+            <p className="text-xs text-neutral-500 mt-1.5">
+              {luxuryThresholdSource === 'zillow'
+                ? 'Luxury Mode activated because the purchase price meets or exceeds the top third of home values for this ZIP code, based on Zillow Research’s Home Value Index (ZHVI) data.'
+                : 'Luxury Mode activated because the purchase price is at least double the AI-estimated county median home price. ZIP-level Zillow data wasn’t available for this ZIP, so this is an AI estimate, not published data.'}
+            </p>
+          )}
           {isLuxuryMode && hoaRange && (
             <p className="text-xs text-neutral-500 mt-1.5">
               Typical HOA dues for luxury communities in this area: {formatCurrencyWhole(hoaRange.low)}–

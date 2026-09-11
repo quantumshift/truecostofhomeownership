@@ -20,6 +20,7 @@ interface MortgageSectionProps {
   zip: string;
   onZipChange: (zip: string) => void;
   onZipBlur: (zip: string) => void;
+  marketEstimateFailed: boolean;
 }
 
 export default function MortgageSection({
@@ -31,6 +32,7 @@ export default function MortgageSection({
   zip,
   onZipChange,
   onZipBlur,
+  marketEstimateFailed,
 }: MortgageSectionProps) {
   function handleDownPaymentModeChange(mode: 'dollar' | 'percent') {
     if (mode === value.downPaymentMode) return;
@@ -81,6 +83,11 @@ export default function MortgageSection({
             onBlur={(e) => onZipBlur(e.target.value)}
             className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-navy-light focus:border-navy-light"
           />
+          {marketEstimateFailed && (
+            <p className="text-xs text-amber-700 mt-1.5">
+              We couldn&apos;t verify local market data for this ZIP. Luxury-tier features may not be reflected.
+            </p>
+          )}
         </FieldRow>
 
         <FieldRow label="Purchase Price" htmlFor="purchasePrice">

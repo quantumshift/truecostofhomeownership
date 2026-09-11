@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { CalculatorState, MarketEstimateResponse } from '@/lib/types';
+import { CalculatorState, MarketEstimateResponse, ZipTopTierValueResponse } from '@/lib/types';
 import {
   calculateAutoPmiMonthly,
   calculateSectionTotals,
@@ -20,6 +20,8 @@ import TierGroup from './TierGroup';
 const initialState: CalculatorState = {
   zip: '',
   isLuxuryMode: false,
+  luxuryThresholdSource: null,
+  marketEstimateFailed: false,
   mortgage: {
     purchasePrice: 400000,
     downPaymentMode: 'percent',
@@ -64,36 +66,86 @@ interface MarketEstimateState extends MarketEstimateResponse {
   zip: string;
 }
 
+interface ZipTopTierState {
+  zip: string;
+  value: number | null;
+}
+
 export default function Calculator() {
   const [state, setState] = useState<CalculatorState>(initialState);
   const prevPmiApplicable = useRef<boolean | null>(null);
   const [marketEstimate, setMarketEstimate] = useState<MarketEstimateState | null>(null);
+  const [zipTopTier, setZipTopTier] = useState<ZipTopTierState | null>(null);
   const fetchedZips = useRef<Set<string>>(new Set());
 
   const downPaymentPercent = getDownPaymentPercent(state);
   const pmiApplicable = downPaymentPercent < 20;
 
-  async function handleZipBlur(zip: string) {
-    if (!isValidZip(zip) || fetchedZips.current.has(zip)) return;
-    fetchedZips.current.add(zip);
+  async function fetchMarketEstimate(zip: string): Promise<MarketEstimateResponse | null> {
+    const res = await fetch('/api/estimate-market', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ zip }),
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as MarketEstimateResponse;
+  }
+
+  async function fetchZipTopTierValue(zip: string): Promise<ZipTopTierValueResponse | null> {
     try {
-      const res = await fetch('/api/estimate-market', {
+      const res = await fetch('/api/zip-top-tier-value', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ zip }),
       });
-      if (!res.ok) return;
-      const data: MarketEstimateResponse = await res.json();
-      setMarketEstimate({ zip, ...data });
+      if (!res.ok) return null;
+      return (await res.json()) as ZipTopTierValueResponse;
     } catch {
-      // Silent — luxury mode just won't activate for this ZIP.
+      return null;
     }
   }
 
+  async function handleZipBlur(zip: string) {
+    if (!isValidZip(zip) || fetchedZips.current.has(zip)) return;
+    fetchedZips.current.add(zip);
+
+    const topTierData = await fetchZipTopTierValue(zip);
+    setZipTopTier({ zip, value: topTierData?.value ?? null });
+
+    // The AI county-median estimate is still needed for the HOA range (unaffected by this fix)
+    // and as the luxury-threshold fallback for ZIPs Zillow doesn't cover.
+    let data: MarketEstimateResponse | null = null;
+    try {
+      data = await fetchMarketEstimate(zip);
+    } catch {
+      // First attempt failed — fall through to a single retry below.
+    }
+    if (!data) {
+      try {
+        data = await fetchMarketEstimate(zip);
+      } catch {
+        // Retry also failed — surfaced via marketEstimateFailed below.
+      }
+    }
+    if (data) {
+      setMarketEstimate({ zip, ...data });
+      setState((s) => (s.marketEstimateFailed ? { ...s, marketEstimateFailed: false } : s));
+    } else {
+      setState((s) => ({ ...s, marketEstimateFailed: true }));
+    }
+  }
+
+  const zipTopTierValue = zipTopTier && zipTopTier.zip === state.zip ? zipTopTier.value : null;
+
   const isLuxuryMode =
-    !!marketEstimate &&
-    marketEstimate.zip === state.zip &&
-    state.mortgage.purchasePrice >= marketEstimate.countyMedianPrice * 1.25;
+    zipTopTierValue !== null
+      ? state.mortgage.purchasePrice >= zipTopTierValue
+      : !!marketEstimate &&
+        marketEstimate.zip === state.zip &&
+        state.mortgage.purchasePrice >= marketEstimate.countyMedianPrice * 2;
+
+  const luxuryThresholdSource: CalculatorState['luxuryThresholdSource'] =
+    zipTopTierValue !== null ? 'zillow' : marketEstimate && marketEstimate.zip === state.zip ? 'ai-estimate' : null;
 
   const hoaRange =
     marketEstimate && marketEstimate.zip === state.zip
@@ -116,8 +168,12 @@ export default function Calculator() {
   }, [pmiApplicable]);
 
   useEffect(() => {
-    setState((s) => (s.isLuxuryMode === isLuxuryMode ? s : { ...s, isLuxuryMode }));
-  }, [isLuxuryMode]);
+    setState((s) =>
+      s.isLuxuryMode === isLuxuryMode && s.luxuryThresholdSource === luxuryThresholdSource
+        ? s
+        : { ...s, isLuxuryMode, luxuryThresholdSource }
+    );
+  }, [isLuxuryMode, luxuryThresholdSource]);
 
   const loanAmount = getLoanAmount(state);
 
@@ -148,6 +204,7 @@ export default function Calculator() {
           zip={state.zip}
           onZipChange={(zip) => setState((s) => ({ ...s, zip }))}
           onZipBlur={handleZipBlur}
+          marketEstimateFailed={state.marketEstimateFailed}
         />
         <TaxesInsuranceSection
           value={state.taxesInsurance}
@@ -156,6 +213,7 @@ export default function Calculator() {
           monthlyInsurance={totals.homeownersInsuranceMonthly}
           monthlyTotal={totals.taxesInsuranceMonthly}
           isLuxuryMode={isLuxuryMode}
+          luxuryThresholdSource={luxuryThresholdSource}
           hoaRange={hoaRange}
         />
         <p className="text-sm text-neutral-600 leading-relaxed border-t border-navy/10 pt-4">

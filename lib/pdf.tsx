@@ -268,6 +268,14 @@ export default function CostReportDocument({ name, address, state, totals }: Cos
     mortgageMethodology = `Mortgage insurance calculated at ${(pmiRate * 100).toFixed(1)}% annually, based on the ${pmiTier} down payment tier. Principal and interest calculated using standard loan amortization.`;
   }
 
+  let luxuryMethodology: string | null = null;
+  if (state.isLuxuryMode) {
+    luxuryMethodology =
+      state.luxuryThresholdSource === 'zillow'
+        ? 'Luxury Mode activated because the purchase price meets or exceeds the top third of home values for this ZIP code, based on Zillow Research’s Home Value Index (ZHVI) data.'
+        : 'Luxury Mode activated because the purchase price is at least double the AI-estimated county median home price (ZIP-level Zillow data was not available for this ZIP, so this is an AI estimate, not published data).';
+  }
+
   const referenceData = state.isLuxuryMode ? LUXURY_SYSTEM_REFERENCE_DATA : SYSTEM_REFERENCE_DATA;
   const systems = [
     { key: 'roof' as const, ...referenceData.roof, reserve: totals.roofReserve, age: state.repairs.roof.ageYears },
@@ -299,6 +307,7 @@ export default function CostReportDocument({ name, address, state, totals }: Cos
   const metaParts = [`Prepared for ${name || 'you'}`];
   if (address) metaParts.push(address);
   metaParts.push(`Purchase Price: ${formatCurrency(state.mortgage.purchasePrice)}`);
+  if (state.marketEstimateFailed) metaParts.push('Local market data unverified for this ZIP');
 
   return (
     <Document title="True Cost of Home Ownership Report">
@@ -338,6 +347,7 @@ export default function CostReportDocument({ name, address, state, totals }: Cos
           <Text style={styles.methodologyLine}>
             Property tax is the annual property tax figure divided by 12. Insurance and HOA are entered directly.
           </Text>
+          {luxuryMethodology && <Text style={styles.methodologyLine}>{luxuryMethodology}</Text>}
         </View>
 
         <View style={styles.subtotalRow} wrap={false}>
@@ -425,6 +435,12 @@ export default function CostReportDocument({ name, address, state, totals }: Cos
         </View>
 
         <View style={styles.footer} fixed>
+          {state.marketEstimateFailed && (
+            <Text style={styles.footerDisclaimer}>
+              Note: We couldn&apos;t verify local market data for this ZIP when this report was generated, so the
+              luxury-tier classification above may not be fully reflected.
+            </Text>
+          )}
           <Text style={styles.footerDisclaimer}>
             This calculator provides rough estimates for planning purposes only, not a substitute for actual
             quotes, bills, or professional advice. National median costs are used for repair reserves and vary by

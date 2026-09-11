@@ -56,9 +56,13 @@ export interface RepairsInputs {
   waterHeater: SystemInputs;
 }
 
+export type LuxuryThresholdSource = 'zillow' | 'ai-estimate' | null;
+
 export interface CalculatorState {
   zip: string;
   isLuxuryMode: boolean;
+  luxuryThresholdSource: LuxuryThresholdSource;
+  marketEstimateFailed: boolean;
   mortgage: MortgageInputs;
   taxesInsurance: TaxesInsuranceInputs;
   utilities: UtilitiesInputs;
@@ -77,6 +81,13 @@ export interface MarketEstimateResponse {
   countyMedianPrice: number;
   hoaLow: number;
   hoaHigh: number;
+}
+
+export interface ZipTopTierValueResponse {
+  zip: string;
+  value: number | null;
+  asOf: string;
+  source: string;
 }
 
 export interface SectionTotals {

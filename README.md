@@ -109,23 +109,61 @@ based on `state.isLuxuryMode`.
 
 A ZIP code is collected once, at the top of Mortgage & Financing, and reused for both the utility estimator and
 this feature (no asking twice). On blur (not on every keystroke), if the ZIP is a complete 5-digit value,
-`Calculator.tsx` fires a background call to `/api/estimate-market`, which asks Claude for a rough county median
-home price and a typical luxury HOA range for that ZIP — same "rough estimate, not a live lookup" standard
-as the utility estimator. No button, no loading state the visitor has to notice — it's a quiet background check,
-the same pattern as PMI auto-toggling based on down payment.
+`Calculator.tsx` fires two background calls:
 
-If the entered purchase price comes in at 25% or more above that county median, `state.isLuxuryMode` flips on
-(synced from Calculator.tsx's derived value into CalculatorState, so it's also correct in the server-side
-recompute for the PDF/email) and three things change: four extra expense fields appear inside Utilities, under
-Home Operating Costs (still counted in its total) — Pool/Spa Maintenance, Landscaping Crew, Housekeeping/Property
-Staff, and Security System/Monitoring, alongside the existing generic "Other" catch-all field, not replacing it;
-the System Replacements reference table switches from national-median costs to `LUXURY_SYSTEM_REFERENCE_DATA`
-(same lifespans, higher costs); and the HOA field in Property Taxes & Insurance gets an informational reference
-note showing the typical luxury HOA range for the area — informational only, never auto-filled, since actual dues
-vary too much property to property.
+1. `/api/zip-top-tier-value` — looks up the ZIP directly in `data/zhvi-top-tier.json`, a local snapshot of
+   Zillow Research's published ZHVI top-tier (67th–100th percentile) home value index, ZIP-level, smoothed &
+   seasonally adjusted. This is real published data, not an AI guess, and covers roughly 26,000 of the ~41,000
+   US ZIP codes (see "Refreshing the Zillow data" below).
+2. `/api/estimate-market`, which asks Claude for a rough county median home price and a typical luxury HOA
+   dues range for that ZIP — same "rough estimate, not a live lookup" standard as the utility estimator. This
+   call still runs unconditionally because the HOA range has no Zillow equivalent, and its county median
+   doubles as the luxury-threshold fallback described below.
 
-If the estimate call fails or `ANTHROPIC_API_KEY` isn't set, this fails silently — the calculator behaves exactly
-as it does today, just without the extra fields. Nothing about the core tool depends on this working.
+No button, no loading state the visitor has to notice — it's a quiet background check, the same pattern as PMI
+auto-toggling based on down payment.
+
+**Threshold logic**, computed in `Calculator.tsx`:
+
+- If Zillow has a top-tier value for this ZIP, `state.isLuxuryMode` flips on once the purchase price meets or
+  exceeds that value directly — no multiplier, since the top-tier figure already *is* the local upper segment
+  of that ZIP's market, not an approximation of one. This fixes a real failure mode: a county-wide median can
+  be wildly unrepresentative of a specific ZIP (e.g. Mobile County, AL's ~$230k county median vs. downtown
+  ZIP 36602's own ~$680k top-tier value — a $600k home there is unremarkable, not "luxury").
+- If Zillow has no data for this ZIP, it falls back to the AI-estimated county median from
+  `/api/estimate-market`, flipping on at 2x that median (the prior, cruder heuristic — kept only as a fallback,
+  not the primary path).
+- `state.luxuryThresholdSource` (`'zillow' | 'ai-estimate' | null`) records which path fired, so the PDF report
+  and the on-page note near the HOA field can say plainly which kind of data justified Luxury Mode rather than
+  presenting a real ZIP-level figure and an AI guess identically.
+
+Either way, once `state.isLuxuryMode` flips on (synced from Calculator.tsx's derived value into
+CalculatorState, so it's also correct in the server-side recompute for the PDF/email), three things change: four
+extra expense fields appear inside Utilities, under Home Operating Costs (still counted in its total) —
+Pool/Spa Maintenance, Landscaping Crew, Housekeeping/Property Staff, and Security System/Monitoring, alongside
+the existing generic "Other" catch-all field, not replacing it; the System Replacements reference table switches
+from national-median costs to `LUXURY_SYSTEM_REFERENCE_DATA` (same lifespans, higher costs); and the HOA field
+in Property Taxes & Insurance gets an informational reference note showing the typical luxury HOA range for the
+area — informational only, never auto-filled, since actual dues vary too much property to property.
+
+If the `/api/estimate-market` call fails or `ANTHROPIC_API_KEY` isn't set, `state.marketEstimateFailed` flips on
+and a notice appears (ZIP field on-page, report footer, both lead emails) — same as before this fix. The HOA
+range simply won't show. If Zillow also had no data for that ZIP, luxury mode itself silently stays off; nothing
+about the core tool depends on either call working.
+
+### Refreshing the Zillow data
+
+`data/zhvi-top-tier.json` is a static snapshot, not a live API call — Zillow only republishes this file monthly
+(around the 16th), so hitting it on every page load would be pointless. Refresh it by running:
+
+```
+node scripts/refresh-zillow-zhvi.mjs
+```
+
+This re-downloads the current CSV from Zillow Research (see the script header for the source page and file
+naming caveat — Zillow has changed this filename before) and overwrites `data/zhvi-top-tier.json` with a
+ZIP → dollar-value lookup plus an `asOf` date. No automated schedule exists yet; re-run it manually, roughly
+monthly.
 
 ---
 
@@ -138,8 +176,13 @@ app/
   robots.ts, sitemap.ts     Crawler access (no AI-crawler disallow rules) + sitemap
   api/
     estimate-utilities/     Calls Claude for rough ZIP-based utility estimates
-    estimate-market/         Calls Claude for county median price + luxury HOA range (luxury mode)
+    estimate-market/         Calls Claude for county median price (luxury-threshold fallback) + luxury HOA range
+    zip-top-tier-value/      Looks up ZIP in the local Zillow ZHVI top-tier data (primary luxury threshold)
     submit-lead/             Recomputes totals server-side, renders PDF, sends both emails
+data/
+  zhvi-top-tier.json        ZIP -> Zillow ZHVI top-tier dollar value, refreshed via scripts/refresh-zillow-zhvi.mjs
+scripts/
+  refresh-zillow-zhvi.mjs   Manual monthly refresh of data/zhvi-top-tier.json from Zillow Research
 components/
   Calculator.tsx            Client orchestrator — owns all calculator state, luxury-mode derivation
   TierGroup.tsx              Generic tier wrapper (eyebrow + H2 title + one-line intro + boxed container),
