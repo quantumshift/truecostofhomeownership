@@ -360,7 +360,9 @@ export default function CostReportDocument({ name, address, state, totals }: Cos
             <Text style={styles.totalValue}>{formatCurrency(totals.utilitiesMonthly)}/mo</Text>
           </View>
           <Text style={styles.methodologyLine}>
-            Entered directly, or estimated by ZIP code from general regional utility data.
+            Entered directly, or estimated by AI. Electricity is anchored to EIA state-level average rates,
+            adjusted for local climate and ZIP-specific factors. Other utility categories are estimated by AI
+            based on regional context.
           </Text>
         </View>
 

@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getStateFromZip, STATE_NAMES } from '@/lib/zip-state';
+import { EIA_ELECTRICITY_RATES } from '@/lib/eia-electricity-rates';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -25,6 +27,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'ZIP code must be 5 digits.' }, { status: 400 });
   }
 
+  const stateCode = getStateFromZip(zip);
+  const stateName = stateCode ? STATE_NAMES[stateCode] : null;
+  const eiaRate = stateCode ? EIA_ELECTRICITY_RATES[stateCode] : null;
+
+  const anchorText =
+    stateName && eiaRate
+      ? `The average residential electricity rate in ${stateName} is approximately ${eiaRate.centsPerKwh}¢/kWh, with an average monthly bill of approximately $${eiaRate.avgMonthlyBill}, per U.S. Energy Information Administration data. Using this as your starting point, estimate typical blended monthly utility costs (electricity, gas/heating, water & sewer, trash) for a typical single-family home specifically in ZIP code ${zip}, adjusting up or down from the state average based on this ZIP's specific climate, cost of living, and local utility context. Two ZIP codes in the same state should still differ from each other if their climate or local costs genuinely differ, but neither should drift far from the state anchor without a clear reason tied to that ZIP specifically.`
+      : `Estimate typical blended monthly utility costs (year-round average, in whole dollars) for a typical single-family home in ZIP code ${zip}, United States. Base this on that specific area's climate and typical utility rates — a hot, humid, high-rate area should show noticeably higher electricity than a mild, low-rate area, and a cold-winter gas-heating region should show noticeably higher gas than a mild climate. Two different ZIP codes in different climates should produce visibly different numbers, not generic national averages.`;
+
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
@@ -43,7 +54,7 @@ export async function POST(req: NextRequest) {
         messages: [
           {
             role: 'user',
-            content: `Estimate typical blended monthly utility costs (year-round average, in whole dollars) for a typical single-family home in ZIP code ${zip}, United States. Base this on that specific area's climate and typical utility rates — a hot, humid, high-rate area should show noticeably higher electricity than a mild, low-rate area, and a cold-winter gas-heating region should show noticeably higher gas than a mild climate. Two different ZIP codes in different climates should produce visibly different numbers, not generic national averages.`,
+            content: anchorText,
           },
         ],
         tools: [

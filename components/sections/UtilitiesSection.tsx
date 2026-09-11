@@ -197,10 +197,11 @@ export default function UtilitiesSection({
 
       <EducationBubble>
         <p>
-          Utility costs vary with home size, age, insulation quality, and climate. This estimate is built from
-          general regional data, not live utility rates, compare it against actual bills from the seller or
-          local utility provider before relying on it. These costs begin the month you take ownership and
-          continue for as long as you hold the property.
+          Utility costs vary with home size, age, insulation quality, and climate. Electricity is estimated from
+          EIA state-level average rates, adjusted by AI for local climate and ZIP-specific factors. Other utility
+          categories are estimated by AI based on regional context, not live utility rates, compare all of these
+          against actual bills from the seller or local utility provider before relying on them. These costs begin
+          the month you take ownership and continue for as long as you hold the property.
         </p>
       </EducationBubble>
     </CollapsibleSection>
