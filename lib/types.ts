@@ -42,10 +42,6 @@ export interface UtilitiesInputs {
   security: number;
 }
 
-export interface MaintenanceInputs {
-  squareFootage: number;
-}
-
 export interface SystemInputs {
   ageYears: number;
 }
@@ -68,7 +64,6 @@ export interface CalculatorState {
   mortgage: MortgageInputs;
   taxesInsurance: TaxesInsuranceInputs;
   utilities: UtilitiesInputs;
-  maintenance: MaintenanceInputs;
   repairs: RepairsInputs;
 }
 
@@ -126,4 +121,7 @@ export const LUXURY_SYSTEM_REFERENCE_DATA = {
   waterHeater: { lifespan: 10, cost: 6500, label: 'Water Heater' },
 } as const;
 
-export const MAINTENANCE_RATE_PER_SQFT = 0.14;
+// NAHB home operating expense data: routine maintenance and repairs average this share of a
+// home's purchase price per year. Replaces the old flat $0.14/sq ft HUD/VA figure, which didn't
+// scale with home value.
+export const MAINTENANCE_RATE_OF_VALUE = 0.0054;

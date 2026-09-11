@@ -12,7 +12,7 @@ export const faqItems = [
   {
     question: 'How much does home maintenance cost per month?',
     answer:
-      "A commonly used starting point is $0.14 per square foot per month, the HUD/VA standard maintenance-and-utilities allowance used in reverse mortgage and VA loan residual income calculations. A 2,000 sq ft home would land around $280/month for routine upkeep. Actual costs vary by home age, condition, and region.",
+      "A commonly used starting point is 0.54% of your home's purchase price per year, based on National Association of Home Builders (NAHB) data on typical routine maintenance and repair costs. A $400,000 home would land around $180/month for routine upkeep. Actual costs vary by home age, condition, and region.",
   },
   {
     question: 'Is this calculator accurate for any state or city?',

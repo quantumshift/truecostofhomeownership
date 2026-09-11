@@ -52,9 +52,6 @@ const initialState: CalculatorState = {
     housekeeping: 0,
     security: 0,
   },
-  maintenance: {
-    squareFootage: 1800,
-  },
   repairs: {
     roof: { ageYears: 10 },
     hvac: { ageYears: 8 },
@@ -227,11 +224,11 @@ export default function Calculator() {
 
       <TierGroup
         eyebrow="Tier 2"
-        title="Home Operating Costs"
+        title="Maintenance & Utilities"
         intro={
           <p>
             The ongoing costs of running the home day to day, power, gas, water, trash, and internet, plus
-            anything else that keeps the property running month to month.
+            routine maintenance and upkeep.
           </p>
         }
       >
@@ -242,6 +239,7 @@ export default function Calculator() {
           monthlyTotal={totals.utilitiesMonthly}
           isLuxuryMode={isLuxuryMode}
         />
+        <MaintenanceSection purchasePrice={state.mortgage.purchasePrice} monthlyTotal={totals.maintenanceMonthly} />
       </TierGroup>
 
       <TierGroup
@@ -254,11 +252,6 @@ export default function Calculator() {
           </p>
         }
       >
-        <MaintenanceSection
-          value={state.maintenance}
-          onChange={(patch) => setState((s) => ({ ...s, maintenance: { ...s.maintenance, ...patch } }))}
-          monthlyTotal={totals.maintenanceMonthly}
-        />
         <RepairsSection
           value={state.repairs}
           onChange={(patch) => setState((s) => ({ ...s, repairs: { ...s.repairs, ...patch } }))}

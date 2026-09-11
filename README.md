@@ -94,7 +94,7 @@ npm run typecheck  # TypeScript check with no emit
 | PMI | User-entered monthly estimate, shown only when down payment < 20% |
 | Monthly property tax | Annual property tax ÷ 12 |
 | Monthly utilities | Electricity + gas are single blended monthly averages (no seasonal split — regional summer/winter swings vary too much nationally for one formula to hold up) |
-| Monthly maintenance | Square footage × $0.14 (HUD/VA standard maintenance-and-utilities allowance), plus any luxury line items below |
+| Monthly maintenance | Purchase price × 0.54% ÷ 12 (NAHB average annual routine maintenance/repair cost as a share of home value) |
 | Monthly repair reserve (per system) | Replacement cost ÷ max(1, lifespan − age) ÷ 12 |
 
 System reference data (`lib/types.ts` → `SYSTEM_REFERENCE_DATA`): Roof (25 yr / $14,500), HVAC (17 yr / $9,838),
@@ -139,7 +139,7 @@ auto-toggling based on down payment.
 
 Either way, once `state.isLuxuryMode` flips on (synced from Calculator.tsx's derived value into
 CalculatorState, so it's also correct in the server-side recompute for the PDF/email), three things change: four
-extra expense fields appear inside Utilities, under Home Operating Costs (still counted in its total) —
+extra expense fields appear inside Utilities, under Maintenance & Utilities (still counted in its total) —
 Pool/Spa Maintenance, Landscaping Crew, Housekeeping/Property Staff, and Security System/Monitoring, alongside
 the existing generic "Other" catch-all field, not replacing it; the System Replacements reference table switches
 from national-median costs to `LUXURY_SYSTEM_REFERENCE_DATA` (same lifespans, higher costs); and the HOA field
@@ -186,8 +186,8 @@ scripts/
 components/
   Calculator.tsx            Client orchestrator — owns all calculator state, luxury-mode derivation
   TierGroup.tsx              Generic tier wrapper (eyebrow + H2 title + one-line intro + boxed container),
-                             used for all three tiers: Principal/Interest/Taxes & Insurance, Home Operating
-                             Costs, Owner's Reserve
+                             used for all three tiers: The House Payment, Maintenance & Utilities, Owner's
+                             Reserve
   sections/                 One component per calculator section (each renders its own H3). Every section
                              follows the same five-part shape: title, one-line orienting subtitle, inputs,
                              calculated result, one EducationBubble after the result — that's the only place

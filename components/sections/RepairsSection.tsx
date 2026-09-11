@@ -52,29 +52,32 @@ export default function RepairsSection({
       title="System Replacements"
       subtitle="A monthly reserve based on how old each system is."
     >
-      <div className="grid gap-5 sm:grid-cols-2 mb-5">
-        <FieldRow
-          label="Starting Cash Reserve"
-          htmlFor="startingCashReserve"
-          hint="If you're starting with money already set aside for repairs and replacements, enter it here."
-        >
-          <CurrencyInput
-            id="startingCashReserve"
-            value={value.startingCashReserve}
-            onChange={(v) => onChange({ startingCashReserve: v })}
-          />
-        </FieldRow>
-        <FieldRow
-          label="Dedicated Credit Line"
-          htmlFor="dedicatedCreditLine"
-          hint="A credit line reserved only for system repairs and replacements, not other spending. This is borrowing capacity, not savings, using it creates a balance you'd need to repay with interest."
-        >
-          <CurrencyInput
-            id="dedicatedCreditLine"
-            value={value.dedicatedCreditLine}
-            onChange={(v) => onChange({ dedicatedCreditLine: v })}
-          />
-        </FieldRow>
+      <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-4 mb-5">
+        <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500 mb-3">Reserve Offset</p>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <FieldRow
+            label="Starting Cash Reserve"
+            htmlFor="startingCashReserve"
+            hint="If you're starting with money already set aside for repairs and replacements, enter it here."
+          >
+            <CurrencyInput
+              id="startingCashReserve"
+              value={value.startingCashReserve}
+              onChange={(v) => onChange({ startingCashReserve: v })}
+            />
+          </FieldRow>
+          <FieldRow
+            label="Dedicated Credit Line"
+            htmlFor="dedicatedCreditLine"
+            hint="A credit line reserved only for system repairs and replacements, not other spending. This is borrowing capacity, not savings, using it creates a balance you'd need to repay with interest."
+          >
+            <CurrencyInput
+              id="dedicatedCreditLine"
+              value={value.dedicatedCreditLine}
+              onChange={(v) => onChange({ dedicatedCreditLine: v })}
+            />
+          </FieldRow>
+        </div>
       </div>
 
       <div className="overflow-x-auto -mx-1">

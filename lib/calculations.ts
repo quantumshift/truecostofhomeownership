@@ -1,7 +1,7 @@
 import {
   CalculatorState,
   LUXURY_SYSTEM_REFERENCE_DATA,
-  MAINTENANCE_RATE_PER_SQFT,
+  MAINTENANCE_RATE_OF_VALUE,
   RepairsInputs,
   SYSTEM_REFERENCE_DATA,
   SectionTotals,
@@ -79,7 +79,7 @@ export function calculateSectionTotals(state: CalculatorState): SectionTotals {
     u.housekeeping +
     u.security;
 
-  const maintenanceMonthly = state.maintenance.squareFootage * MAINTENANCE_RATE_PER_SQFT;
+  const maintenanceMonthly = (state.mortgage.purchasePrice * MAINTENANCE_RATE_OF_VALUE) / 12;
 
   const referenceData = state.isLuxuryMode ? LUXURY_SYSTEM_REFERENCE_DATA : SYSTEM_REFERENCE_DATA;
 

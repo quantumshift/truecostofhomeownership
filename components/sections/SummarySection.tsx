@@ -31,15 +31,15 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
       ],
     },
     {
-      label: 'Home Operating Costs',
-      items: [{ label: 'Monthly Operating Costs', amount: totals.utilitiesMonthly, Icon: BoltIcon }],
+      label: 'Maintenance & Utilities',
+      items: [
+        { label: 'Monthly Utilities', amount: totals.utilitiesMonthly, Icon: BoltIcon },
+        { label: 'Maintenance', amount: totals.maintenanceMonthly, Icon: WrenchIcon },
+      ],
     },
     {
       label: "Owner's Reserve",
-      items: [
-        { label: 'Maintenance & Upkeep', amount: totals.maintenanceMonthly, Icon: WrenchIcon },
-        { label: 'System Replacement Reserves', amount: totals.repairsMonthly, Icon: ToolboxIcon },
-      ],
+      items: [{ label: 'System Replacement Reserves', amount: totals.repairsMonthly, Icon: ToolboxIcon }],
     },
   ];
 

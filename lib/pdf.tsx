@@ -2,7 +2,7 @@ import { Document, Page, Text, View, StyleSheet, Svg, Path } from '@react-pdf/re
 import {
   CalculatorState,
   SectionTotals,
-  MAINTENANCE_RATE_PER_SQFT,
+  MAINTENANCE_RATE_OF_VALUE,
   SYSTEM_REFERENCE_DATA,
   LUXURY_SYSTEM_REFERENCE_DATA,
 } from './types';
@@ -133,6 +133,22 @@ const styles = StyleSheet.create({
     marginTop: 6,
     lineHeight: 1.4,
   },
+  reserveOffsetBox: {
+    backgroundColor: '#f7f9fb',
+    borderWidth: 1,
+    borderColor: '#dde5ec',
+    borderRadius: 4,
+    padding: 10,
+    marginBottom: 10,
+  },
+  reserveOffsetHeading: {
+    fontSize: 8.5,
+    fontWeight: 700,
+    color: NAVY_LIGHT,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: 4,
+  },
   table: {
     marginTop: 2,
     marginBottom: 4,
@@ -249,7 +265,8 @@ interface CostReportProps {
 
 export default function CostReportDocument({ name, address, state, totals }: CostReportProps) {
   const housePaymentMonthly = totals.mortgageMonthly + totals.taxesInsuranceMonthly;
-  const ownersReserveMonthly = totals.maintenanceMonthly + totals.repairsMonthly;
+  const operatingCostsMonthly = totals.utilitiesMonthly + totals.maintenanceMonthly;
+  const ownersReserveMonthly = totals.repairsMonthly;
   const loanAmount = getLoanAmount(state);
   const downPaymentPercent = getDownPaymentPercent(state);
   const downPaymentDollar =
@@ -306,6 +323,13 @@ export default function CostReportDocument({ name, address, state, totals }: Cos
       repairsMethodology += ` ${CREDIT_LINE_CAVEAT}`;
     }
   }
+
+  const maintenanceRatePercent = (MAINTENANCE_RATE_OF_VALUE * 100).toFixed(2);
+  const maintenanceMethodology =
+    `Maintenance is estimated at ${maintenanceRatePercent}% of your home's purchase price per year, based on ` +
+    'National Association of Home Builders (NAHB) data on typical routine maintenance and repair costs. This ' +
+    'covers predictable, ongoing upkeep like lawn care, gutters, filters, and general wear, not major system ' +
+    "replacements, which are calculated separately below in your Owner's Reserve.";
 
   const u = state.utilities;
   const utilityLineItems: { label: string; amount: number }[] = [
@@ -377,15 +401,15 @@ export default function CostReportDocument({ name, address, state, totals }: Cos
         </View>
 
         <Text style={styles.tierLabel}>Tier 2</Text>
-        <Text style={styles.tierTitle}>Home Operating Costs</Text>
+        <Text style={styles.tierTitle}>Maintenance &amp; Utilities</Text>
 
         <View style={styles.section} wrap={false}>
-          <Text style={styles.sectionTitle}>Monthly Operating Costs</Text>
+          <Text style={styles.sectionTitle}>Monthly Utilities</Text>
           {utilityLineItems.map((item) => (
             <Row key={item.label} label={item.label} amount={item.amount} />
           ))}
           <View style={styles.totalRow}>
-            <Text style={styles.totalLabel}>Total Monthly Operating Costs</Text>
+            <Text style={styles.totalLabel}>Total Monthly Utilities</Text>
             <Text style={styles.totalValue}>{formatCurrency(totals.utilitiesMonthly)}/mo</Text>
           </View>
           <Text style={styles.methodologyLine}>
@@ -395,29 +419,36 @@ export default function CostReportDocument({ name, address, state, totals }: Cos
           </Text>
         </View>
 
+        <View style={styles.section} wrap={false}>
+          <Text style={styles.sectionTitle}>Maintenance</Text>
+          <Text style={styles.detailLine}>
+            {formatCurrency(state.mortgage.purchasePrice)} x {maintenanceRatePercent}% ÷ 12 ={' '}
+            {formatCurrency(totals.maintenanceMonthly)}/mo
+          </Text>
+          <Row label="Total Monthly Maintenance" amount={totals.maintenanceMonthly} />
+          <Text style={styles.methodologyLine}>{maintenanceMethodology}</Text>
+        </View>
+
+        <View style={styles.subtotalRow} wrap={false}>
+          <Text style={styles.subtotalLabel}>Maintenance &amp; Utilities Total</Text>
+          <Text style={styles.subtotalValue}>{formatCurrency(operatingCostsMonthly)}/mo</Text>
+        </View>
+
         <Text style={styles.tierLabel}>Tier 3</Text>
         <Text style={styles.tierTitle}>Owner&apos;s Reserve</Text>
 
         <View style={styles.section} wrap={false}>
-          <Text style={styles.sectionTitle}>Maintenance &amp; Upkeep</Text>
-          <Text style={styles.detailLine}>
-            {state.maintenance.squareFootage.toLocaleString()} sq ft x ${MAINTENANCE_RATE_PER_SQFT.toFixed(2)}/sq
-            ft = {formatCurrency(totals.maintenanceMonthly)}/mo
-          </Text>
-          <Row label="Total Monthly Maintenance & Upkeep" amount={totals.maintenanceMonthly} />
-          <Text style={styles.methodologyLine}>
-            $0.14 per square foot is the HUD/VA standard maintenance-and-utilities allowance used in reverse
-            mortgage and VA loan residual income calculations.
-          </Text>
-        </View>
-
-        <View style={styles.section} wrap={false}>
           <Text style={styles.sectionTitle}>System Replacements</Text>
-          {state.repairs.startingCashReserve > 0 && (
-            <Row label="Starting Cash Reserve" amount={state.repairs.startingCashReserve} monthly={false} />
-          )}
-          {state.repairs.dedicatedCreditLine > 0 && (
-            <Row label="Dedicated Credit Line" amount={state.repairs.dedicatedCreditLine} monthly={false} />
+          {(state.repairs.startingCashReserve > 0 || state.repairs.dedicatedCreditLine > 0) && (
+            <View style={styles.reserveOffsetBox}>
+              <Text style={styles.reserveOffsetHeading}>Reserve Offset</Text>
+              {state.repairs.startingCashReserve > 0 && (
+                <Row label="Starting Cash Reserve" amount={state.repairs.startingCashReserve} monthly={false} />
+              )}
+              {state.repairs.dedicatedCreditLine > 0 && (
+                <Row label="Dedicated Credit Line" amount={state.repairs.dedicatedCreditLine} monthly={false} />
+              )}
+            </View>
           )}
           <View style={styles.table}>
             <View style={styles.tableHeaderRow}>
@@ -445,7 +476,7 @@ export default function CostReportDocument({ name, address, state, totals }: Cos
         </View>
 
         <View style={styles.subtotalRow} wrap={false}>
-          <Text style={styles.subtotalLabel}>Owner&apos;s Reserve Total (Maintenance &amp; System Replacement)</Text>
+          <Text style={styles.subtotalLabel}>Owner&apos;s Reserve Total (System Replacement Reserve)</Text>
           <Text style={styles.subtotalValue}>{formatCurrency(ownersReserveMonthly)}/mo</Text>
         </View>
 
