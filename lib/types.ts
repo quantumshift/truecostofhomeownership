@@ -54,6 +54,8 @@ export interface RepairsInputs {
   roof: SystemInputs;
   hvac: SystemInputs;
   waterHeater: SystemInputs;
+  startingCashReserve: number;
+  dedicatedCreditLine: number;
 }
 
 export type LuxuryThresholdSource = 'zillow' | 'ai-estimate' | null;
@@ -104,6 +106,9 @@ export interface SectionTotals {
   roofReserve: number;
   hvacReserve: number;
   waterHeaterReserve: number;
+  // Labels of systems that received part of the reserve offset (starting cash + credit line),
+  // in the order the offset was applied (soonest-due system first). Empty when no offset is set.
+  reserveOffsetAppliedSystems: string[];
   grandTotal: number;
 }
 

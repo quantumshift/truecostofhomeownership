@@ -59,6 +59,8 @@ const initialState: CalculatorState = {
     roof: { ageYears: 10 },
     hvac: { ageYears: 8 },
     waterHeater: { ageYears: 5 },
+    startingCashReserve: 0,
+    dedicatedCreditLine: 0,
   },
 };
 
@@ -265,6 +267,7 @@ export default function Calculator() {
           waterHeaterReserve={totals.waterHeaterReserve}
           monthlyTotal={totals.repairsMonthly}
           isLuxuryMode={isLuxuryMode}
+          reserveOffsetAppliedSystems={totals.reserveOffsetAppliedSystems}
         />
       </TierGroup>
 

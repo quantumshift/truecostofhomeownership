@@ -7,7 +7,10 @@ import {
   LUXURY_SYSTEM_REFERENCE_DATA,
 } from './types';
 import { getAutoPmiAnnualRate, getDownPaymentPercent, getLoanAmount } from './calculations';
-import { formatCurrency } from './format';
+import { formatCurrency, formatReserveOffsetSentence } from './format';
+
+const CREDIT_LINE_CAVEAT =
+  'Credit line amounts are borrowing capacity, not savings, and would need to be repaid with interest if used.';
 
 const NAVY = '#003366';
 const NAVY_LIGHT = '#0a5ca8';
@@ -288,6 +291,22 @@ export default function CostReportDocument({ name, address, state, totals }: Cos
     },
   ];
 
+  const reserveOffsetSentence = formatReserveOffsetSentence(
+    state.repairs.startingCashReserve,
+    state.repairs.dedicatedCreditLine,
+    totals.reserveOffsetAppliedSystems,
+  );
+  let repairsMethodology =
+    'Monthly reserve equals replacement cost divided by years remaining (lifespan minus age, floor of one ' +
+    'year), divided by 12. Roof, HVAC, and water heater cost figures are based on data from Angi, Pearl, ' +
+    'HomeAdvisor, and Homewyse.';
+  if (reserveOffsetSentence) {
+    repairsMethodology += ` ${reserveOffsetSentence}`;
+    if (state.repairs.dedicatedCreditLine > 0) {
+      repairsMethodology += ` ${CREDIT_LINE_CAVEAT}`;
+    }
+  }
+
   const u = state.utilities;
   const utilityLineItems: { label: string; amount: number }[] = [
     { label: 'Electricity', amount: u.electricity.value },
@@ -394,6 +413,12 @@ export default function CostReportDocument({ name, address, state, totals }: Cos
 
         <View style={styles.section} wrap={false}>
           <Text style={styles.sectionTitle}>System Replacements</Text>
+          {state.repairs.startingCashReserve > 0 && (
+            <Row label="Starting Cash Reserve" amount={state.repairs.startingCashReserve} monthly={false} />
+          )}
+          {state.repairs.dedicatedCreditLine > 0 && (
+            <Row label="Dedicated Credit Line" amount={state.repairs.dedicatedCreditLine} monthly={false} />
+          )}
           <View style={styles.table}>
             <View style={styles.tableHeaderRow}>
               <Text style={[styles.tableHeaderCell, styles.colSystem]}>System</Text>
@@ -416,11 +441,7 @@ export default function CostReportDocument({ name, address, state, totals }: Cos
             <Text style={styles.totalLabel}>Total Monthly System Replacement Reserve</Text>
             <Text style={styles.totalValue}>{formatCurrency(totals.repairsMonthly)}/mo</Text>
           </View>
-          <Text style={styles.methodologyLine}>
-            Monthly reserve equals median replacement cost divided by years remaining (lifespan minus age, floor
-            of one year), divided by 12. Roof, HVAC, and water heater cost figures are based on data from Angi,
-            Pearl, HomeAdvisor, and Homewyse.
-          </Text>
+          <Text style={styles.methodologyLine}>{repairsMethodology}</Text>
         </View>
 
         <View style={styles.subtotalRow} wrap={false}>
