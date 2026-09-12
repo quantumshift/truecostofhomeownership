@@ -81,7 +81,7 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
   return (
     <section id="summary" className="scroll-mt-6">
       <div className="text-center mb-6">
-        <h2 className="text-2xl sm:text-3xl font-bold text-navy">Your monthly true cost of home ownership</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold text-navy">Your monthly true cost of homeownership</h2>
         <p className="text-neutral-500 mt-1">Everything combined, not just the mortgage</p>
       </div>
 
@@ -109,7 +109,7 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
       </div>
 
       <div className="rounded-lg bg-navy text-white p-6 sm:p-8 text-center mb-4">
-        <p className="text-sm uppercase tracking-wide text-white/70 mb-2">Your monthly true cost of home ownership</p>
+        <p className="text-sm uppercase tracking-wide text-white/70 mb-2">Your monthly true cost of homeownership</p>
         <p className="text-4xl sm:text-5xl font-bold tabular-nums">{formatCurrency(totals.grandTotal, 0)}</p>
         <p className="text-sm text-white/70 mt-3">
           House Payment:{' '}
@@ -139,7 +139,7 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
         ) : (
           <form onSubmit={handleSubmit} noValidate>
             <p className="text-sm text-neutral-600 mb-4">
-              Enter your name and email below to receive your complete True Cost of Home Ownership Report.
+              Enter your name and email below to receive your complete True Cost of Homeownership Report.
             </p>
             <div className="grid gap-4 sm:grid-cols-2 mb-4">
               <div>
@@ -191,7 +191,7 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
               disabled={status === 'submitting'}
               className="w-full sm:w-auto rounded-md bg-navy px-6 py-2.5 text-sm font-semibold text-white hover:bg-navy-light disabled:bg-neutral-300 transition-colors"
             >
-              {status === 'submitting' ? 'Sending…' : 'Send True Cost of Home Ownership Report'}
+              {status === 'submitting' ? 'Sending…' : 'Send True Cost of Homeownership Report'}
             </button>
             {status === 'error' && (
               <p className="text-sm text-red-600 mt-3">
