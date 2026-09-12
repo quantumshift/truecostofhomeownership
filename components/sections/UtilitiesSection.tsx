@@ -67,7 +67,7 @@ export default function UtilitiesSection({
     value.trash.isAiEstimate;
 
   return (
-    <CollapsibleSection id="utilities" title="Monthly Operating Costs">
+    <CollapsibleSection id="utilities" title="Utilities">
       <div className="rounded-md bg-neutral-50 border border-neutral-200 p-4 mb-6">
         <p className="text-sm font-medium text-neutral-800 mb-2">
           {hasEstimate

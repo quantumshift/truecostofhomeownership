@@ -31,7 +31,7 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
       ],
     },
     {
-      label: 'Maintenance & Utilities',
+      label: 'Monthly Operating Costs',
       items: [
         { label: 'Monthly Utilities', amount: totals.utilitiesMonthly, Icon: BoltIcon },
         { label: 'Maintenance', amount: totals.maintenanceMonthly, Icon: WrenchIcon },

@@ -224,7 +224,7 @@ export default function Calculator() {
 
       <TierGroup
         eyebrow="Tier 2"
-        title="Maintenance & Utilities"
+        title="Monthly Operating Costs"
         intro={
           <p>
             The ongoing costs of running the home day to day, power, gas, water, trash, and internet, plus
