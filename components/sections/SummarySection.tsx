@@ -33,7 +33,7 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
     {
       label: 'Monthly Operating Costs',
       items: [
-        { label: 'Monthly Utilities', amount: totals.utilitiesMonthly, Icon: BoltIcon },
+        { label: 'Utilities', amount: totals.utilitiesMonthly, Icon: BoltIcon },
         { label: 'Maintenance', amount: totals.maintenanceMonthly, Icon: WrenchIcon },
       ],
     },
@@ -119,15 +119,12 @@ export default function SummarySection({ state, totals }: SummarySectionProps) {
 
       <div className="rounded-lg bg-neutral-50 border border-neutral-200 p-5 mb-8 space-y-3">
         <p className="text-sm text-neutral-700 leading-relaxed">
-          We built this to put a real number on what people call the &quot;hidden costs&quot; of homeownership.
+          This tool exists because the mortgage payment alone is just the beginning of the true cost of owning a
+          home. Actual costs will vary by property, region, and various other factors, but this calculator
+          provides a true number to start your homeownership discussion.
         </p>
         <p className="text-sm text-neutral-700 leading-relaxed">
-          This number won&apos;t be perfect, actual costs will vary by property condition, region, and additional
-          circumstances, but it&apos;s a really good starting point for smart conversations about future
-          expenses.
-        </p>
-        <p className="text-sm text-neutral-700 leading-relaxed">
-          Sharing this report with your financial planner for their feedback wouldn&apos;t be a horrible idea.
+          We encourage you to get feedback on this estimate from your financial planner and real estate advisor.
         </p>
       </div>
 

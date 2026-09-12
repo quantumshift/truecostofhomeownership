@@ -199,8 +199,7 @@ export default function MortgageSection({
 
       <EducationBubble>
         <p>
-          Principal and interest are usually your largest fixed monthly cost. Mortgage insurance typically
-          applies when the down payment is below 20%, and is removed once enough equity is built.
+          Principal and interest are usually your largest fixed monthly cost.
         </p>
       </EducationBubble>
     </CollapsibleSection>

@@ -178,8 +178,9 @@ export default function RepairsSection({
           for a standard tank-style unit, not tankless.
         </p>
         <p className="text-xs text-neutral-500">
-          Luxury-tier figures are based on research across three luxury real estate markets: King County, WA;
-          Los Angeles County, CA; and the Hamptons, NY.
+          Luxury-tier figures are based on specific luxury ZIP codes nationwide (PropertyShark 2025 rankings),
+          including Medina, WA (98039); Beverly Hills and Bel Air, CA (90210, 90077); Sagaponack, NY (11962);
+          Fisher Island, FL (33109); Naples, FL; Greenwich, CT; Aspen, CO; and Paradise Valley, AZ.
         </p>
       </EducationBubble>
     </CollapsibleSection>
