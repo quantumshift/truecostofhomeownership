@@ -135,7 +135,7 @@ export default function SummarySection(props: SummarySectionProps) {
           </h2>
           <p className="text-neutral-500 mt-1">
             {isSingle
-              ? 'Everything combined, not just the mortgage'
+              ? 'What it will likely cost to own this home'
               : "You'll receive a complete report for each property in one email"}
           </p>
         </div>
@@ -284,7 +284,7 @@ export default function SummarySection(props: SummarySectionProps) {
           </p>
         )}
         <h2 className="text-2xl sm:text-3xl font-bold text-navy">Your monthly true cost of homeownership</h2>
-        <p className="text-neutral-500 mt-1">Everything combined, not just the mortgage</p>
+        <p className="text-neutral-500 mt-1">What it will likely cost to own this home</p>
       </div>
 
       <BreakdownCard totals={totals} />
