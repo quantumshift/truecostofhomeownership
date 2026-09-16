@@ -45,6 +45,14 @@ const styles = StyleSheet.create({
     color: '#666666',
     marginBottom: 20,
   },
+  propertyBadge: {
+    fontSize: 8.5,
+    fontWeight: 700,
+    color: NAVY_LIGHT,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginBottom: 6,
+  },
   tierLabel: {
     fontSize: 8.5,
     fontWeight: 700,
@@ -256,14 +264,15 @@ function getPmiTierLabel(downPaymentPercent: number): string {
   return '20% or more';
 }
 
-interface CostReportProps {
+interface PropertyReportProps {
   name: string;
   address?: string;
   state: CalculatorState;
   totals: SectionTotals;
+  propertyLabel?: string;
 }
 
-export default function CostReportDocument({ name, address, state, totals }: CostReportProps) {
+function PropertyReportPage({ name, address, state, totals, propertyLabel }: PropertyReportProps) {
   const housePaymentMonthly = totals.mortgageMonthly + totals.taxesInsuranceMonthly;
   const operatingCostsMonthly = totals.utilitiesMonthly + totals.maintenanceMonthly;
   const ownersReserveMonthly = totals.repairsMonthly;
@@ -353,15 +362,15 @@ export default function CostReportDocument({ name, address, state, totals }: Cos
   if (state.marketEstimateFailed) metaParts.push('Local market data unverified for this ZIP');
 
   return (
-    <Document title="True Cost of Home Ownership Report">
-      <Page size="LETTER" style={styles.page}>
-        <View style={styles.header}>
-          <ShieldMark />
-          <Text style={styles.headerText}>Empire Home Loans</Text>
-        </View>
+    <Page size="LETTER" style={styles.page}>
+      <View style={styles.header}>
+        <ShieldMark />
+        <Text style={styles.headerText}>Empire Home Loans</Text>
+      </View>
 
-        <Text style={styles.title}>Your True Cost of Home Ownership Report</Text>
-        <Text style={styles.subtitle}>{metaParts.join(' | ')}</Text>
+      {propertyLabel && <Text style={styles.propertyBadge}>{propertyLabel}</Text>}
+      <Text style={styles.title}>Your True Cost of Home Ownership Report</Text>
+      <Text style={styles.subtitle}>{metaParts.join(' | ')}</Text>
 
         <Text style={styles.tierLabel}>Tier 1</Text>
         <Text style={styles.tierTitle}>The House Payment</Text>
@@ -503,7 +512,29 @@ export default function CostReportDocument({ name, address, state, totals }: Cos
           </Text>
           <Text style={styles.footerContact}>Licensed in AZ, TX, WA, NV, CA · NMLS 1466931</Text>
         </View>
-      </Page>
+    </Page>
+  );
+}
+
+interface CostReportDocumentProps {
+  name: string;
+  properties: { address?: string; state: CalculatorState; totals: SectionTotals }[];
+}
+
+export default function CostReportDocument({ name, properties }: CostReportDocumentProps) {
+  const showLabels = properties.length > 1;
+  return (
+    <Document title="True Cost of Home Ownership Report">
+      {properties.map((property, i) => (
+        <PropertyReportPage
+          key={i}
+          name={name}
+          address={property.address}
+          state={property.state}
+          totals={property.totals}
+          propertyLabel={showLabels ? `Property ${i + 1} of ${properties.length}` : undefined}
+        />
+      ))}
     </Document>
   );
 }

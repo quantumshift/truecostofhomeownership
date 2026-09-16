@@ -125,3 +125,6 @@ export const LUXURY_SYSTEM_REFERENCE_DATA = {
 // home's purchase price per year. Replaces the old flat $0.14/sq ft HUD/VA figure, which didn't
 // scale with home value.
 export const MAINTENANCE_RATE_OF_VALUE = 0.0054;
+
+// Max number of properties a visitor can run in a single sitting before getting one combined email.
+export const MAX_PROPERTIES = 3;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { CalculatorState, MarketEstimateResponse, ZipTopTierValueResponse } from '@/lib/types';
+import { CalculatorState, MAX_PROPERTIES, MarketEstimateResponse, ZipTopTierValueResponse } from '@/lib/types';
 import {
   calculateAutoPmiMonthly,
   calculateSectionTotals,
@@ -70,8 +70,27 @@ interface ZipTopTierState {
   value: number | null;
 }
 
+// Fields carried over to a fresh property entry: loan term, interest rate, and down payment
+// percent (not dollar, since purchase price will likely differ between properties).
+function nextPropertyState(previous: CalculatorState): CalculatorState {
+  const downPaymentPercent = getDownPaymentPercent(previous);
+  return {
+    ...initialState,
+    mortgage: {
+      ...initialState.mortgage,
+      loanTerm: previous.mortgage.loanTerm,
+      interestRate: previous.mortgage.interestRate,
+      downPaymentMode: 'percent',
+      downPaymentPercent,
+      downPaymentDollar: (initialState.mortgage.purchasePrice * downPaymentPercent) / 100,
+    },
+  };
+}
+
 export default function Calculator() {
   const [state, setState] = useState<CalculatorState>(initialState);
+  const [completedProperties, setCompletedProperties] = useState<CalculatorState[]>([]);
+  const [mode, setMode] = useState<'entry' | 'leadCapture'>('entry');
   const prevPmiApplicable = useRef<boolean | null>(null);
   const [marketEstimate, setMarketEstimate] = useState<MarketEstimateState | null>(null);
   const [zipTopTier, setZipTopTier] = useState<ZipTopTierState | null>(null);
@@ -187,6 +206,25 @@ export default function Calculator() {
 
   const totals = useMemo(() => calculateSectionTotals(state), [state]);
 
+  function handleAddAnotherProperty() {
+    setCompletedProperties((props) => [...props, state]);
+    setState((s) => nextPropertyState(s));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function handleFinishEntry() {
+    setCompletedProperties((props) => [...props, state]);
+    setMode('leadCapture');
+  }
+
+  if (mode === 'leadCapture') {
+    return (
+      <div className="max-w-2xl mx-auto space-y-5">
+        <SummarySection mode="leadCapture" properties={completedProperties} />
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-2xl mx-auto space-y-5">
       <TierGroup
@@ -264,7 +302,15 @@ export default function Calculator() {
         />
       </TierGroup>
 
-      <SummarySection state={state} totals={totals} />
+      <SummarySection
+        mode="entry"
+        state={state}
+        totals={totals}
+        propertyNumber={completedProperties.length + 1}
+        canAddAnother={completedProperties.length + 1 < MAX_PROPERTIES}
+        onAddAnotherProperty={handleAddAnotherProperty}
+        onFinishEntry={handleFinishEntry}
+      />
 
       <a
         href="#summary"
