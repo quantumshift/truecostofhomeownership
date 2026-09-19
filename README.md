@@ -185,9 +185,10 @@ scripts/
   refresh-zillow-zhvi.mjs   Manual monthly refresh of data/zhvi-top-tier.json from Zillow Research
 components/
   Calculator.tsx            Client orchestrator — owns all calculator state, luxury-mode derivation
-  TierGroup.tsx              Generic tier wrapper (eyebrow + H2 title + one-line intro + boxed container),
-                             used for all three tiers: The House Payment, Maintenance & Utilities, Owner's
-                             Reserve
+  TierGroup.tsx              Generic collapsible box (title + subtitle header, collapsed by default, click to
+                             expand). Used for the three input tiers (The House Payment, Maintenance &
+                             Utilities, Owner's Reserve) and for the "Your True Cost of Homeownership" results
+                             box in SummarySection
   sections/                 One component per calculator section (each renders its own H3). Every section
                              follows the same five-part shape: title, one-line orienting subtitle, inputs,
                              calculated result, one EducationBubble after the result — that's the only place

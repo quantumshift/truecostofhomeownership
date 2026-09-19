@@ -5,6 +5,7 @@ import { CalculatorState, MAX_PROPERTIES, SectionTotals } from '@/lib/types';
 import { calculateSectionTotals } from '@/lib/calculations';
 import { formatCurrency, formatCurrencyWhole, isValidEmail } from '@/lib/format';
 import { HomeIcon, ShieldIcon, BoltIcon, WrenchIcon, ToolboxIcon } from '../ui/Icons';
+import TierGroup from '../TierGroup';
 
 type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -277,25 +278,27 @@ export default function SummarySection(props: SummarySectionProps) {
 
   return (
     <section id="summary" className="scroll-mt-6">
-      <div className="text-center mb-6">
-        {propertyNumber > 1 && (
-          <p className="text-xs font-semibold uppercase tracking-wide text-navy-light mb-2">
-            Property {propertyNumber}
-          </p>
-        )}
-        <h2 className="text-2xl sm:text-3xl font-bold text-navy">Your monthly true cost of homeownership</h2>
-        <p className="text-neutral-500 mt-1">What it will likely cost to own this home</p>
-      </div>
+      {propertyNumber > 1 && (
+        <p className="text-xs font-semibold uppercase tracking-wide text-navy-light mb-4 text-center">
+          Property {propertyNumber}
+        </p>
+      )}
 
       <BreakdownCard totals={totals} />
 
-      <div className="rounded-lg bg-navy text-white p-6 sm:p-8 text-center mb-4">
-        <p className="text-sm uppercase tracking-wide text-white/70 mb-2">Your monthly true cost of homeownership</p>
-        <p className="text-4xl sm:text-5xl font-bold tabular-nums">{formatCurrency(totals.grandTotal, 0)}</p>
-        <p className="text-sm text-white/70 mt-3">
-          House Payment:{' '}
-          <span className="font-medium text-white">{formatCurrencyWhole(housePaymentMonthly)}/mo</span>
-        </p>
+      <div className="mb-4">
+        <TierGroup id="true-cost-total" title="Your True Cost of Homeownership">
+          <div className="rounded-lg bg-navy text-white p-6 sm:p-8 text-center">
+            <p className="text-sm uppercase tracking-wide text-white/70 mb-2">
+              Your monthly true cost of homeownership
+            </p>
+            <p className="text-4xl sm:text-5xl font-bold tabular-nums">{formatCurrency(totals.grandTotal, 0)}</p>
+            <p className="text-sm text-white/70 mt-3">
+              House Payment:{' '}
+              <span className="font-medium text-white">{formatCurrencyWhole(housePaymentMonthly)}/mo</span>
+            </p>
+          </div>
+        </TierGroup>
       </div>
 
       <div className="rounded-lg bg-neutral-50 border border-neutral-200 p-5 mb-8 space-y-3">

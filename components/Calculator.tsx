@@ -225,11 +225,15 @@ export default function Calculator() {
     );
   }
 
+  const propertyKey = completedProperties.length;
+
   return (
     <div className="max-w-2xl mx-auto space-y-5">
       <TierGroup
-        eyebrow="Tier 1"
+        key={`tier-house-payment-${propertyKey}`}
+        id="tier-house-payment"
         title="The House Payment"
+        subtitle="Enter your mortgage basics"
         intro={<p>Together, these make up the house payment, the figure lenders use to calculate your debt-to-income (DTI) ratio.</p>}
       >
         <MortgageSection
@@ -261,8 +265,10 @@ export default function Calculator() {
       </TierGroup>
 
       <TierGroup
-        eyebrow="Tier 2"
-        title="Monthly Operating Costs"
+        key={`tier-maintenance-utilities-${propertyKey}`}
+        id="tier-maintenance-utilities"
+        title="Maintenance & Utilities"
+        subtitle="Add your monthly home operating expenses"
         intro={
           <p>
             The ongoing costs of running the home day to day, power, gas, water, trash, and internet, plus
@@ -281,8 +287,10 @@ export default function Calculator() {
       </TierGroup>
 
       <TierGroup
-        eyebrow="Tier 3"
+        key={`tier-owners-reserve-${propertyKey}`}
+        id="tier-owners-reserve"
         title="Owner's Reserve"
+        subtitle="Set your system ages to calculate your reserve"
         intro={
           <p>
             Think of this like paying yourself HOA dues: money set aside now so it&apos;s there when a big home
@@ -303,6 +311,7 @@ export default function Calculator() {
       </TierGroup>
 
       <SummarySection
+        key={`summary-${propertyKey}`}
         mode="entry"
         state={state}
         totals={totals}
