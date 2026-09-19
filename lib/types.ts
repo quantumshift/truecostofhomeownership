@@ -25,6 +25,12 @@ export interface TaxesInsuranceInputs {
 export interface UtilityFieldState {
   value: number;
   isAiEstimate: boolean;
+  // Overrides the default "AI estimate" badge text (e.g. "Local rate" for a sourced
+  // county-level figure, "Estimate" for a statewide fallback). Ignored when isAiEstimate is false.
+  badgeLabel?: string;
+  // Short note shown under the field explaining where the value came from. Set alongside
+  // badgeLabel for sourced/fallback values; omitted for the default AI-estimate path.
+  sourceNote?: string;
 }
 
 export interface UtilitiesInputs {
@@ -72,6 +78,13 @@ export interface UtilityEstimateResponse {
   gas: number;
   waterSewer: number;
   trash: number;
+  // Set when waterSewer/trash came from a sourced rate table (currently Washington only) instead
+  // of the AI estimate. When sourced is false, source is omitted and the field is the usual AI
+  // estimate.
+  waterSewerSourced?: boolean;
+  waterSewerSource?: string;
+  trashSourced?: boolean;
+  trashSource?: string;
 }
 
 export interface MarketEstimateResponse {

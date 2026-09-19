@@ -10,6 +10,26 @@ import AiBadge from '../ui/AiBadge';
 import SectionTotalRow from '../ui/SectionTotalRow';
 import EducationBubble from '../ui/EducationBubble';
 
+// Builds the waterSewer/trash field state for an estimate response. A sourced value (currently
+// Washington county rate data) gets a "Local rate" badge and a source note instead of the default
+// "AI estimate" badge; an unsourced fallback (statewide medians, or the plain AI path for other
+// states) is flagged as an estimate rather than presented as a specific published rate.
+function waFieldState(value: number, sourced: boolean | undefined, source: string | undefined): UtilityFieldState {
+  if (sourced) {
+    return { value, isAiEstimate: true, badgeLabel: 'Local rate', sourceNote: `Sourced from ${source}.` };
+  }
+  if (source) {
+    // Washington fallback: a real number, but a statewide median rather than a county-specific rate.
+    return {
+      value,
+      isAiEstimate: true,
+      badgeLabel: 'Estimate',
+      sourceNote: `No confirmed rate for your county yet — using a statewide Washington average (${source}).`,
+    };
+  }
+  return { value, isAiEstimate: true };
+}
+
 interface UtilitiesSectionProps {
   zip: string;
   value: UtilitiesInputs;
@@ -50,8 +70,8 @@ export default function UtilitiesSection({
       onChange({
         electricity: { value: data.electricity, isAiEstimate: true },
         gas: { value: data.gas, isAiEstimate: true },
-        waterSewer: { value: data.waterSewer, isAiEstimate: true },
-        trash: { value: data.trash, isAiEstimate: true },
+        waterSewer: waFieldState(data.waterSewer, data.waterSewerSourced, data.waterSewerSource),
+        trash: waFieldState(data.trash, data.trashSourced, data.trashSource),
       });
     } catch {
       setError("Couldn't get an estimate for that ZIP right now. Go ahead and enter your own numbers below.");
@@ -120,20 +140,26 @@ export default function UtilitiesSection({
         <FieldRow
           label="Water & Sewer"
           htmlFor="waterSewer"
-          badge={value.waterSewer.isAiEstimate ? <AiBadge /> : undefined}
+          badge={value.waterSewer.isAiEstimate ? <AiBadge label={value.waterSewer.badgeLabel} /> : undefined}
+          hint={value.waterSewer.sourceNote}
         >
           <CurrencyInput
             id="waterSewer"
             value={value.waterSewer.value}
-            onChange={(v) => updateField('waterSewer', { value: v, isAiEstimate: false })}
+            onChange={(v) => updateField('waterSewer', { value: v, isAiEstimate: false, sourceNote: undefined })}
           />
         </FieldRow>
 
-        <FieldRow label="Trash / Recycling" htmlFor="trash" badge={value.trash.isAiEstimate ? <AiBadge /> : undefined}>
+        <FieldRow
+          label="Trash / Recycling"
+          htmlFor="trash"
+          badge={value.trash.isAiEstimate ? <AiBadge label={value.trash.badgeLabel} /> : undefined}
+          hint={value.trash.sourceNote}
+        >
           <CurrencyInput
             id="trash"
             value={value.trash.value}
-            onChange={(v) => updateField('trash', { value: v, isAiEstimate: false })}
+            onChange={(v) => updateField('trash', { value: v, isAiEstimate: false, sourceNote: undefined })}
           />
         </FieldRow>
 

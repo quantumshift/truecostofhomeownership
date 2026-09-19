@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getStateFromZip, STATE_NAMES } from '@/lib/zip-state';
 import { EIA_ELECTRICITY_RATES } from '@/lib/eia-electricity-rates';
+import { getWaUtilityEstimate } from '@/lib/wa-county-rates';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -100,11 +101,22 @@ export async function POST(req: NextRequest) {
     }
 
     const input = toolUse.input as Record<string, number>;
+
+    // Washington has directly sourced city/county trash and water/sewer rate data (there's no
+    // federal database for these the way EIA covers electricity), so use that instead of the AI's
+    // guess for those two line items. Electricity and gas stay on the EIA-anchored AI path above
+    // regardless of state.
+    const waEstimate = stateCode === 'WA' ? getWaUtilityEstimate(zip) : null;
+
     const result = {
       electricity: clampEstimate(input.electricity),
       gas: clampEstimate(input.gas),
-      waterSewer: clampEstimate(input.waterSewer),
-      trash: clampEstimate(input.trash),
+      waterSewer: clampEstimate(waEstimate ? waEstimate.waterSewer.value : input.waterSewer),
+      trash: clampEstimate(waEstimate ? waEstimate.trash.value : input.trash),
+      waterSewerSourced: waEstimate?.waterSewer.sourced ?? false,
+      waterSewerSource: waEstimate?.waterSewer.source,
+      trashSourced: waEstimate?.trash.sourced ?? false,
+      trashSource: waEstimate?.trash.source,
     };
 
     return NextResponse.json(result);
