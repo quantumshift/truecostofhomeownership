@@ -199,7 +199,9 @@ export default function MortgageSection({
 
       <EducationBubble>
         <p>
-          Principal and interest are usually your largest fixed monthly cost.
+          Principal and interest are usually your largest fixed monthly cost. Mortgage insurance requirements,
+          cost, duration, and cancellation rules vary by loan program. Verify the rules and estimated cost for
+          the specific loan you are considering.
         </p>
       </EducationBubble>
     </CollapsibleSection>

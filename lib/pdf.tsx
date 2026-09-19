@@ -292,9 +292,9 @@ function PropertyReportPage({ name, address, state, totals, propertyLabel }: Pro
       'Principal and interest calculated using standard loan amortization. No mortgage insurance included in this figure.';
   } else if (state.mortgage.pmiManualOverride) {
     mortgageMethodology =
-      'Mortgage insurance based on the lender quote entered. Principal and interest calculated using standard loan amortization.';
+      'Mortgage insurance based on the lender quote entered. Principal and interest calculated using standard loan amortization. Mortgage insurance requirements, cost, duration, and cancellation rules vary by loan program. Verify the rules and estimated cost for the specific loan you are considering.';
   } else {
-    mortgageMethodology = `Mortgage insurance calculated at ${(pmiRate * 100).toFixed(1)}% annually, based on the ${pmiTier} down payment tier. Principal and interest calculated using standard loan amortization.`;
+    mortgageMethodology = `Mortgage insurance calculated at ${(pmiRate * 100).toFixed(1)}% annually, based on the ${pmiTier} down payment tier. Principal and interest calculated using standard loan amortization. Mortgage insurance requirements, cost, duration, and cancellation rules vary by loan program. Verify the rules and estimated cost for the specific loan you are considering.`;
   }
 
   let luxuryMethodology: string | null = null;
@@ -482,6 +482,10 @@ function PropertyReportPage({ name, address, state, totals, propertyLabel }: Pro
             <Text style={styles.totalValue}>{formatCurrency(totals.repairsMonthly)}/mo</Text>
           </View>
           <Text style={styles.methodologyLine}>{repairsMethodology}</Text>
+          <Text style={styles.methodologyLine}>
+            Planning Reserve: An estimated monthly allocation for future maintenance, repairs, and replacement of
+            major components. It is not a bill due each month, and actual costs and timing will vary.
+          </Text>
         </View>
 
         <View style={styles.subtotalRow} wrap={false}>

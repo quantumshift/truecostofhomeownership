@@ -15,9 +15,9 @@ export const faqItems = [
       "A commonly used starting point is 0.54% of your home's purchase price per year, based on National Association of Home Builders (NAHB) data on typical routine maintenance and repair costs. A $400,000 home would land around $180/month for routine upkeep. Actual costs vary by home age, condition, and region.",
   },
   {
-    question: 'Is this calculator accurate for any state or city?',
+    question: 'Can I use this calculator for a home anywhere in the United States?',
     answer:
-      "Yes. It's built to work anywhere in the U.S., with no regional assumptions baked into the defaults, you enter your own purchase price, tax rate, insurance, and utility numbers, so the result reflects your market. The one exception is the repair reserve figures, which use national median costs, since coastal and West Coast markets often run higher than the rural Midwest or Southeast, we call that out directly rather than implying false precision.",
+      'Yes. You can enter property-specific and local cost information for homes throughout the United States. Some default figures and replacement-cost assumptions rely on regional or national data, so actual costs will vary by property and location.',
   },
 ];
 

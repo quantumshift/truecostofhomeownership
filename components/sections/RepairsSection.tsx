@@ -124,6 +124,12 @@ export default function RepairsSection({
 
       <SectionTotalRow label="Total Monthly System Replacement Reserve" amount={monthlyTotal} />
 
+      <p className="text-xs text-neutral-500 mt-1.5">
+        <span className="font-semibold">Planning Reserve:</span> An estimated monthly allocation for future
+        maintenance, repairs, and replacement of major components. It is not a bill due each month, and actual
+        costs and timing will vary.
+      </p>
+
       {offsetSentence && <p className="text-xs text-neutral-500 mt-1.5">{offsetSentence}</p>}
 
       <EducationBubble>
