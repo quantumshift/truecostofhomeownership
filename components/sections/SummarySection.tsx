@@ -274,7 +274,6 @@ export default function SummarySection(props: SummarySectionProps) {
   }
 
   const { state, totals, propertyNumber, canAddAnother, onAddAnotherProperty, onFinishEntry } = props;
-  const housePaymentMonthly = totals.mortgageMonthly + totals.taxesInsuranceMonthly;
 
   return (
     <section id="summary" className="scroll-mt-6">
@@ -284,20 +283,9 @@ export default function SummarySection(props: SummarySectionProps) {
         </p>
       )}
 
-      <BreakdownCard totals={totals} />
-
       <div className="mb-4">
-        <TierGroup id="true-cost-total" title="Your True Cost of Homeownership">
-          <div className="rounded-lg bg-navy text-white p-6 sm:p-8 text-center">
-            <p className="text-sm uppercase tracking-wide text-white/70 mb-2">
-              Your monthly true cost of homeownership
-            </p>
-            <p className="text-4xl sm:text-5xl font-bold tabular-nums">{formatCurrency(totals.grandTotal, 0)}</p>
-            <p className="text-sm text-white/70 mt-3">
-              House Payment:{' '}
-              <span className="font-medium text-white">{formatCurrencyWhole(housePaymentMonthly)}/mo</span>
-            </p>
-          </div>
+        <TierGroup id="true-cost-total" title="True Cost Breakdown">
+          <BreakdownCard totals={totals} />
         </TierGroup>
       </div>
 
