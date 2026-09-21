@@ -357,7 +357,15 @@ function PropertyReportPage({ name, address, state, totals, propertyLabel }: Pro
   }
 
   const metaParts = [`Prepared for ${name || 'you'}`];
-  if (address) metaParts.push(address);
+  // The free-text address the user typed in the lead form can carry its own trailing ZIP,
+  // which may not match the ZIP entered in the Mortgage section (typo, or edited afterward).
+  // That ZIP is the one driving tax/utility lookups and is shown on its own a few lines down
+  // ("Property Taxes & Insurance (NNNNN)"), so strip any trailing ZIP here to avoid the report
+  // showing two different ZIP codes for the same property.
+  if (address) {
+    const addressWithoutZip = address.replace(/\b\d{5}(-\d{4})?\s*$/, '').replace(/,\s*$/, '').trim();
+    metaParts.push(addressWithoutZip || address);
+  }
   metaParts.push(`Purchase Price: ${formatCurrency(state.mortgage.purchasePrice)}`);
   if (state.marketEstimateFailed) metaParts.push('Local market data unverified for this ZIP');
 
