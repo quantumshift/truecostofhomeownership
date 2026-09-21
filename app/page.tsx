@@ -1,8 +1,9 @@
+import Image from 'next/image';
+import Link from 'next/link';
 import Calculator from '@/components/Calculator';
 import FaqSection from '@/components/FaqSection';
 import { faqItems } from '@/components/FaqSection';
 import Footer from '@/components/Footer';
-import Logo from '@/components/Logo';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://truecostofhomeownership.com';
 
@@ -52,7 +53,16 @@ export default function Home() {
       <div className="min-h-screen bg-white">
         <header className="border-b border-neutral-200">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
-            <Logo />
+            <Link href="/" className="inline-block">
+              <Image
+                src="/images/logo.png"
+                alt="True Cost of Homeownership"
+                width={190}
+                height={72}
+                className="w-[150px] h-auto sm:w-[190px]"
+                priority
+              />
+            </Link>
           </div>
         </header>
 
