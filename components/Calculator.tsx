@@ -267,7 +267,7 @@ export default function Calculator() {
       <TierGroup
         key={`tier-maintenance-utilities-${propertyKey}`}
         id="tier-maintenance-utilities"
-        title="Maintenance & Utilities"
+        title="Monthly Operating Expenses"
         subtitle="Add your monthly home operating expenses"
         intro={
           <p>
@@ -325,7 +325,7 @@ export default function Calculator() {
         href="#summary"
         className="fixed bottom-0 inset-x-0 z-20 flex items-center justify-between bg-navy text-white px-5 py-3 shadow-lg"
       >
-        <span className="text-sm text-white/70">Your monthly true cost so far</span>
+        <span className="text-sm text-white/70">Your True Cost of Homeownership so far</span>
         <span className="text-lg font-semibold tabular-nums">{formatCurrencyWhole(totals.grandTotal)}/mo ↓</span>
       </a>
       <div className="h-16" aria-hidden="true" />

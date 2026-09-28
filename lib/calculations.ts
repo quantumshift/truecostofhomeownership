@@ -89,8 +89,10 @@ export function calculateSectionTotals(state: CalculatorState): SectionTotals {
   );
   const repairsMonthly = roofReserve + hvacReserve + waterHeaterReserve;
 
-  const grandTotal =
-    mortgageMonthly + taxesInsuranceMonthly + utilitiesMonthly + maintenanceMonthly + repairsMonthly;
+  const houseMonthly = mortgageMonthly + taxesInsuranceMonthly;
+  const operatingExpensesMonthly = utilitiesMonthly + maintenanceMonthly;
+  const trueMonthlyCost = houseMonthly + operatingExpensesMonthly;
+  const grandTotal = trueMonthlyCost + repairsMonthly;
 
   return {
     mortgageMonthly,
@@ -100,8 +102,11 @@ export function calculateSectionTotals(state: CalculatorState): SectionTotals {
     propertyTaxMonthly,
     homeownersInsuranceMonthly,
     hoaMonthly,
+    houseMonthly,
     utilitiesMonthly,
     maintenanceMonthly,
+    operatingExpensesMonthly,
+    trueMonthlyCost,
     repairsMonthly,
     roofReserve,
     hvacReserve,

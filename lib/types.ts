@@ -108,8 +108,15 @@ export interface SectionTotals {
   propertyTaxMonthly: number;
   homeownersInsuranceMonthly: number;
   hoaMonthly: number;
+  // House Payment total (Box 1): mortgageMonthly + taxesInsuranceMonthly.
+  houseMonthly: number;
   utilitiesMonthly: number;
   maintenanceMonthly: number;
+  // Monthly Operating Expenses total (Box 2): utilitiesMonthly + maintenanceMonthly.
+  operatingExpensesMonthly: number;
+  // Stage 1 result: houseMonthly + operatingExpensesMonthly. What the homeowner should expect
+  // to pay out of pocket every month, before the Owner's Reserve set-aside.
+  trueMonthlyCost: number;
   repairsMonthly: number;
   roofReserve: number;
   hvacReserve: number;
@@ -117,6 +124,7 @@ export interface SectionTotals {
   // Labels of systems that received part of the reserve offset (starting cash + credit line),
   // in the order the offset was applied (soonest-due system first). Empty when no offset is set.
   reserveOffsetAppliedSystems: string[];
+  // Stage 2 result: trueMonthlyCost + repairsMonthly. The site's namesake, full planning number.
   grandTotal: number;
 }
 

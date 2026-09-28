@@ -2,7 +2,7 @@ export const faqItems = [
   {
     question: 'What is the true cost of homeownership?',
     answer:
-      "It's the full monthly picture of owning a home, not just the mortgage payment. It includes principal and interest, property taxes, homeowners insurance, HOA dues if applicable, utilities, routine maintenance, and a reserve for larger repairs like a roof or water heater down the road.",
+      "It's the full monthly picture of owning a home, not just the mortgage payment. Your house payment (principal, interest, taxes, insurance, and HOA dues if applicable) plus your monthly operating expenses (utilities and routine maintenance) make up your True Monthly Cost of Homeownership, what you should expect to pay out of pocket every month. Add a reserve for larger repairs like a roof or water heater down the road, and you get your True Cost of Homeownership, the full planning number.",
   },
   {
     question: "What's included in the true cost of owning a home beyond the mortgage?",

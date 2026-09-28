@@ -273,8 +273,8 @@ interface PropertyReportProps {
 }
 
 function PropertyReportPage({ name, address, state, totals, propertyLabel }: PropertyReportProps) {
-  const housePaymentMonthly = totals.mortgageMonthly + totals.taxesInsuranceMonthly;
-  const operatingCostsMonthly = totals.utilitiesMonthly + totals.maintenanceMonthly;
+  const housePaymentMonthly = totals.houseMonthly;
+  const operatingCostsMonthly = totals.operatingExpensesMonthly;
   const ownersReserveMonthly = totals.repairsMonthly;
   const loanAmount = getLoanAmount(state);
   const downPaymentPercent = getDownPaymentPercent(state);
@@ -418,7 +418,7 @@ function PropertyReportPage({ name, address, state, totals, propertyLabel }: Pro
         </View>
 
         <Text style={styles.tierLabel}>Tier 2</Text>
-        <Text style={styles.tierTitle}>Maintenance &amp; Utilities</Text>
+        <Text style={styles.tierTitle}>Monthly Operating Expenses</Text>
 
         <View style={styles.section} wrap={false}>
           <Text style={styles.sectionTitle}>Monthly Utilities</Text>
@@ -447,7 +447,7 @@ function PropertyReportPage({ name, address, state, totals, propertyLabel }: Pro
         </View>
 
         <View style={styles.subtotalRow} wrap={false}>
-          <Text style={styles.subtotalLabel}>Maintenance &amp; Utilities Total</Text>
+          <Text style={styles.subtotalLabel}>Monthly Operating Expenses Total</Text>
           <Text style={styles.subtotalValue}>{formatCurrency(operatingCostsMonthly)}/mo</Text>
         </View>
 
@@ -501,10 +501,30 @@ function PropertyReportPage({ name, address, state, totals, propertyLabel }: Pro
           <Text style={styles.subtotalValue}>{formatCurrency(ownersReserveMonthly)}/mo</Text>
         </View>
 
-        <View style={styles.heroBox} wrap={false}>
-          <Text style={styles.heroLabel}>Your monthly true cost of home ownership</Text>
-          <Text style={styles.heroTotal}>{formatCurrency(totals.grandTotal)}</Text>
-          <Text style={styles.heroSub}>House Payment: {formatCurrency(housePaymentMonthly)}/mo</Text>
+        <View wrap={false}>
+          <Text style={styles.tierTitle}>True Cost Breakdown</Text>
+
+          <View style={styles.section}>
+            <Row label="House Payment" amount={housePaymentMonthly} />
+            <Row label="+ Monthly Operating Expenses" amount={operatingCostsMonthly} />
+            <View style={styles.totalRow}>
+              <Text style={styles.totalLabel}>= True Monthly Cost of Homeownership</Text>
+              <Text style={styles.totalValue}>{formatCurrency(totals.trueMonthlyCost)}/mo</Text>
+            </View>
+          </View>
+
+          <View style={styles.section}>
+            <Row label="True Monthly Cost of Homeownership" amount={totals.trueMonthlyCost} />
+            <Row label="+ Owner's Reserve" amount={ownersReserveMonthly} />
+          </View>
+
+          <View style={styles.heroBox}>
+            <Text style={styles.heroLabel}>= True Cost of Homeownership</Text>
+            <Text style={styles.heroTotal}>{formatCurrency(totals.grandTotal)}</Text>
+            <Text style={styles.heroSub}>
+              True Monthly Cost of Homeownership: {formatCurrency(totals.trueMonthlyCost)}/mo
+            </Text>
+          </View>
         </View>
 
         <View style={styles.footer} fixed>

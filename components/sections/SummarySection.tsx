@@ -4,7 +4,7 @@ import { FormEvent, useState } from 'react';
 import { CalculatorState, MAX_PROPERTIES, SectionTotals } from '@/lib/types';
 import { calculateSectionTotals } from '@/lib/calculations';
 import { formatCurrency, formatCurrencyWhole, isValidEmail } from '@/lib/format';
-import { HomeIcon, ShieldIcon, BoltIcon, WrenchIcon, ToolboxIcon } from '../ui/Icons';
+import { HomeIcon, ShieldIcon, BoltIcon, WrenchIcon } from '../ui/Icons';
 import TierGroup from '../TierGroup';
 
 type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
@@ -36,15 +36,11 @@ function BreakdownCard({ totals }: { totals: SectionTotals }) {
       ],
     },
     {
-      label: 'Monthly Operating Costs',
+      label: 'Monthly Operating Expenses',
       items: [
         { label: 'Utilities', amount: totals.utilitiesMonthly, Icon: BoltIcon },
         { label: 'Maintenance', amount: totals.maintenanceMonthly, Icon: WrenchIcon },
       ],
-    },
-    {
-      label: "Owner's Reserve",
-      items: [{ label: 'System Replacement Reserves', amount: totals.repairsMonthly, Icon: ToolboxIcon }],
     },
   ];
 
@@ -70,6 +66,40 @@ function BreakdownCard({ totals }: { totals: SectionTotals }) {
           </ul>
         </div>
       ))}
+
+      {/* Stage 1: House Payment + Monthly Operating Expenses = True Monthly Cost of Homeownership */}
+      <div className="mt-4 pt-4 border-t border-neutral-200 space-y-1.5">
+        <div className="flex items-center justify-between text-sm text-neutral-600">
+          <span>House Payment</span>
+          <span className="tabular-nums">{formatCurrencyWhole(totals.houseMonthly)}/mo</span>
+        </div>
+        <div className="flex items-center justify-between text-sm text-neutral-600">
+          <span>+ Monthly Operating Expenses</span>
+          <span className="tabular-nums">{formatCurrencyWhole(totals.operatingExpensesMonthly)}/mo</span>
+        </div>
+        <div className="flex items-center justify-between pt-1.5 border-t border-neutral-200">
+          <span className="text-sm font-semibold text-navy">= True Monthly Cost of Homeownership</span>
+          <span className="text-base font-bold text-navy tabular-nums">
+            {formatCurrencyWhole(totals.trueMonthlyCost)}/mo
+          </span>
+        </div>
+      </div>
+
+      {/* Stage 2: True Monthly Cost of Homeownership + Owner's Reserve = True Cost of Homeownership */}
+      <div className="mt-5 pt-4 border-t-2 border-navy/20 space-y-1.5">
+        <div className="flex items-center justify-between text-sm text-neutral-600">
+          <span>True Monthly Cost of Homeownership</span>
+          <span className="tabular-nums">{formatCurrencyWhole(totals.trueMonthlyCost)}/mo</span>
+        </div>
+        <div className="flex items-center justify-between text-sm text-neutral-600">
+          <span>+ Owner&apos;s Reserve</span>
+          <span className="tabular-nums">{formatCurrencyWhole(totals.repairsMonthly)}/mo</span>
+        </div>
+      </div>
+      <div className="mt-3 rounded-lg bg-navy text-white p-5 sm:p-6 text-center">
+        <p className="text-xs uppercase tracking-wide text-white/70 mb-1.5">= True Cost of Homeownership</p>
+        <p className="text-3xl sm:text-4xl font-bold tabular-nums">{formatCurrency(totals.grandTotal, 0)}/mo</p>
+      </div>
     </div>
   );
 }
@@ -132,7 +162,7 @@ export default function SummarySection(props: SummarySectionProps) {
       <section id="summary" className="scroll-mt-6">
         <div className="text-center mb-6">
           <h2 className="text-2xl sm:text-3xl font-bold text-navy">
-            {isSingle ? 'Your monthly true cost of homeownership' : `Your ${properties.length} property reports`}
+            {isSingle ? 'Your True Cost of Homeownership' : `Your ${properties.length} property reports`}
           </h2>
           <p className="text-neutral-500 mt-1">
             {isSingle
@@ -142,17 +172,7 @@ export default function SummarySection(props: SummarySectionProps) {
         </div>
 
         {isSingle ? (
-          <>
-            <BreakdownCard totals={calculateSectionTotals(properties[0])} />
-            <div className="rounded-lg bg-navy text-white p-6 sm:p-8 text-center mb-4">
-              <p className="text-sm uppercase tracking-wide text-white/70 mb-2">
-                Your monthly true cost of homeownership
-              </p>
-              <p className="text-4xl sm:text-5xl font-bold tabular-nums">
-                {formatCurrency(calculateSectionTotals(properties[0]).grandTotal, 0)}
-              </p>
-            </div>
-          </>
+          <BreakdownCard totals={calculateSectionTotals(properties[0])} />
         ) : (
           <div className="rounded-lg border border-neutral-200 bg-white p-5 mb-4">
             <ul className="divide-y divide-neutral-100">

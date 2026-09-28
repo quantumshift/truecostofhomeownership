@@ -105,14 +105,21 @@ function buildPropertyEmailBlock(report: PropertyReport, index: number, total: n
     lines.push(`— Property ${index + 1} of ${total}${report.state.zip ? ` (${report.state.zip})` : ''} —`, '');
   }
   lines.push(
-    `Your monthly true cost of home ownership: ${formatCurrency(totals.grandTotal, 0)}`,
-    `House Payment: ${formatCurrencyWhole(totals.mortgageMonthly + totals.taxesInsuranceMonthly)}/mo`,
+    `Your True Cost of Homeownership: ${formatCurrency(totals.grandTotal, 0)}`,
     '',
     `Mortgage: ${formatCurrencyWhole(totals.mortgageMonthly)}/mo`,
     `Taxes, Insurance & HOA: ${formatCurrencyWhole(totals.taxesInsuranceMonthly)}/mo`,
-    `Monthly Operating Costs: ${formatCurrencyWhole(totals.utilitiesMonthly)}/mo`,
-    `Maintenance & Upkeep: ${formatCurrencyWhole(totals.maintenanceMonthly)}/mo`,
-    `System Replacement Reserves: ${formatCurrencyWhole(totals.repairsMonthly)}/mo`,
+    `House Payment: ${formatCurrencyWhole(totals.houseMonthly)}/mo`,
+    '',
+    `Utilities: ${formatCurrencyWhole(totals.utilitiesMonthly)}/mo`,
+    `Maintenance: ${formatCurrencyWhole(totals.maintenanceMonthly)}/mo`,
+    `Monthly Operating Expenses: ${formatCurrencyWhole(totals.operatingExpensesMonthly)}/mo`,
+    '',
+    `= True Monthly Cost of Homeownership: ${formatCurrencyWhole(totals.trueMonthlyCost)}/mo`,
+    '',
+    `Owner's Reserve (System Replacement Reserves): ${formatCurrencyWhole(totals.repairsMonthly)}/mo`,
+    '',
+    `= True Cost of Homeownership: ${formatCurrencyWhole(totals.grandTotal)}/mo`,
   );
   return lines;
 }

@@ -16,7 +16,7 @@ const jsonLd = [
     applicationCategory: 'FinanceApplication',
     operatingSystem: 'Any',
     description:
-      'A free calculator that estimates the true monthly cost of owning a home, including mortgage, property taxes, insurance, utilities, maintenance, and future repairs, not just the mortgage payment.',
+      'A free calculator that estimates the true cost of owning a home, including mortgage, property taxes, insurance, utilities, maintenance, and future repairs, not just the mortgage payment.',
     offers: {
       '@type': 'Offer',
       price: '0',
@@ -72,8 +72,8 @@ export default function Home() {
           </h1>
           <p className="mt-2 max-w-2xl text-navy-light font-medium">Know it before you owe it.</p>
           <p className="mt-4 max-w-2xl text-neutral-600 leading-relaxed">
-            This calculator shows the true monthly cost of owning a home: principal, interest, taxes, insurance,
-            utilities, maintenance, plus a reserve for system replacements.
+            This calculator shows the true cost of owning a home: principal, interest, taxes, insurance, utilities,
+            maintenance, plus a reserve for system replacements.
           </p>
           <p className="mt-4 max-w-2xl text-neutral-600 leading-relaxed">
             Answer the questions below to discover your <span className="font-bold text-navy">True Cost of Homeownership</span>.

@@ -219,7 +219,7 @@ export default function UtilitiesSection({
         </div>
       )}
 
-      <SectionTotalRow label="Total Monthly Operating Costs" amount={monthlyTotal} />
+      <SectionTotalRow label="Total Monthly Utilities" amount={monthlyTotal} />
 
       <EducationBubble>
         <p>
