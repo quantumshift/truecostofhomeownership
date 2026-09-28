@@ -13,6 +13,8 @@ type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
 const PRE_APPROVAL_URL_TBD = '#';
 // TBD: content hub doesn't exist yet — placeholder until it's built.
 const FIVE_STEPS_URL_TBD = '#';
+// Neutral third-party rental search site; no business relationship required.
+const RENTAL_SEARCH_URL = 'https://www.apartments.com';
 
 interface EntrySummaryProps {
   mode: 'entry';
@@ -118,16 +120,20 @@ function OfferCard({
   eyebrow: string;
   label: string;
   href: string;
-  accent: 'navy' | 'gold';
+  accent: 'navy' | 'gold' | 'green';
 }) {
   const accentClasses =
     accent === 'navy'
       ? 'border-navy/20 hover:border-navy/40'
-      : 'border-amber-300 hover:border-amber-400';
+      : accent === 'gold'
+        ? 'border-amber-300 hover:border-amber-400'
+        : 'border-emerald-300 hover:border-emerald-400';
   const buttonClasses =
     accent === 'navy'
       ? 'bg-navy text-white hover:bg-navy-light'
-      : 'bg-amber-500 text-white hover:bg-amber-600';
+      : accent === 'gold'
+        ? 'bg-amber-500 text-white hover:bg-amber-600'
+        : 'bg-emerald-600 text-white hover:bg-emerald-700';
 
   return (
     <div className={`rounded-lg border bg-white p-5 flex flex-col items-center text-center gap-3 ${accentClasses}`}>
@@ -376,10 +382,8 @@ export default function SummarySection(props: SummarySectionProps) {
       </div>
 
       <div className="mb-6">
-        <p className="text-center text-sm font-semibold text-navy mb-4">
-          Wherever you are in the process, there&apos;s a next step.
-        </p>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <p className="text-center text-sm font-semibold text-navy mb-4">What&apos;s your next step?</p>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <OfferCard
             eyebrow="See how your bank's rate measures up"
             label="Get Pre-Approved"
@@ -391,6 +395,12 @@ export default function SummarySection(props: SummarySectionProps) {
             label="Get the 5 Steps to Thriving Homeownership"
             href={FIVE_STEPS_URL_TBD}
             accent="gold"
+          />
+          <OfferCard
+            eyebrow="Not ready to buy, but it's time to move?"
+            label="Find Your Next Rental"
+            href={RENTAL_SEARCH_URL}
+            accent="green"
           />
         </div>
       </div>

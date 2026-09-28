@@ -234,6 +234,7 @@ export default function Calculator() {
         id="tier-house-payment"
         title="The House Payment"
         subtitle="Enter your mortgage basics"
+        defaultOpen
         intro={<p>Together, these make up the house payment, the figure lenders use to calculate your debt-to-income (DTI) ratio.</p>}
       >
         <MortgageSection

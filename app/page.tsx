@@ -70,7 +70,7 @@ export default function Home() {
           <h1 className="text-3xl sm:text-4xl font-bold text-navy tracking-tight">
             TRUE COST OF HOMEOWNERSHIP CALCULATOR
           </h1>
-          <p className="mt-2 max-w-2xl text-navy-light font-medium">Know the complete number going in.</p>
+          <p className="mt-2 max-w-2xl text-navy-light font-medium">Homeownership&rsquo;s mystery number.</p>
           <p className="mt-4 max-w-2xl text-neutral-600 leading-relaxed">
             See the full monthly cost of owning and operating the home, plus a separate Owner&rsquo;s Reserve for
             system repair and replacement.
