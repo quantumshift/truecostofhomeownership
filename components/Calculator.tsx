@@ -268,7 +268,7 @@ export default function Calculator() {
         key={`tier-maintenance-utilities-${propertyKey}`}
         id="tier-maintenance-utilities"
         title="Monthly Operating Expenses"
-        subtitle="Add your monthly home operating expenses"
+        subtitle="Utilities & Maintenance"
         intro={
           <p>
             The ongoing costs of running the home day to day, power, gas, water, trash, and internet, plus

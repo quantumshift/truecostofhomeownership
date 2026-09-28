@@ -95,7 +95,7 @@ export default function RepairsSection({
       </div>
 
       <div className="rounded-lg border border-neutral-200 bg-neutral-50 p-4 my-5">
-        <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500 mb-3">Reserve Offset</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500 mb-3">Owner&apos;s Reserve Seed</p>
         <div className="grid gap-5 sm:grid-cols-2">
           <FieldRow
             label="Starting Cash Reserve"

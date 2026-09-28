@@ -458,7 +458,7 @@ function PropertyReportPage({ name, address, state, totals, propertyLabel }: Pro
           <Text style={styles.sectionTitle}>System Replacements</Text>
           {(state.repairs.startingCashReserve > 0 || state.repairs.dedicatedCreditLine > 0) && (
             <View style={styles.reserveOffsetBox}>
-              <Text style={styles.reserveOffsetHeading}>Reserve Offset</Text>
+              <Text style={styles.reserveOffsetHeading}>Owner&apos;s Reserve Seed</Text>
               {state.repairs.startingCashReserve > 0 && (
                 <Row label="Starting Cash Reserve" amount={state.repairs.startingCashReserve} monthly={false} />
               )}

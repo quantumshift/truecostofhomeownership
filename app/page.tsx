@@ -68,15 +68,15 @@ export default function Home() {
 
         <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
           <h1 className="text-3xl sm:text-4xl font-bold text-navy tracking-tight">
-            True Cost of Homeownership Calculator
+            TRUE COST OF HOMEOWNERSHIP CALCULATOR
           </h1>
-          <p className="mt-2 max-w-2xl text-navy-light font-medium">Know it before you owe it.</p>
+          <p className="mt-2 max-w-2xl text-navy-light font-medium">Know the complete number going in.</p>
           <p className="mt-4 max-w-2xl text-neutral-600 leading-relaxed">
-            This calculator shows the true cost of owning a home: principal, interest, taxes, insurance, utilities,
-            maintenance, plus a reserve for system replacements.
+            See the full monthly cost of owning and operating the home, plus a separate Owner&rsquo;s Reserve for
+            system repair and replacement.
           </p>
           <p className="mt-4 max-w-2xl text-neutral-600 leading-relaxed">
-            Answer the questions below to discover your <span className="font-bold text-navy">True Cost of Homeownership</span>.
+            Start with the details you know. Review and adjust for accuracy.
           </p>
 
           <div className="mt-10">

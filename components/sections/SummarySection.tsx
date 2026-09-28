@@ -9,6 +9,11 @@ import TierGroup from '../TierGroup';
 
 type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
 
+// TBD: Kirk to provide the real pre-approval application URL.
+const PRE_APPROVAL_URL_TBD = '#';
+// TBD: content hub doesn't exist yet — placeholder until it's built.
+const FIVE_STEPS_URL_TBD = '#';
+
 interface EntrySummaryProps {
   mode: 'entry';
   state: CalculatorState;
@@ -100,6 +105,39 @@ function BreakdownCard({ totals }: { totals: SectionTotals }) {
         <p className="text-xs uppercase tracking-wide text-white/70 mb-1.5">= True Cost of Homeownership</p>
         <p className="text-3xl sm:text-4xl font-bold tabular-nums">{formatCurrency(totals.grandTotal, 0)}/mo</p>
       </div>
+    </div>
+  );
+}
+
+function OfferCard({
+  eyebrow,
+  label,
+  href,
+  accent,
+}: {
+  eyebrow: string;
+  label: string;
+  href: string;
+  accent: 'navy' | 'gold';
+}) {
+  const accentClasses =
+    accent === 'navy'
+      ? 'border-navy/20 hover:border-navy/40'
+      : 'border-amber-300 hover:border-amber-400';
+  const buttonClasses =
+    accent === 'navy'
+      ? 'bg-navy text-white hover:bg-navy-light'
+      : 'bg-amber-500 text-white hover:bg-amber-600';
+
+  return (
+    <div className={`rounded-lg border bg-white p-5 flex flex-col items-center text-center gap-3 ${accentClasses}`}>
+      <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">{eyebrow}</p>
+      <a
+        href={href}
+        className={`w-full rounded-md px-6 py-2.5 text-sm font-semibold transition-colors ${buttonClasses}`}
+      >
+        {label}
+      </a>
     </div>
   );
 }
@@ -304,39 +342,30 @@ export default function SummarySection(props: SummarySectionProps) {
       )}
 
       <div className="mb-4">
-        <TierGroup id="true-cost-total" title="True Cost Breakdown">
+        <TierGroup id="true-cost-total" title="True Cost Breakdown" subtitle="All three elements, broken out">
           <BreakdownCard totals={totals} />
         </TierGroup>
       </div>
 
-      <div className="rounded-lg bg-neutral-50 border border-neutral-200 p-5 mb-8 space-y-3">
-        <p className="text-sm text-neutral-700 leading-relaxed">
-          This tool exists because the mortgage payment alone is just the beginning of the true cost of owning a
-          home. Actual costs will vary by property, region, and various other factors, but this calculator
-          provides a true number to start your homeownership discussion.
-        </p>
-        <p className="text-sm text-neutral-700 leading-relaxed">
-          We encourage you to get feedback on this estimate from your financial planner and real estate advisor.
-        </p>
-      </div>
-
-      <div className="rounded-lg border border-neutral-200 bg-white p-6 space-y-3">
-        {canAddAnother && (
+      <div className="rounded-lg border border-neutral-200 bg-white p-6 space-y-3 mb-8">
+        <div className={canAddAnother ? 'grid gap-3 sm:grid-cols-2' : ''}>
+          {canAddAnother && (
+            <button
+              type="button"
+              onClick={onAddAnotherProperty}
+              className="w-full rounded-md border border-navy px-6 py-2.5 text-sm font-semibold text-navy hover:bg-navy/5 transition-colors"
+            >
+              + Add another property
+            </button>
+          )}
           <button
             type="button"
-            onClick={onAddAnotherProperty}
-            className="w-full rounded-md border border-navy px-6 py-2.5 text-sm font-semibold text-navy hover:bg-navy/5 transition-colors"
+            onClick={onFinishEntry}
+            className="w-full rounded-md bg-navy px-6 py-2.5 text-sm font-semibold text-white hover:bg-navy-light transition-colors"
           >
-            + Add another property
+            {propertyNumber > 1 ? "I'm done — get my reports" : 'Get my report'}
           </button>
-        )}
-        <button
-          type="button"
-          onClick={onFinishEntry}
-          className="w-full rounded-md bg-navy px-6 py-2.5 text-sm font-semibold text-white hover:bg-navy-light transition-colors"
-        >
-          {propertyNumber > 1 ? "I'm done — get my reports" : 'Get my report'}
-        </button>
+        </div>
         {canAddAnother && (
           <p className="text-xs text-neutral-500 text-center">
             You can run up to {MAX_PROPERTIES - propertyNumber} more{' '}
@@ -345,6 +374,31 @@ export default function SummarySection(props: SummarySectionProps) {
           </p>
         )}
       </div>
+
+      <div className="mb-6">
+        <p className="text-center text-sm font-semibold text-navy mb-4">
+          Wherever you are in the process, there&apos;s a next step.
+        </p>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <OfferCard
+            eyebrow="See how your bank's rate measures up"
+            label="Get Pre-Approved"
+            href={PRE_APPROVAL_URL_TBD}
+            accent="navy"
+          />
+          <OfferCard
+            eyebrow="Not ready yet?"
+            label="Get the 5 Steps to Thriving Homeownership"
+            href={FIVE_STEPS_URL_TBD}
+            accent="gold"
+          />
+        </div>
+      </div>
+
+      <p className="text-xs text-neutral-400 leading-relaxed text-center">
+        Actual costs will vary by property, region, and other factors. Talk with your financial planner and real
+        estate advisor about this estimate.
+      </p>
     </section>
   );
 }
