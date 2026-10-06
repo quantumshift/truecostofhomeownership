@@ -283,6 +283,9 @@ export default function Calculator() {
           isLuxuryMode={isLuxuryMode}
         />
         <MaintenanceSection purchasePrice={state.mortgage.purchasePrice} monthlyTotal={totals.maintenanceMonthly} />
+        <p className="text-sm text-neutral-600 leading-relaxed border-t border-navy/10 pt-4">
+          <span className="font-semibold text-navy">Add a reserve for system repair and <span className="whitespace-nowrap">replacement.<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="ml-1.5 inline-block h-[1.5em] w-[1.5em] align-middle"><path d="M12 3v17M5 13l7 7 7-7" /></svg></span></span>
+        </p>
       </TierGroup>
 
       <TierGroup
@@ -307,6 +310,9 @@ export default function Calculator() {
           isLuxuryMode={isLuxuryMode}
           reserveOffsetAppliedSystems={totals.reserveOffsetAppliedSystems}
         />
+        <p className="text-sm text-neutral-600 leading-relaxed border-t border-navy/10 pt-4">
+          <span className="font-semibold text-navy">See your True Cost of <span className="whitespace-nowrap">Homeownership.<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="ml-1.5 inline-block h-[1.5em] w-[1.5em] align-middle"><path d="M12 3v17M5 13l7 7 7-7" /></svg></span></span>
+        </p>
       </TierGroup>
 
       <SummarySection
