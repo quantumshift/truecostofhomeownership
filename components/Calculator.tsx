@@ -233,9 +233,9 @@ export default function Calculator() {
         key={`tier-house-payment-${propertyKey}`}
         id="tier-house-payment"
         title="The House Payment"
-        subtitle="Enter your mortgage basics"
+        subtitle="The familiar starting point."
         defaultOpen
-        intro={<p>Together, these make up the house payment, the figure lenders use to calculate your debt-to-income (DTI) ratio.</p>}
+        intro={<p>Mortgage, property taxes, insurance, and HOA dues combined are the house payment portion of the debt-to-income ratio. Use what you know now and adjust as needed.</p>}
       >
         <MortgageSection
           value={state.mortgage}
@@ -259,9 +259,7 @@ export default function Calculator() {
           hoaRange={hoaRange}
         />
         <p className="text-sm text-neutral-600 leading-relaxed border-t border-navy/10 pt-4">
-          P&amp;I, taxes, insurance, and any HOA dues together make up your house payment, the figure lenders use
-          to calculate your debt-to-income ratio. The tiers below add the additional monthly costs of owning
-          this home beyond what a lender requires you to disclose upfront.
+          <span className="font-semibold text-navy">Now add what it costs to operate the <span className="whitespace-nowrap">home.<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="ml-1.5 inline-block h-[1.5em] w-[1.5em] align-middle"><path d="M12 3v17M5 13l7 7 7-7" /></svg></span></span>
         </p>
       </TierGroup>
 

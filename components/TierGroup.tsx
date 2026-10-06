@@ -24,24 +24,27 @@ export default function TierGroup({ id, title, subtitle, intro, defaultOpen = fa
         aria-controls={panelId}
         className="w-full flex items-center justify-between gap-4 px-4 py-4 sm:px-5 text-left hover:bg-navy/5 transition-colors"
       >
-        <div>
+        <div className="min-w-0">
           <h2 className="text-xl font-bold text-navy">{title}</h2>
           {subtitle && <p className="text-sm text-neutral-600 mt-0.5">{subtitle}</p>}
         </div>
-        <svg
-          className={`h-5 w-5 text-navy shrink-0 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
-          viewBox="0 0 20 20"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M5 7.5L10 12.5L15 7.5"
-            stroke="currentColor"
-            strokeWidth="1.75"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <span className="flex items-center gap-1.5 shrink-0 text-navy">
+          <span className="text-sm font-semibold" aria-hidden="true">{open ? 'Close' : 'Open'}</span>
+          <svg
+            className={`h-5 w-5 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+            viewBox="0 0 20 20"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M3 6.5L10 13.5L17 6.5"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </span>
       </button>
       <div id={panelId} hidden={!open} className="px-4 pb-5 sm:px-5 space-y-5 border-t border-navy/10 pt-4">
         {intro && <div className="text-sm text-neutral-700 leading-relaxed space-y-2.5">{intro}</div>}

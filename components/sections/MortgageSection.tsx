@@ -68,7 +68,7 @@ export default function MortgageSection({
     <CollapsibleSection
       id="mortgage"
       title="Mortgage"
-      subtitle="Your principal and interest, the core loan payment, calculated from what you enter below."
+      subtitle="Your principal and interest, calculated from what you enter below."
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <FieldRow label="ZIP Code" htmlFor="zip" hint="Used for utility and market estimates below">

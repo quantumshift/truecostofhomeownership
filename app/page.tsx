@@ -68,15 +68,21 @@ export default function Home() {
 
         <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
           <h1 className="text-3xl sm:text-4xl font-bold text-navy tracking-tight">
+            Welcome to the
+            <br />
             TRUE COST OF HOMEOWNERSHIP CALCULATOR
           </h1>
-          <p className="mt-2 max-w-2xl text-navy-light font-medium">Homeownership&rsquo;s mystery number.</p>
-          <p className="mt-4 max-w-2xl text-neutral-600 leading-relaxed">
-            See the full monthly cost of owning and operating the home, plus a separate Owner&rsquo;s Reserve for
-            system repair and replacement.
+          <p className="mt-2 max-w-2xl text-navy-light font-medium">
+            Where you can put a number on what it will take to own a particular home.
           </p>
           <p className="mt-4 max-w-2xl text-neutral-600 leading-relaxed">
-            Start with the details you know. Review and adjust for accuracy.
+            Start with the house payment, add what you know about the monthly operating expenses, and complete your
+            Owner&rsquo;s Reserve details.
+          </p>
+          <p className="mt-4 max-w-2xl text-neutral-600 leading-relaxed">
+            When you&rsquo;re done, you&rsquo;ll actually have two important numbers: your{' '}
+            <span className="font-semibold text-navy">True Monthly Cost</span> and your{' '}
+            <span className="font-semibold text-navy">True Cost of Homeownership</span>.
           </p>
 
           <div className="mt-10">
