@@ -8,7 +8,7 @@ import {
   getDownPaymentPercent,
   getLoanAmount,
 } from '@/lib/calculations';
-import { formatCurrencyWhole, isValidZip } from '@/lib/format';
+import { isValidZip } from '@/lib/format';
 import MortgageSection from './sections/MortgageSection';
 import TaxesInsuranceSection from './sections/TaxesInsuranceSection';
 import UtilitiesSection from './sections/UtilitiesSection';
@@ -325,15 +325,6 @@ export default function Calculator() {
         onAddAnotherProperty={handleAddAnotherProperty}
         onFinishEntry={handleFinishEntry}
       />
-
-      <a
-        href="#summary"
-        className="fixed bottom-0 inset-x-0 z-20 flex items-center justify-between bg-navy text-white px-5 py-3 shadow-lg"
-      >
-        <span className="text-sm text-white/70">Your True Cost of Homeownership so far</span>
-        <span className="text-lg font-semibold tabular-nums">{formatCurrencyWhole(totals.grandTotal)}/mo ↓</span>
-      </a>
-      <div className="h-16" aria-hidden="true" />
     </div>
   );
 }

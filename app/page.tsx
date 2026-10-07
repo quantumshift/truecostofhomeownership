@@ -68,8 +68,7 @@ export default function Home() {
 
         <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
           <h1 className="text-2xl/[1.2] sm:text-4xl font-bold text-navy tracking-tight">
-            Welcome to the
-            <br />
+            <span className="block mb-1 text-lg/[1.2] sm:text-2xl/[1.2] font-semibold italic">Welcome to the</span>
             TRUE COST OF HOMEOWNERSHIP CALCULATOR
           </h1>
           <p className="mt-2 max-w-2xl text-navy-light font-medium">
