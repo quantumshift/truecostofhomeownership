@@ -6,15 +6,9 @@ import { calculateSectionTotals } from '@/lib/calculations';
 import { formatCurrency, formatCurrencyWhole, isValidEmail } from '@/lib/format';
 import { HomeIcon, ShieldIcon, BoltIcon, WrenchIcon } from '../ui/Icons';
 import TierGroup from '../TierGroup';
+import NextStepOffers from '../NextStepOffers';
 
 type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
-
-// TBD: Kirk to provide the real pre-approval application URL.
-const PRE_APPROVAL_URL_TBD = '#';
-// TBD: content hub doesn't exist yet — placeholder until it's built.
-const FIVE_STEPS_URL_TBD = '#';
-// Neutral third-party rental search site; no business relationship required.
-const RENTAL_SEARCH_URL = 'https://www.apartments.com';
 
 interface EntrySummaryProps {
   mode: 'entry';
@@ -111,43 +105,6 @@ function BreakdownCard({ totals }: { totals: SectionTotals }) {
   );
 }
 
-function OfferCard({
-  eyebrow,
-  label,
-  href,
-  accent,
-}: {
-  eyebrow: string;
-  label: string;
-  href: string;
-  accent: 'navy' | 'gold' | 'green';
-}) {
-  const accentClasses =
-    accent === 'navy'
-      ? 'border-navy/20 hover:border-navy/40'
-      : accent === 'gold'
-        ? 'border-amber-300 hover:border-amber-400'
-        : 'border-emerald-300 hover:border-emerald-400';
-  const buttonClasses =
-    accent === 'navy'
-      ? 'bg-navy text-white hover:bg-navy-light'
-      : accent === 'gold'
-        ? 'bg-amber-500 text-white hover:bg-amber-600'
-        : 'bg-emerald-600 text-white hover:bg-emerald-700';
-
-  return (
-    <div className={`rounded-lg border bg-white p-5 flex flex-col items-center text-center gap-3 ${accentClasses}`}>
-      <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">{eyebrow}</p>
-      <a
-        href={href}
-        className={`w-full rounded-md px-6 py-2.5 text-sm font-semibold transition-colors ${buttonClasses}`}
-      >
-        {label}
-      </a>
-    </div>
-  );
-}
-
 export default function SummarySection(props: SummarySectionProps) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -238,18 +195,7 @@ export default function SummarySection(props: SummarySectionProps) {
           </div>
         )}
 
-        <div className="rounded-lg bg-neutral-50 border border-neutral-200 p-5 mb-8 space-y-3">
-          <p className="text-sm text-neutral-700 leading-relaxed">
-            This tool exists because the mortgage payment alone is just the beginning of the true cost of owning a
-            home. Actual costs will vary by property, region, and various other factors, but this calculator
-            provides a true number to start your homeownership discussion.
-          </p>
-          <p className="text-sm text-neutral-700 leading-relaxed">
-            We encourage you to get feedback on this estimate from your financial planner and real estate advisor.
-          </p>
-        </div>
-
-        <div className="rounded-lg border border-neutral-200 bg-white p-6">
+        <div className="rounded-lg border border-neutral-200 bg-white p-6 mb-8">
           {status === 'success' ? (
             <div className="text-center py-4">
               <p className="text-navy font-semibold text-lg mb-1">Sent!</p>
@@ -318,7 +264,7 @@ export default function SummarySection(props: SummarySectionProps) {
               >
                 {status === 'submitting'
                   ? 'Sending…'
-                  : `Send True Cost of Homeownership ${isSingle ? 'Report' : `Reports (${properties.length})`}`}
+                  : isSingle ? 'Send me my report' : 'Send me my reports'}
               </button>
               {status === 'error' && (
                 <p className="text-sm text-red-600 mt-3">
@@ -333,6 +279,8 @@ export default function SummarySection(props: SummarySectionProps) {
             </form>
           )}
         </div>
+
+        {status === 'success' && <NextStepOffers />}
       </section>
     );
   }
@@ -381,34 +329,7 @@ export default function SummarySection(props: SummarySectionProps) {
         )}
       </div>
 
-      <div className="mb-6">
-        <p className="text-center text-sm font-semibold text-navy mb-4">What&apos;s your next step?</p>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <OfferCard
-            eyebrow="See how your bank's rate measures up"
-            label="Get Pre-Approved"
-            href={PRE_APPROVAL_URL_TBD}
-            accent="navy"
-          />
-          <OfferCard
-            eyebrow="Not ready yet?"
-            label="Get the 5 Steps to Thriving Homeownership"
-            href={FIVE_STEPS_URL_TBD}
-            accent="gold"
-          />
-          <OfferCard
-            eyebrow="Not ready to buy, but it's time to move?"
-            label="Find Your Next Rental"
-            href={RENTAL_SEARCH_URL}
-            accent="green"
-          />
-        </div>
-      </div>
-
-      <p className="text-xs text-neutral-400 leading-relaxed text-center">
-        Actual costs will vary by property, region, and other factors. Talk with your financial planner and real
-        estate advisor about this estimate.
-      </p>
+      <NextStepOffers />
     </section>
   );
 }
