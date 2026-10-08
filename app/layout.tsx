@@ -5,14 +5,14 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://truecostofhomeowne
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: 'True Cost of Homeownership Calculator: The True Cost of Owning a Home',
+  title: 'True Cost of Homeownership Calculator',
   description:
     "See the true cost of homeownership before you buy. This free calculator adds up the true cost of owning a home, including mortgage, taxes, insurance, utilities, maintenance, and future repairs, all in one honest number.",
   alternates: {
     canonical: SITE_URL,
   },
   openGraph: {
-    title: 'True Cost of Homeownership Calculator: The True Cost of Owning a Home',
+    title: 'True Cost of Homeownership Calculator',
     description:
       "See the true cost of homeownership before you buy. This free calculator adds up the true cost of owning a home, not just the mortgage payment.",
     url: SITE_URL,
